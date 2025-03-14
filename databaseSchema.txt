@@ -1,0 +1,674 @@
+CREATE DATABASE HRIS;
+USE HRIS;
+
+-- Users Table with direct role assignment
+CREATE TABLE users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    role ENUM('Admin', 'HR', 'Employee', 'Payroll_Manager', 'Recruiter', 'Manager') NOT NULL,
+    status ENUM('Active', 'Inactive') DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Departments
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(100) UNIQUE NOT NULL,
+    department_head INT,
+    parent_department_id INT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_department_id) REFERENCES departments(department_id)
+);
+
+-- Personnel Table (201 File)
+CREATE TABLE personnel (
+    personnel_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT UNIQUE NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50),
+    date_of_birth DATE,
+    gender ENUM('Male', 'Female', 'Other'),
+    civil_status ENUM('Single', 'Married', 'Divorced', 'Widowed'),
+    contact_number VARCHAR(20),
+    address TEXT,
+    department_id INT,
+    designation VARCHAR(100),
+    employment_type ENUM('Regular', 'Contractual', 'Part-time', 'Temporary', 'Consultant') NOT NULL,
+    date_hired DATE,
+    salary DECIMAL(10,2),
+    gsis_number VARCHAR(50),
+    pagibig_number VARCHAR(50),
+    philhealth_number VARCHAR(50),
+    sss_number VARCHAR(50),
+    tin_number VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (department_id) REFERENCES departments(department_id),
+    CONSTRAINT chk_salary_positive CHECK (salary > 0),
+    CONSTRAINT chk_tin_format CHECK (tin_number REGEXP '^[0-9]{9,12}$'),
+    CONSTRAINT chk_sss_format CHECK (sss_number REGEXP '^[0-9]{10,12}$'),
+    CONSTRAINT chk_pagibig_format CHECK (pagibig_number REGEXP '^[0-9]{12}$'),
+    CONSTRAINT chk_philhealth_format CHECK (philhealth_number REGEXP '^[0-9]{12}$'),
+    CONSTRAINT chk_gsis_format CHECK (gsis_number REGEXP '^[0-9]{11}$')
+);
+
+-- Update department table to reference personnel
+ALTER TABLE departments ADD CONSTRAINT fk_department_head FOREIGN KEY (department_head) REFERENCES personnel(personnel_id);
+
+-- Employment History
+CREATE TABLE employment_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    organization VARCHAR(100),
+    position VARCHAR(100),
+    start_date DATE,
+    end_date DATE,
+    employment_type ENUM('Private', 'Government', 'Contract of Service'),
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    CONSTRAINT chk_employment_dates CHECK (end_date IS NULL OR end_date >= start_date)
+);
+
+-- Work Schedules
+CREATE TABLE work_schedules (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    schedule_name VARCHAR(100) NOT NULL,
+    is_flextime BOOLEAN DEFAULT FALSE,
+    start_time TIME,
+    end_time TIME,
+    break_start_time TIME,
+    break_end_time TIME,
+    break_deducted BOOLEAN DEFAULT TRUE,
+    is_work_from_home BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Personnel Schedule Assignments
+CREATE TABLE personnel_schedules (
+    assignment_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    schedule_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (schedule_id) REFERENCES work_schedules(schedule_id),
+    FOREIGN KEY (created_by) REFERENCES users(user_id),
+    CONSTRAINT chk_schedule_dates CHECK (end_date IS NULL OR end_date >= start_date)
+);
+
+-- Attendance Logs
+CREATE TABLE attendance_logs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    log_date DATE NOT NULL,
+    time_in TIME,
+    time_out TIME,
+    total_hours DECIMAL(5,2),
+    status ENUM('Present', 'Absent', 'Late', 'On Leave', 'Work From Home') NOT NULL,
+    biometric_used BOOLEAN DEFAULT TRUE,
+    evidence_path VARCHAR(255),
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id)
+);
+
+-- DTR Adjustment Requests
+CREATE TABLE dtr_adjustment_requests (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    log_date DATE NOT NULL,
+    original_time_in TIME,
+    original_time_out TIME,
+    requested_time_in TIME,
+    requested_time_out TIME,
+    reason TEXT NOT NULL,
+    supporting_document VARCHAR(255),
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    approved_by INT,
+    approval_date TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (approved_by) REFERENCES users(user_id)
+);
+
+-- Leave Types
+CREATE TABLE leave_types (
+    leave_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    leave_type_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    requires_document BOOLEAN DEFAULT FALSE,
+    max_days INT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Leave Balances
+CREATE TABLE leave_balances (
+    balance_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    leave_type_id INT NOT NULL,
+    year INT NOT NULL,
+    total_credits DECIMAL(5,2) NOT NULL,
+    used_credits DECIMAL(5,2) DEFAULT 0.00,
+    earned_credits DECIMAL(5,2) DEFAULT 0.00,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (leave_type_id) REFERENCES leave_types(leave_type_id),
+    UNIQUE KEY unique_balance (personnel_id, leave_type_id, year),
+    CONSTRAINT chk_total_credits_positive CHECK (total_credits >= 0),
+    CONSTRAINT chk_used_credits_positive CHECK (used_credits >= 0),
+    CONSTRAINT chk_earned_credits_positive CHECK (earned_credits >= 0)
+);
+
+-- Leave Applications
+CREATE TABLE leave_applications (
+    leave_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    leave_type_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    total_days DECIMAL(5,2) NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected', 'Cancelled') DEFAULT 'Pending',
+    reason TEXT,
+    supporting_document VARCHAR(255),
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (leave_type_id) REFERENCES leave_types(leave_type_id),
+    CONSTRAINT chk_leave_dates CHECK (end_date >= start_date)
+);
+
+-- Leave Monetization Requests
+CREATE TABLE leave_monetization (
+    monetization_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    leave_type_id INT NOT NULL,
+    days_to_monetize DECIMAL(5,2) NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    amount DECIMAL(10,2),
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    approved_by INT,
+    approval_date TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (leave_type_id) REFERENCES leave_types(leave_type_id),
+    FOREIGN KEY (approved_by) REFERENCES users(user_id),
+    CONSTRAINT chk_days_to_monetize_positive CHECK (days_to_monetize > 0)
+);
+
+-- Overtime Requests
+CREATE TABLE overtime_requests (
+    overtime_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    overtime_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    total_hours DECIMAL(5,2) NOT NULL,
+    reason TEXT NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    approved_by INT,
+    approval_date TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (approved_by) REFERENCES users(user_id),
+    CONSTRAINT chk_overtime_time CHECK (end_time > start_time),
+    CONSTRAINT chk_overtime_hours_positive CHECK (total_hours > 0)
+);
+
+-- Personnel Movement History
+CREATE TABLE personnel_movement (
+    movement_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    movement_type ENUM('Promotion', 'Transfer', 'Re-employment', 'Reinstatement', 'Voluntary_Demotion', 
+                       'Disciplinary_Demotion', 'Reclassification', 'Reassignment', 'Detail', 
+                       'Designation', 'Probationary_Period', 'Item_Number_Change', 'Step_Increment', 
+                       'Salary_Adjustment', 'Reinstatement_Same_Position') NOT NULL,
+    previous_department_id INT,
+    new_department_id INT,
+    previous_designation VARCHAR(100),
+    new_designation VARCHAR(100),
+    previous_salary DECIMAL(10,2),
+    new_salary DECIMAL(10,2),
+    previous_item_number VARCHAR(50),
+    new_item_number VARCHAR(50),
+    effective_date DATE NOT NULL,
+    issued_by INT NOT NULL,
+    issued_date DATE NOT NULL,
+    remarks TEXT,
+    document_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (previous_department_id) REFERENCES departments(department_id),
+    FOREIGN KEY (new_department_id) REFERENCES departments(department_id),
+    FOREIGN KEY (issued_by) REFERENCES users(user_id)
+);
+
+-- Merits and Violations
+CREATE TABLE merits_violations (
+    record_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    record_type ENUM('Merit', 'Violation') NOT NULL,
+    description TEXT NOT NULL,
+    date_recorded DATE NOT NULL,
+    documented_by INT NOT NULL,
+    document_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (documented_by) REFERENCES users(user_id)
+);
+
+-- Administrative Cases
+CREATE TABLE administrative_cases (
+    case_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    case_title VARCHAR(255) NOT NULL,
+    case_description TEXT NOT NULL,
+    case_status ENUM('Filed', 'Under Investigation', 'Resolved', 'Dismissed', 'Appealed') DEFAULT 'Filed',
+    date_filed DATE NOT NULL,
+    resolution TEXT,
+    resolution_date DATE,
+    sanctions TEXT,
+    filed_by INT NOT NULL,
+    document_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (filed_by) REFERENCES users(user_id)
+);
+
+-- Payroll Records
+CREATE TABLE payroll_records (
+    payroll_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    payroll_period_start DATE NOT NULL,
+    payroll_period_end DATE NOT NULL,
+    basic_salary DECIMAL(10,2) NOT NULL,
+    salary_adjustments DECIMAL(10,2) DEFAULT 0.00,
+    gross_salary DECIMAL(10,2) NOT NULL,
+    total_deductions DECIMAL(10,2) NOT NULL,
+    net_amount_due DECIMAL(10,2) NOT NULL,
+    payment_status ENUM('Pending', 'Processed', 'Disbursed') DEFAULT 'Pending',
+    bank_account_number VARCHAR(50),
+    processed_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed_by INT,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (processed_by) REFERENCES users(user_id),
+    CONSTRAINT chk_payroll_period CHECK (payroll_period_end >= payroll_period_start),
+    CONSTRAINT chk_basic_salary_positive CHECK (basic_salary >= 0),
+    CONSTRAINT chk_gross_salary_positive CHECK (gross_salary >= 0),
+    CONSTRAINT chk_deductions_positive CHECK (total_deductions >= 0),
+    CONSTRAINT chk_net_amount_positive CHECK (net_amount_due >= 0)
+);
+
+-- Deductions
+CREATE TABLE deductions (
+    deduction_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    payroll_id INT NOT NULL,
+    bir DECIMAL(10,2) DEFAULT 0.00,
+    pagibig DECIMAL(10,2) DEFAULT 0.00,
+    philhealth DECIMAL(10,2) DEFAULT 0.00,
+    sss DECIMAL(10,2) DEFAULT 0.00,
+    loans DECIMAL(10,2) DEFAULT 0.00,
+    other_deductions DECIMAL(10,2) DEFAULT 0.00,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (payroll_id) REFERENCES payroll_records(payroll_id),
+    CONSTRAINT chk_bir_positive CHECK (bir >= 0),
+    CONSTRAINT chk_pagibig_positive CHECK (pagibig >= 0),
+    CONSTRAINT chk_philhealth_positive CHECK (philhealth >= 0),
+    CONSTRAINT chk_sss_positive CHECK (sss >= 0),
+    CONSTRAINT chk_loans_positive CHECK (loans >= 0),
+    CONSTRAINT chk_other_deductions_positive CHECK (other_deductions >= 0)
+);
+
+-- Loan Records
+CREATE TABLE loan_records (
+    loan_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    loan_type ENUM('Consolidated', 'Policy', 'Multi-Purpose', 'Other') NOT NULL,
+    loan_source VARCHAR(100) NOT NULL, -- e.g., "GSIS", "Pag-IBIG", etc.
+    loan_amount DECIMAL(10,2) NOT NULL,
+    monthly_deduction DECIMAL(10,2) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    remaining_balance DECIMAL(10,2) NOT NULL,
+    status ENUM('Active', 'Fully Paid', 'Delinquent') DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    CONSTRAINT chk_loan_amount_positive CHECK (loan_amount > 0),
+    CONSTRAINT chk_monthly_deduction_positive CHECK (monthly_deduction > 0),
+    CONSTRAINT chk_remaining_balance_positive CHECK (remaining_balance >= 0)
+);
+
+-- Job Postings
+CREATE TABLE job_postings (
+    position_id INT PRIMARY KEY AUTO_INCREMENT,
+    position_title VARCHAR(100) NOT NULL,
+    department_id INT NOT NULL,
+    job_description TEXT NOT NULL,
+    qualifications TEXT NOT NULL,
+    technical_competencies TEXT,
+    salary_range VARCHAR(100),
+    employment_type ENUM('Regular', 'Contractual', 'Part-time', 'Temporary', 'Consultant') NOT NULL,
+    num_vacancies INT NOT NULL DEFAULT 1,
+    application_deadline DATE NOT NULL,
+    posting_status ENUM('Draft', 'Published', 'Closed', 'Filled') DEFAULT 'Draft',
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id),
+    FOREIGN KEY (created_by) REFERENCES users(user_id),
+    CONSTRAINT chk_num_vacancies_positive CHECK (num_vacancies > 0)
+);
+
+-- Job Applicants
+CREATE TABLE job_applicants (
+    applicant_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50),
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    current_employer VARCHAR(100),
+    highest_education VARCHAR(100),
+    resume_path VARCHAR(255),
+    is_existing_employee BOOLEAN DEFAULT FALSE,
+    application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Job Applications
+CREATE TABLE job_applications (
+    application_id INT PRIMARY KEY AUTO_INCREMENT,
+    position_id INT NOT NULL,
+    applicant_id INT NOT NULL,
+    cover_letter TEXT,
+    status ENUM('Pending', 'Pre-Screening', 'For Interview', 'For Examination', 'Shortlisted', 'Selected', 'Rejected', 'Withdrawn', 'Hired') DEFAULT 'Pending',
+    application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    withdrawn_date TIMESTAMP,
+    remarks TEXT,
+    FOREIGN KEY (position_id) REFERENCES job_postings(position_id),
+    FOREIGN KEY (applicant_id) REFERENCES job_applicants(applicant_id)
+);
+
+-- Application Supporting Documents
+CREATE TABLE application_documents (
+    document_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT NOT NULL,
+    document_type VARCHAR(100) NOT NULL,
+    document_path VARCHAR(255) NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES job_applications(application_id)
+);
+
+-- Interview Schedule
+CREATE TABLE interview_schedule (
+    interview_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT NOT NULL,
+    interviewer_id INT NOT NULL,
+    interview_date DATETIME NOT NULL,
+    interview_type ENUM('Phone', 'Video', 'On-Site') NOT NULL,
+    interview_status ENUM('Scheduled', 'Completed', 'Cancelled') DEFAULT 'Scheduled',
+    interview_location VARCHAR(255),
+    interview_notes TEXT,
+    rating DECIMAL(3,2),
+    FOREIGN KEY (application_id) REFERENCES job_applications(application_id),
+    FOREIGN KEY (interviewer_id) REFERENCES users(user_id),
+    CONSTRAINT chk_rating_range CHECK (rating IS NULL OR rating BETWEEN 1 AND 5)
+);
+
+-- Examination Schedule
+CREATE TABLE examination_schedule (
+    exam_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT NOT NULL,
+    exam_type VARCHAR(100) NOT NULL,
+    exam_date DATETIME NOT NULL,
+    exam_location VARCHAR(255),
+    exam_status ENUM('Scheduled', 'Completed', 'Cancelled') DEFAULT 'Scheduled',
+    score DECIMAL(5,2),
+    passing_score DECIMAL(5,2),
+    result ENUM('Passed', 'Failed', 'Pending') DEFAULT 'Pending',
+    examiner_id INT,
+    notes TEXT,
+    FOREIGN KEY (application_id) REFERENCES job_applications(application_id),
+    FOREIGN KEY (examiner_id) REFERENCES users(user_id)
+);
+
+-- Applicant Assessment
+CREATE TABLE applicant_assessment (
+    assessment_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT NOT NULL,
+    assessor_id INT NOT NULL,
+    assessment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    criteria_technical DECIMAL(3,2),
+    criteria_experience DECIMAL(3,2),
+    criteria_education DECIMAL(3,2),
+    criteria_communication DECIMAL(3,2),
+    criteria_cultural_fit DECIMAL(3,2),
+    overall_rating DECIMAL(3,2),
+    comments TEXT,
+    recommendation ENUM('Hire', 'Consider', 'Reject') NOT NULL,
+    FOREIGN KEY (application_id) REFERENCES job_applications(application_id),
+    FOREIGN KEY (assessor_id) REFERENCES users(user_id),
+    CONSTRAINT chk_criteria_technical CHECK (criteria_technical BETWEEN 1 AND 5),
+    CONSTRAINT chk_criteria_experience CHECK (criteria_experience BETWEEN 1 AND 5),
+    CONSTRAINT chk_criteria_education CHECK (criteria_education BETWEEN 1 AND 5),
+    CONSTRAINT chk_criteria_communication CHECK (criteria_communication BETWEEN 1 AND 5),
+    CONSTRAINT chk_criteria_cultural_fit CHECK (criteria_cultural_fit BETWEEN 1 AND 5),
+    CONSTRAINT chk_overall_rating CHECK (overall_rating BETWEEN 1 AND 5)
+);
+
+-- Certificate Requests
+CREATE TABLE certificate_requests (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    certificate_type ENUM('Employment', 'Contribution', 'Service Record', 'Other') NOT NULL,
+    purpose TEXT NOT NULL,
+    status ENUM('Pending', 'Processing', 'Completed', 'Rejected') DEFAULT 'Pending',
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completion_date TIMESTAMP,
+    processed_by INT,
+    remarks TEXT,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (processed_by) REFERENCES users(user_id)
+);
+
+-- Performance Reviews
+CREATE TABLE performance_reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    reviewer_id INT NOT NULL,
+    review_period_start DATE NOT NULL,
+    review_period_end DATE NOT NULL,
+    review_date DATE NOT NULL,
+    performance_score DECIMAL(3,2),
+    strengths TEXT,
+    areas_for_improvement TEXT,
+    goals TEXT,
+    status ENUM('Draft', 'Submitted', 'Reviewed', 'Acknowledged') DEFAULT 'Draft',
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (reviewer_id) REFERENCES users(user_id),
+    CONSTRAINT chk_review_period CHECK (review_period_end >= review_period_start),
+    CONSTRAINT chk_performance_score CHECK (performance_score BETWEEN 1 AND 5)
+);
+
+-- Training Programs
+CREATE TABLE training_programs (
+    training_id INT PRIMARY KEY AUTO_INCREMENT,
+    training_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    start_date DATE,
+    end_date DATE,
+    location VARCHAR(100),
+    trainer VARCHAR(100),
+    max_participants INT,
+    status ENUM('Planned', 'Ongoing', 'Completed', 'Cancelled') DEFAULT 'Planned',
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(user_id),
+    CONSTRAINT chk_training_dates CHECK (end_date >= start_date),
+    CONSTRAINT chk_max_participants CHECK (max_participants > 0)
+);
+
+-- Training Modules Table (Enhanced for Structured Content)
+CREATE TABLE training_modules (
+    module_id INT PRIMARY KEY AUTO_INCREMENT,
+    training_id INT NOT NULL,
+    module_name VARCHAR(255) NOT NULL,
+    content TEXT,
+    video_link VARCHAR(255),
+    FOREIGN KEY (training_id) REFERENCES training_programs(training_id)
+);
+
+-- Training Participants
+CREATE TABLE training_participants (
+    training_id INT NOT NULL,
+    personnel_id INT NOT NULL,
+    status ENUM('Enrolled', 'Completed', 'Failed', 'Dropped') DEFAULT 'Enrolled',
+    enrollment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completion_date DATE,
+    certificate_issued BOOLEAN DEFAULT FALSE,
+    feedback TEXT,
+    PRIMARY KEY (training_id, personnel_id),
+    FOREIGN KEY (training_id) REFERENCES training_programs(training_id),
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id)
+);
+
+-- Feedback and Reviews
+CREATE TABLE employee_feedback (
+    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    feedback_type ENUM('System', 'HR Service', 'Management', 'Work Environment', 'Other') NOT NULL,
+    feedback_content TEXT NOT NULL,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('New', 'Under Review', 'Addressed', 'Closed') DEFAULT 'New',
+    response TEXT,
+    responded_by INT,
+    responded_at TIMESTAMP,
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (responded_by) REFERENCES users(user_id)
+);
+
+-- Notifications Table
+CREATE TABLE notifications (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    notification_type VARCHAR(100),
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Documents
+CREATE TABLE documents (
+    document_id INT PRIMARY KEY AUTO_INCREMENT,
+    document_name VARCHAR(100) NOT NULL,
+    document_type VARCHAR(50),
+    file_path VARCHAR(255) NOT NULL,
+    uploaded_by INT NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    related_to_table VARCHAR(50),
+    related_to_id INT,
+    description TEXT,
+    is_public BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (uploaded_by) REFERENCES users(user_id)
+);
+
+-- Audit Logs
+CREATE TABLE audit_logs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    action_type VARCHAR(50) NOT NULL,
+    table_affected VARCHAR(50) NOT NULL,
+    record_id VARCHAR(50) NOT NULL,
+    action_details TEXT,
+    ip_address VARCHAR(50),
+    user_agent TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Reports Table 
+CREATE TABLE reports (
+    report_id INT PRIMARY KEY AUTO_INCREMENT,
+    report_name VARCHAR(255) NOT NULL,
+    generated_by INT NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    digital_signature TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (generated_by) REFERENCES users(user_id)
+);
+
+
+CREATE TABLE approvals (
+    approval_id INT PRIMARY KEY AUTO_INCREMENT,
+    request_type ENUM('Leave', 'Payroll', 'Recruitment') NOT NULL,
+    request_id INT NOT NULL,
+    approval_step INT DEFAULT 1,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    approved_by INT,
+    approval_date TIMESTAMP,
+    FOREIGN KEY (approved_by) REFERENCES users(user_id)
+);
+
+
+CREATE TABLE system_settings (
+    setting_id INT PRIMARY KEY AUTO_INCREMENT,
+    setting_key VARCHAR(255) UNIQUE NOT NULL,
+    setting_value TEXT NOT NULL
+);
+
+
+-- Performance Evaluations Table
+CREATE TABLE performance_evaluations (
+    evaluation_id INT PRIMARY KEY AUTO_INCREMENT,
+    personnel_id INT NOT NULL,
+    reviewer_id INT NOT NULL,
+    evaluation_period_start DATE NOT NULL,
+    evaluation_period_end DATE NOT NULL,
+    evaluation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    self_assessment TEXT,
+    manager_comments TEXT,
+    peer_feedback TEXT,
+    kpi_score DECIMAL(3,2),
+    overall_performance_score DECIMAL(3,2),
+    strengths TEXT,
+    areas_for_improvement TEXT,
+    recommended_training TEXT,
+    status ENUM('Draft', 'Submitted', 'Reviewed', 'Finalized') DEFAULT 'Draft',
+    FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id),
+    FOREIGN KEY (reviewer_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE system_modules (
+    module_id INT PRIMARY KEY AUTO_INCREMENT,
+    module_name VARCHAR(255) UNIQUE NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    can_be_disabled BOOLEAN DEFAULT TRUE,  -- Prevents disabling critical modules
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+
+-- Create indexes on frequently queried columns
+CREATE INDEX idx_personnel_department ON personnel(department_id);
+CREATE INDEX idx_personnel_employment_type ON personnel(employment_type);
+CREATE INDEX idx_attendance_log_date ON attendance_logs(log_date);
+CREATE INDEX idx_leave_applications_status ON leave_applications(status);
+CREATE INDEX idx_payroll_records_period ON payroll_records(payroll_period_start, payroll_period_end);
+CREATE INDEX idx_job_applications_status ON job_applications(status);
+CREATE INDEX idx_audit_logs_user_id ON audit_logs(user_id);
+CREATE INDEX idx_audit_logs_timestamp ON audit_logs(timestamp);
+CREATE INDEX idx_documents_related ON documents(related_to_table, related_to_id);
+CREATE INDEX idx_training_dates ON training_programs(start_date, end_date);
+CREATE INDEX idx_performance_reviews_personnel ON performance_reviews(personnel_id);
+CREATE INDEX idx_personnel_schedules_dates ON personnel_schedules(start_date, end_date);
+CREATE INDEX idx_loan_records_personnel ON loan_records(personnel_id);
+CREATE INDEX idx_overtime_requests_status ON overtime_requests(status);
+CREATE INDEX idx_certificate_requests_status ON certificate_requests(status);
+
+
+
