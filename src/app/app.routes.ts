@@ -5,9 +5,9 @@ import { hrGuard } from './core/guards/hr.guard';
 import { payrollGuard } from './core/guards/payroll.guard';
 import { employeeGuard } from './core/guards/employee.guard';
 
-
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  // Login Page (Directly Import Component)
+  { path: 'login', loadComponent: () => import('./modules/auth/pages/login/login.component').then(m => m.LoginComponent) },
 
   // Common Routes (accessible by all authenticated users)
   { path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [authGuard] },
@@ -24,7 +24,6 @@ export const routes: Routes = [
   // System Admin (Admin Only)
   { path: 'admin', loadChildren: () => import('./modules/system-admin/system-admin.module').then(m => m.SystemAdminModule), canActivate: [adminGuard] },
 
-  // Wildcard for unknown routes
-  { path: '**', redirectTo: '/dashboard' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' }
 ];
-
