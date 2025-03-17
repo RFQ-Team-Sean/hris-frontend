@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIf, CommonModule } from '@angular/common';
+import { DummyDataService } from '../../../../core/services/dummy-data.service';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,9 @@ import { NgIf, CommonModule } from '@angular/common';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private dummyService: DummyDataService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -21,10 +23,18 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login Data:', this.loginForm.value);
-      alert('Login successful! 🎉');
+      const { email, password } = this.loginForm.value;
+
+      this.dummyService.login(email, password).subscribe(response => {
+        if (response.success) {
+          console.log('Logged in as:', response.user);
+          alert(`Welcome, ${response.user.username} (${response.user.role}) 🎉`);
+        } else {
+          this.errorMessage = response.message;
+        }
+      });
     } else {
-      alert('Please fill in the form correctly.');
+      this.errorMessage = 'Please fill in the form correctly.';
     }
   }
 }
