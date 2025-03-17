@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-enrollment',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './enrollment.component.html',
-  styleUrl: './enrollment.component.scss'
+  styleUrls: ['./enrollment.component.scss']
 })
-export class EnrollmentComponent {
-
-}
+export class EnrollmentComponent {}
