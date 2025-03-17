@@ -23,6 +23,8 @@ export const routes: Routes = [
   { path: 'performance', loadChildren: () => import('./modules/performance/performance.module').then(m => m.PerformanceModule), canActivate: [authGuard]  },
   { path: 'reports', loadChildren: () => import('./modules/reports/reports.module').then(m => m.ReportsModule), canActivate: [authGuard]  },
   { path: 'employee-self-service', loadChildren: () => import('./modules/employee-self-service/employee-self-service.module').then(m => m.EmployeeSelfServiceModule), canActivate: [authGuard]  },
+  { path: 'system-admin', loadChildren: () => import('./modules/system-admin/system-admin.module').then(m => m.SystemAdminModule), canActivate: [authGuard]  },
+
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
