@@ -35,29 +35,17 @@ export class LoginComponent {
           console.log('Login successful:', response.user);
           localStorage.setItem('user', JSON.stringify(response.user)); // Store user info
           
-          // Redirect based on user role
-          switch (response.user.role) {
-            case 'Admin':
-              this.router.navigate(['/admin']);
-              break;
-            case 'HR':
-              this.router.navigate(['/personnel']);
-              break;
-            case 'Employee':
-              this.router.navigate(['/self-service']);
-              break;
-            case 'Payroll_Manager':
-              this.router.navigate(['/payroll']);
-              break;
-            case 'Recruiter':
-              this.router.navigate(['/recruitment']);
-              break;
-            case 'Manager':
-              this.router.navigate(['/dashboard']);
-              break;
-            default:
-              this.router.navigate(['/dashboard']);
-          }
+          // ✅ Corrected route paths
+          const roleBasedRoutes: { [key: string]: string } = {
+            Admin: '/dashboard/admin', // ✅ Corrected admin route
+            HR: '/dashboard/hr',
+            Employee: '/dashboard/employee',
+            Payroll_Manager: '/dashboard/payroll',
+            Recruiter: '/dashboard/recruiter',
+            Manager: '/dashboard/manager',
+          };
+
+          this.router.navigate([roleBasedRoutes[response.user.role] || '/dashboard']);
         } else {
           this.errorMessage = response.message; // Show error message
         }
