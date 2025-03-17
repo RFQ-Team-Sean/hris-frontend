@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-personnel-dashboard',
-  imports: [],
+  standalone: true,
   templateUrl: './personnel-dashboard.component.html',
-  styleUrl: './personnel-dashboard.component.scss'
+  styleUrls: ['./personnel-dashboard.component.scss']
 })
-export class PersonnelDashboardComponent {
-
-}
+export class PersonnelDashboardComponent {}
