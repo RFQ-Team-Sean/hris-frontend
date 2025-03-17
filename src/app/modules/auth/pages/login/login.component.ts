@@ -34,7 +34,30 @@ export class LoginComponent {
         if (response.success) {
           console.log('Login successful:', response.user);
           localStorage.setItem('user', JSON.stringify(response.user)); // Store user info
-          this.router.navigate(['/dashboard']); // Redirect to dashboard
+          
+          // Redirect based on user role
+          switch (response.user.role) {
+            case 'Admin':
+              this.router.navigate(['/admin']);
+              break;
+            case 'HR':
+              this.router.navigate(['/personnel']);
+              break;
+            case 'Employee':
+              this.router.navigate(['/self-service']);
+              break;
+            case 'Payroll_Manager':
+              this.router.navigate(['/payroll']);
+              break;
+            case 'Recruiter':
+              this.router.navigate(['/recruitment']);
+              break;
+            case 'Manager':
+              this.router.navigate(['/dashboard']);
+              break;
+            default:
+              this.router.navigate(['/dashboard']);
+          }
         } else {
           this.errorMessage = response.message; // Show error message
         }

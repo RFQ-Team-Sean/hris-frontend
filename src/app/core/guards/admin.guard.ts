@@ -6,7 +6,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
     return true;
   } else {
     const router = new Router();
-    router.navigate(['/dashboard']); // Redirect to dashboard if not authorized
+    router.navigate(['/dashboard']);
     return false;
   }
 };
