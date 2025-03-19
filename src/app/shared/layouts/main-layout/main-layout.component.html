@@ -1,0 +1,162 @@
+<div class="layout-container" [ngClass]="{'sidebar-expanded': sidebarExpanded, 'sidebar-collapsed': !sidebarExpanded}">
+  <!-- Sidebar -->
+  <app-sidebar (toggleSidebarEvent)="onSidebarToggle($event)"></app-sidebar>
+  
+  <!-- Mobile Toggle Button (only visible on small screens) -->
+  <button class="mobile-toggle" (click)="toggleMobileSidebar()" *ngIf="!sidebarExpanded">
+    <span class="material-icons">menu</span>
+  </button>
+  
+  <!-- Main Content Area -->
+  <div class="app-content" [ngClass]="{'content-expanded': !sidebarExpanded}">
+    <!-- Header -->
+    <header class="content-header">
+      <div class="header-left">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+          <span *ngFor="let crumb of breadcrumbs; let i = index" class="breadcrumb-item">
+            <a [routerLink]="crumb.path" *ngIf="i < breadcrumbs.length - 1">{{ crumb.label }}</a>
+            <span *ngIf="i < breadcrumbs.length - 1" class="separator">/</span>
+            <span *ngIf="i === breadcrumbs.length - 1" class="current">{{ crumb.label }}</span>
+          </span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <!-- Search Box -->
+        <div class="global-search">
+          <span class="material-icons">search</span>
+          <input type="text" placeholder="Search..." class="search-input">
+        </div>
+        
+        <!-- Notification Bell -->
+        <div class="notifications">
+          <span class="material-icons">notifications</span>
+          <span class="notification-badge">3</span>
+        </div>
+        
+        <!-- User Menu -->
+        <div class="user-menu" (click)="toggleUserMenu()">
+          <div class="avatar">
+            <span class="material-icons">person</span>
+          </div>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" [ngClass]="{'active': userMenuOpen}">
+            <a routerLink="/profile" class="dropdown-item">
+              <span class="material-icons">account_circle</span>
+              <span>My Profile</span>
+            </a>
+            <a routerLink="/settings" class="dropdown-item">
+              <span class="material-icons">settings</span>
+              <span>Settings</span>
+            </a>
+            <div class="divider"></div>
+            <a (click)="logout()" class="dropdown-item">
+              <span class="material-icons">logout</span>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="content-main">
+      <!-- Example Content (for demonstration) -->
+      <div class="dashboard-grid" *ngIf="router.url.includes('/dashboard')">
+        <div class="dashboard-card">
+          <h3>Welcome back, {{ user?.name || 'User' }}</h3>
+          <p>Here's what's happening today</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>Quick Stats</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value">28</span>
+              <span class="stat-label">New Employees</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">14</span>
+              <span class="stat-label">Pending Leaves</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">93%</span>
+              <span class="stat-label">Attendance</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">7</span>
+              <span class="stat-label">Open Positions</span>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Recent Activity</h3>
+          <div class="activity-list">
+            <div class="activity-item">
+              <span class="material-icons">person_add</span>
+              <div>
+                <p class="activity-text"><strong>Sarah Johnson</strong> joined the company</p>
+                <p class="activity-time">Today, 9:30 AM</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="material-icons">event_busy</span>
+              <div>
+                <p class="activity-text"><strong>Michael Chen</strong> requested leave</p>
+                <p class="activity-time">Yesterday, 4:15 PM</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="material-icons">assessment</span>
+              <div>
+                <p class="activity-text"><strong>Quarterly Reports</strong> are now available</p>
+                <p class="activity-time">Yesterday, 11:30 AM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Upcoming Events</h3>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-date">
+                <span class="event-day">15</span>
+                <span class="event-month">Jun</span>
+              </div>
+              <div class="event-details">
+                <h4>Team Building Event</h4>
+                <p>10:00 AM - 4:00 PM</p>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-date">
+                <span class="event-day">22</span>
+                <span class="event-month">Jun</span>
+              </div>
+              <div class="event-details">
+                <h4>Quarterly Review</h4>
+                <p>9:00 AM - 12:00 PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Router Outlet for Actual Content -->
+      <router-outlet></router-outlet>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="content-footer">
+      <div>© {{ currentYear }} Quanby HRIS. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Help</a>
+      </div>
+    </footer>
+  </div>
+</div> 
