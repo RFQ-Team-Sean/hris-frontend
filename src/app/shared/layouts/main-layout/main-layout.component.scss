@@ -8,18 +8,19 @@
   background-color: #f9fafc;
   margin: 0;
   padding: 0;
+  position: relative;
   
   &.sidebar-expanded {
     .app-content {
       margin-left: 250px;
-      width: calc(100vw - 250px);
+      width: calc(100% - 250px);
     }
   }
   
   &.sidebar-collapsed {
     .app-content {
       margin-left: 65px;
-      width: calc(100vw - 65px);
+      width: calc(100% - 65px);
     }
   }
 }
@@ -34,6 +35,8 @@
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  position: relative;
+  background-color: #f9fafc;
 }
 
 // Header Styling
@@ -247,137 +250,6 @@
   overflow-y: auto;
 }
 
-// Dashboard Example Styling
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.dashboard-card {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 1.5rem;
-  
-  h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: #64748b;
-    margin: 0;
-  }
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  
-  .stat-value {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #5a55c9;
-  }
-  
-  .stat-label {
-    font-size: 0.875rem;
-    color: #64748b;
-  }
-}
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  
-  .material-icons {
-    font-size: 1.25rem;
-    color: #5a55c9;
-    background-color: rgba(90, 85, 201, 0.1);
-    padding: 0.5rem;
-    border-radius: 50%;
-  }
-  
-  .activity-text {
-    margin: 0;
-    color: #1e293b;
-    font-size: 0.875rem;
-  }
-  
-  .activity-time {
-    margin: 0;
-    color: #94a3b8;
-    font-size: 0.75rem;
-  }
-}
-
-.events-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.event-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  
-  .event-date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 3rem;
-    height: 3.5rem;
-    background-color: #5a55c9;
-    border-radius: 0.375rem;
-    color: white;
-    
-    .event-day {
-      font-size: 1.125rem;
-      font-weight: 600;
-    }
-    
-    .event-month {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-    }
-  }
-  
-  .event-details {
-    h4 {
-      margin: 0;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #1e293b;
-    }
-    
-    p {
-      margin: 0;
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-  }
-}
-
 // Footer Styling
 .content-footer {
   display: flex;
@@ -430,12 +302,6 @@
 }
 
 // Responsive Styling
-@media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 768px) {
   .layout-container {
     &.sidebar-expanded,
