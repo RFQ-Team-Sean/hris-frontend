@@ -6,41 +6,46 @@
             <h1 class="brand-name" *ngIf="isExpanded">QUANBY <span>HRIS</span></h1>
             <h1 class="brand-icon" *ngIf="!isExpanded">Q</h1>
         </div>
-        <button class="toggle-btn" (click)="toggleSidebar()">
+        <button class="toggle-btn" (click)="toggleSidebar()" [attr.aria-label]="isExpanded ? 'Collapse sidebar' : 'Expand sidebar'">
             <i class="material-icons">{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</i>
         </button>
     </div>
 
     <div class="sidebar-content">
-        <div class="menu-container">
+        <nav class="menu-container" role="navigation">
             <!-- Dashboard Link -->
             <div class="menu-item" 
                  [routerLink]="menuItems.length > 0 ? menuItems[0].path : '/dashboard'" 
-                 [class.active]="menuItems.length > 0 ? isActiveRoute(menuItems[0].path) : isActiveRoute('/dashboard')">
-                <i class="material-icons">dashboard</i>
+                 [class.active]="menuItems.length > 0 ? isActiveRoute(menuItems[0].path) : isActiveRoute('/dashboard')"
+                 role="menuitem">
+                <i class="material-icons" aria-hidden="true">dashboard</i>
                 <span *ngIf="isExpanded">Dashboard</span>
             </div>
 
             <!-- HR Admin Submenu -->
-            <div *ngIf="hasMenuItem('HR Admin')" class="menu-item parent-menu" 
+            <div *ngIf="hasMenuItem('HR Admin')" 
+                 class="menu-item parent-menu" 
                  [class.active]="isActiveRoute('/personnel-management')"
-                 (click)="toggleSubmenu('hrAdmin')">
-                <i class="material-icons">people</i>
+                 [attr.aria-expanded]="expandedMenus['hrAdmin']"
+                 (click)="toggleSubmenu('hrAdmin')"
+                 role="menuitem">
+                <i class="material-icons" aria-hidden="true">people</i>
                 <span *ngIf="isExpanded">HR Admin</span>
-                <i *ngIf="isExpanded" class="material-icons expand-icon">
+                <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
                     {{ expandedMenus['hrAdmin'] ? 'expand_less' : 'expand_more' }}
                 </i>
             </div>
             
             <ng-container *ngIf="expandedMenus['hrAdmin'] && isExpanded && hasMenuItem('HR Admin')">
-                <div class="submenu">
+                <div class="submenu" role="menu">
                     <ng-container *ngFor="let item of menuItems">
                         <ng-container *ngIf="item.name === 'HR Admin' && item.children">
                             <div *ngFor="let subItem of item.children" 
                                  class="submenu-item" 
                                  [routerLink]="subItem.path"
-                                 [class.active]="isActiveRoute(subItem.path)">
-                                <span class="submenu-dot"></span>
+                                 [class.active]="isActiveRoute(subItem.path)"
+                                 role="menuitem">
+                                <span class="submenu-dot" aria-hidden="true"></span>
                                 {{ subItem.name }}
                             </div>
                         </ng-container>
@@ -49,25 +54,29 @@
             </ng-container>
 
             <!-- Payroll Submenu -->
-            <div *ngIf="hasMenuItem('Payroll')" class="menu-item parent-menu" 
+            <div *ngIf="hasMenuItem('Payroll')" 
+                 class="menu-item parent-menu" 
                  [class.active]="isActiveRoute('/payroll')"
-                 (click)="toggleSubmenu('payroll')">
-                <i class="material-icons">attach_money</i>
+                 [attr.aria-expanded]="expandedMenus['payroll']"
+                 (click)="toggleSubmenu('payroll')"
+                 role="menuitem">
+                <i class="material-icons" aria-hidden="true">attach_money</i>
                 <span *ngIf="isExpanded">Payroll</span>
-                <i *ngIf="isExpanded" class="material-icons expand-icon">
+                <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
                     {{ expandedMenus['payroll'] ? 'expand_less' : 'expand_more' }}
                 </i>
             </div>
             
             <ng-container *ngIf="expandedMenus['payroll'] && isExpanded && hasMenuItem('Payroll')">
-                <div class="submenu">
+                <div class="submenu" role="menu">
                     <ng-container *ngFor="let item of menuItems">
                         <ng-container *ngIf="item.name === 'Payroll' && item.children">
                             <div *ngFor="let subItem of item.children" 
                                  class="submenu-item" 
                                  [routerLink]="subItem.path"
-                                 [class.active]="isActiveRoute(subItem.path)">
-                                <span class="submenu-dot"></span>
+                                 [class.active]="isActiveRoute(subItem.path)"
+                                 role="menuitem">
+                                <span class="submenu-dot" aria-hidden="true"></span>
                                 {{ subItem.name }}
                             </div>
                         </ng-container>
@@ -76,25 +85,29 @@
             </ng-container>
 
             <!-- System Admin Submenu -->
-            <div *ngIf="hasMenuItem('System Admin')" class="menu-item parent-menu" 
+            <div *ngIf="hasMenuItem('System Admin')" 
+                 class="menu-item parent-menu" 
                  [class.active]="isActiveRoute('/system-admin')"
-                 (click)="toggleSubmenu('sysAdmin')">
-                <i class="material-icons">settings</i>
+                 [attr.aria-expanded]="expandedMenus['sysAdmin']"
+                 (click)="toggleSubmenu('sysAdmin')"
+                 role="menuitem">
+                <i class="material-icons" aria-hidden="true">settings</i>
                 <span *ngIf="isExpanded">System Admin</span>
-                <i *ngIf="isExpanded" class="material-icons expand-icon">
+                <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
                     {{ expandedMenus['sysAdmin'] ? 'expand_less' : 'expand_more' }}
                 </i>
             </div>
             
             <ng-container *ngIf="expandedMenus['sysAdmin'] && isExpanded && hasMenuItem('System Admin')">
-                <div class="submenu">
+                <div class="submenu" role="menu">
                     <ng-container *ngFor="let item of menuItems">
                         <ng-container *ngIf="item.name === 'System Admin' && item.children">
                             <div *ngFor="let subItem of item.children" 
                                  class="submenu-item" 
                                  [routerLink]="subItem.path"
-                                 [class.active]="isActiveRoute(subItem.path)">
-                                <span class="submenu-dot"></span>
+                                 [class.active]="isActiveRoute(subItem.path)"
+                                 role="menuitem">
+                                <span class="submenu-dot" aria-hidden="true"></span>
                                 {{ subItem.name }}
                             </div>
                         </ng-container>
@@ -103,25 +116,27 @@
             </ng-container>
 
             <!-- Simple Menu Items -->
-            <div *ngFor="let item of getSimpleMenuItems()" class="menu-item" 
+            <div *ngFor="let item of getSimpleMenuItems()" 
+                 class="menu-item" 
                  [routerLink]="item.path"
-                 [class.active]="isActiveRoute(item.path)">
-                <i class="material-icons">{{ item.icon }}</i>
+                 [class.active]="isActiveRoute(item.path)"
+                 role="menuitem">
+                <i class="material-icons" aria-hidden="true">{{ item.icon }}</i>
                 <span *ngIf="isExpanded">{{ item.name }}</span>
             </div>
-        </div>
+        </nav>
     </div>
 
     <div class="sidebar-footer">
         <!-- Help Button -->
-        <div class="help-btn" [routerLink]="['/help']">
-            <i class="material-icons">help_outline</i>
+        <div class="help-btn" [routerLink]="['/help']" role="button">
+            <i class="material-icons" aria-hidden="true">help_outline</i>
             <span *ngIf="isExpanded">Help</span>
         </div>
 
         <!-- Logout Button -->
-        <div class="logout-btn" (click)="logout()">
-            <i class="material-icons">exit_to_app</i>
+        <div class="logout-btn" (click)="logout()" role="button">
+            <i class="material-icons" aria-hidden="true">exit_to_app</i>
             <span *ngIf="isExpanded">Logout</span>
         </div>
     </div>
