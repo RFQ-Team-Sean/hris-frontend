@@ -1,0 +1,82 @@
+<div class="layout-container" [ngClass]="{'sidebar-expanded': sidebarExpanded, 'sidebar-collapsed': !sidebarExpanded}">
+  <!-- Sidebar -->
+  <app-sidebar (toggleSidebarEvent)="onSidebarToggle($event)"></app-sidebar>
+  
+  <!-- Mobile Toggle Button (only visible on small screens) -->
+  <button class="mobile-toggle" (click)="toggleMobileSidebar()" *ngIf="!sidebarExpanded">
+    <span class="material-icons">menu</span>
+  </button>
+  
+  <!-- Main Content Area -->
+  <div class="app-content" [ngClass]="{'content-expanded': !sidebarExpanded}">
+    <!-- Header -->
+    <header class="content-header">
+      <div class="header-left">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+          <span *ngFor="let crumb of breadcrumbs; let i = index" class="breadcrumb-item">
+            <a [routerLink]="crumb.path" *ngIf="i < breadcrumbs.length - 1">{{ crumb.label }}</a>
+            <span *ngIf="i < breadcrumbs.length - 1" class="separator">/</span>
+            <span *ngIf="i === breadcrumbs.length - 1" class="current">{{ crumb.label }}</span>
+          </span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <!-- Search Box -->
+        <div class="global-search">
+          <span class="material-icons">search</span>
+          <input type="text" placeholder="Search..." class="search-input">
+        </div>
+        
+        <!-- Notification Bell -->
+        <div class="notifications">
+          <span class="material-icons">notifications</span>
+          <span class="notification-badge">3</span>
+        </div>
+        
+        <!-- User Menu -->
+        <div class="user-menu" (click)="toggleUserMenu()">
+          <div class="avatar">
+            <span class="material-icons">person</span>
+          </div>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" [ngClass]="{'active': userMenuOpen}">
+            <a routerLink="/profile" class="dropdown-item">
+              <span class="material-icons">account_circle</span>
+              <span>My Profile</span>
+            </a>
+            <a routerLink="/settings" class="dropdown-item">
+              <span class="material-icons">settings</span>
+              <span>Settings</span>
+            </a>
+            <div class="divider"></div>
+            <a (click)="logout()" class="dropdown-item">
+              <span class="material-icons">logout</span>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="content-main">
+      <!-- Router Outlet for Content -->
+      <router-outlet></router-outlet>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="content-footer">
+      <div>© {{ currentYear }} Quanby HRIS. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Help</a>
+      </div>
+    </footer>
+  </div>
+</div> 

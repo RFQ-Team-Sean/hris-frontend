@@ -1,0 +1,14 @@
+<div class="app-container">
+  <!-- Sidebar -->
+  <app-sidebar (toggleSidebarEvent)="onToggleSidebar($event)"></app-sidebar>
+
+  <div class="main-content" [@mainContentAnimation]="isSidebarExpanded ? 'expanded' : 'collapsed'">
+    <!-- Header -->
+    <app-header [isSidebarExpanded]="isSidebarExpanded" [currentUser]="currentUser"></app-header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> 
