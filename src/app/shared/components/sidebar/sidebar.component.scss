@@ -5,6 +5,39 @@
   top: 0;
   left: 0;
   z-index: 1000;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    pointer-events: none;
+    
+    &.mobile-visible {
+      pointer-events: all;
+    }
+  }
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1001;
+  backdrop-filter: blur(2px);
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .sidebar-container {
@@ -19,9 +52,25 @@
   overflow-y: auto;
   position: relative;
   width: 250px;
+  z-index: 1002;
   
   &.collapsed {
     width: 65px;
+  }
+  
+  @media (max-width: 768px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+
+    &.expanded {
+      transform: translateX(0);
+    }
   }
   
   &::before {
@@ -305,4 +354,69 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  :host {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    &.mobile-visible {
+      pointer-events: all;
+      
+      .sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .sidebar-container {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .sidebar-container {
+    position: fixed;
+    width: 280px !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1002;
+
+    &.expanded {
+      transform: translateX(0);
+    }
+
+    .toggle-btn {
+      display: none;
+    }
+
+    .menu-item {
+      padding: 16px 20px;
+      
+      i {
+        font-size: 24px;
+      }
+      
+      span {
+        font-size: 16px;
+      }
+    }
+
+    .submenu-item {
+      padding: 14px 20px 14px 56px;
+      font-size: 15px;
+    }
+  }
+}
+
+// Touch-friendly improvements
+.menu-item, .submenu-item {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }

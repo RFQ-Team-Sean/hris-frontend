@@ -1,13 +1,34 @@
+<!-- Sidebar Overlay (for mobile) -->
+<div class="sidebar-overlay" 
+     [class.visible]="isExpanded && isMobile" 
+     (click)="closeMobileSidebar()"
+     role="presentation">
+</div>
+
 <!-- Main Sidebar Container -->
-<div class="sidebar-container" [@slideInOut]="isExpanded ? 'expanded' : 'collapsed'">
+<div class="sidebar-container" 
+     [class.expanded]="isExpanded"
+     [class.mobile]="isMobile"
+     [class.mobile-visible]="isExpanded && isMobile"
+     [@slideInOut]="getAnimationState()">
     <!-- Sidebar Header with Logo -->
     <div class="sidebar-header">
         <div class="logo-container">
             <h1 class="brand-name" *ngIf="isExpanded">QUANBY <span>HRIS</span></h1>
             <h1 class="brand-icon" *ngIf="!isExpanded">Q</h1>
         </div>
-        <button class="toggle-btn" (click)="toggleSidebar()" [attr.aria-label]="isExpanded ? 'Collapse sidebar' : 'Expand sidebar'">
+        <button class="toggle-btn" 
+                (click)="toggleSidebar()" 
+                [attr.aria-label]="isExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
+                *ngIf="!isMobile">
             <i class="material-icons">{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</i>
+        </button>
+        <!-- Add mobile close button -->
+        <button class="toggle-btn" 
+                (click)="closeMobileSidebar()" 
+                *ngIf="isMobile"
+                aria-label="Close menu">
+            <i class="material-icons">close</i>
         </button>
     </div>
 

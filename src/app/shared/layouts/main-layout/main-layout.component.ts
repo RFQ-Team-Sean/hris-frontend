@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { NgClass, NgIf, NgFor } from '@angular/common';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
@@ -12,6 +12,8 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent implements OnInit {
+  @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
+  
   pageTitle: string = 'Dashboard';
   breadcrumbs: {label: string, path: string}[] = [
     { label: 'Home', path: '/' },
@@ -20,9 +22,13 @@ export class MainLayoutComponent implements OnInit {
   userMenuOpen: boolean = false;
   currentYear: number = new Date().getFullYear();
   sidebarExpanded: boolean = true;
+  isMobile: boolean = false;
   user: any;
   
-  constructor(public router: Router) {}
+  constructor(public router: Router) {
+    this.checkMobileView();
+    window.addEventListener('resize', () => this.checkMobileView());
+  }
   
   ngOnInit() {
     // Get user from localStorage
@@ -38,22 +44,37 @@ export class MainLayoutComponent implements OnInit {
     // Check for sidebar state in localStorage
     const sidebarState = localStorage.getItem('sidebarExpanded');
     if (sidebarState !== null) {
-      this.sidebarExpanded = sidebarState === 'true';
+      this.sidebarExpanded = this.isMobile ? false : (sidebarState === 'true');
     }
+  }
+  
+  private checkMobileView() {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth <= 768;
     
-    // Adjust for mobile devices
-    if (window.innerWidth < 768) {
+    // Handle sidebar state when switching between mobile and desktop
+    if (!wasMobile && this.isMobile) {
       this.sidebarExpanded = false;
+    } else if (wasMobile && !this.isMobile) {
+      this.sidebarExpanded = true;
+      // Remove any mobile-specific classes or states
+      document.body.style.overflow = 'auto';
     }
   }
   
   onSidebarToggle(expanded: boolean) {
     this.sidebarExpanded = expanded;
-    localStorage.setItem('sidebarExpanded', String(expanded));
+    if (this.isMobile) {
+      document.body.style.overflow = expanded ? 'hidden' : 'auto';
+    } else {
+      localStorage.setItem('sidebarExpanded', expanded.toString());
+    }
   }
   
   toggleMobileSidebar() {
-    this.sidebarExpanded = true;
+    if (this.sidebarComponent && this.isMobile) {
+      this.sidebarComponent.toggleSidebar();
+    }
   }
   
   toggleUserMenu() {

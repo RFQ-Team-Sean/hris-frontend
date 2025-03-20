@@ -2,15 +2,18 @@
   <!-- Sidebar -->
   <app-sidebar (toggleSidebarEvent)="onSidebarToggle($event)"></app-sidebar>
   
-  <!-- Mobile Toggle Button (only visible on small screens) -->
-  <button class="mobile-toggle" (click)="toggleMobileSidebar()" *ngIf="!sidebarExpanded">
-    <span class="material-icons">menu</span>
-  </button>
-  
   <!-- Main Content Area -->
   <div class="app-content" [ngClass]="{'content-expanded': !sidebarExpanded}">
     <!-- Header -->
     <header class="content-header">
+      <!-- Mobile Toggle Button -->
+      <button class="mobile-toggle" 
+              [class.hidden]="sidebarExpanded"
+              (click)="toggleMobileSidebar()"
+              aria-label="Toggle navigation menu">
+        <i class="material-icons">menu</i>
+      </button>
+
       <div class="header-left">
         <h1 class="page-title">{{ pageTitle }}</h1>
         
@@ -32,19 +35,19 @@
         </div>
         
         <!-- Notification Bell -->
-        <div class="notifications">
+        <div class="notifications" (click)="$event.stopPropagation()">
           <span class="material-icons">notifications</span>
           <span class="notification-badge">3</span>
         </div>
         
         <!-- User Menu -->
-        <div class="user-menu" (click)="toggleUserMenu()">
+        <div class="user-menu" (click)="toggleUserMenu(); $event.stopPropagation()">
           <div class="avatar">
             <span class="material-icons">person</span>
           </div>
           
           <!-- Dropdown Menu -->
-          <div class="dropdown-menu" [ngClass]="{'active': userMenuOpen}">
+          <div class="dropdown-menu" [ngClass]="{'active': userMenuOpen}" (click)="$event.stopPropagation()">
             <a routerLink="/profile" class="dropdown-item">
               <span class="material-icons">account_circle</span>
               <span>My Profile</span>

@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewInit, HostBinding, HostListener, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { NgFor, NgClass, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { filter } from 'rxjs/operators';
+import 'hammerjs';
 
 interface MenuItem {
   name: string;
@@ -18,22 +19,47 @@ interface MenuItem {
   imports: [NgFor, NgIf, RouterModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   animations: [
     trigger('slideInOut', [
       state('expanded', style({
         width: '250px',
+        transform: 'translateX(0)'
       })),
       state('collapsed', style({
         width: '65px',
+        transform: 'translateX(0)'
+      })),
+      state('mobile-expanded', style({
+        width: '100%',
+        maxWidth: '300px',
+        transform: 'translateX(0)'
+      })),
+      state('mobile-collapsed', style({
+        width: '100%',
+        maxWidth: '300px',
+        transform: 'translateX(-100%)'
       })),
       transition('expanded <=> collapsed', [
-        animate('300ms ease-in-out')
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)')
       ]),
+      transition('mobile-expanded <=> mobile-collapsed', [
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)')
+      ])
     ]),
   ]
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
   @Output() toggleSidebarEvent = new EventEmitter<boolean>();
+  @HostBinding('class.mobile-visible') get isMobileVisible() { return this.isExpanded && this.isMobile; }
+  
+  isMobile: boolean = false;
+  touchStartX: number = 0;
+  touchEndX: number = 0;
+  touchStartY: number = 0;
+  touchEndY: number = 0;
+  swipeThreshold: number = 50;
+  swipeAngleThreshold: number = 30;
   
   user: any;
   menuItems: MenuItem[] = [];
@@ -42,12 +68,76 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   availableRoles: string[] = ['Admin', 'HR', 'Employee', 'Payroll_Manager', 'Recruiter', 'Manager'];
   
   constructor(private router: Router) {
-    // Initialize default expanded menus
     this.expandedMenus = {
       hrAdmin: false,
       payroll: false,
       sysAdmin: false
     };
+    this.checkMobileView();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkMobileView();
+  }
+
+  private checkMobileView() {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth <= 768;
+    
+    if (!wasMobile && this.isMobile) {
+      this.isExpanded = false;
+      this.toggleSidebarEvent.emit(false);
+    } else if (wasMobile && !this.isMobile) {
+      this.isExpanded = true;
+      this.toggleSidebarEvent.emit(true);
+    }
+  }
+
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  }
+
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].clientX;
+    this.touchEndY = event.changedTouches[0].clientY;
+    this.handleSwipe();
+  }
+
+  private handleSwipe() {
+    const deltaX = this.touchEndX - this.touchStartX;
+    const deltaY = this.touchEndY - this.touchStartY;
+    const angle = Math.abs(Math.atan2(deltaY, deltaX) * 180 / Math.PI);
+    
+    // Only handle horizontal swipes (angle less than threshold from horizontal)
+    if (angle < this.swipeAngleThreshold || angle > (180 - this.swipeAngleThreshold)) {
+      if (Math.abs(deltaX) >= this.swipeThreshold) {
+        if (deltaX > 0 && !this.isExpanded) {
+          this.toggleSidebar();
+        } else if (deltaX < 0 && this.isExpanded) {
+          this.closeMobileSidebar();
+        }
+      }
+    }
+  }
+
+  toggleSidebar() {
+    if (this.isMobile) {
+      document.body.style.overflow = !this.isExpanded ? 'hidden' : 'auto';
+    }
+    this.isExpanded = !this.isExpanded;
+    this.toggleSidebarEvent.emit(this.isExpanded);
+  }
+
+  closeMobileSidebar() {
+    if (this.isMobile && this.isExpanded) {
+      document.body.style.overflow = 'auto';
+      this.isExpanded = false;
+      this.toggleSidebarEvent.emit(false);
+    }
   }
 
   ngOnInit() {
@@ -232,11 +322,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     const role = this.user?.role || 'Admin';
     this.menuItems = menus[role] || menus['Admin']; // Fallback to Admin if role not found
   }
-
-  toggleSidebar() {
-    this.isExpanded = !this.isExpanded;
-    this.toggleSidebarEvent.emit(this.isExpanded);
-  }
   
   toggleSubmenu(key: string) {
     if (this.isExpanded) {
@@ -293,5 +378,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   logout() {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
+  }
+
+  getAnimationState() {
+    if (this.isMobile) {
+      return this.isExpanded ? 'mobile-expanded' : 'mobile-collapsed';
+    }
+    return this.isExpanded ? 'expanded' : 'collapsed';
   }
 }
