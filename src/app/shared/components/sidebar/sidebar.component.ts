@@ -237,7 +237,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           children: [
             { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
             { name: 'Requests', path: '/personnel-management/requests' },
-            { name: 'Manage Personnel', path: '/personnel-management/manage' },
+            { name: 'Manage Personnel', path: '/personnel-management/employee-list' },
             { name: 'Employee Reports', path: '/personnel-management/reports' }
           ]
         },
@@ -273,7 +273,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           children: [
             { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
             { name: 'Requests', path: '/personnel-management/requests' },
-            { name: 'Manage Personnel', path: '/personnel-management/manage' },
+            { name: 'Manage Personnel', path: '/personnel-management/employee-list' },
             { name: 'Employee Reports', path: '/personnel-management/reports' }
           ]
         },
