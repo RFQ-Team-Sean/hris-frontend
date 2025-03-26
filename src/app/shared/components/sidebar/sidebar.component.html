@@ -265,7 +265,7 @@ role="menuitem">
  <!-- Learning & Developmentt Submenu -->
 <div *ngIf="hasMenuItem('Learning & Development')" 
 class="menu-item parent-menu" 
-[class.active]="isActiveRoute('/performance')"
+[class.active]="isActiveRoute('/learning-development')"
 [attr.aria-expanded]="expandedMenus['Learning & Development']"
 (click)="toggleSubmenu('Learning & Development')"
 role="menuitem">
@@ -292,26 +292,26 @@ role="menuitem">
    </ng-container>
 </div>
 </ng-container>
-           
+ 
 
             <!-- System Admin Submenu -->
-            <div *ngIf="hasMenuItem('System Admin')" 
+            <div *ngIf="hasMenuItem('System Administration')" 
                  class="menu-item parent-menu" 
                  [class.active]="isActiveRoute('/system-admin')"
-                 [attr.aria-expanded]="expandedMenus['sysAdmin']"
-                 (click)="toggleSubmenu('sysAdmin')"
+                 [attr.aria-expanded]="expandedMenus['System Administration']"
+                 (click)="toggleSubmenu('System Administration')"
                  role="menuitem">
                 <i class="material-icons" aria-hidden="true">settings</i>
-                <span *ngIf="isExpanded">System Admin</span>
+                <span *ngIf="isExpanded">System Administration</span>
                 <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
-                    {{ expandedMenus['sysAdmin'] ? 'expand_less' : 'expand_more' }}
+                    {{ expandedMenus['System Administration'] ? 'expand_less' : 'expand_more' }}
                 </i>
             </div>
             
-            <ng-container *ngIf="expandedMenus['sysAdmin'] && isExpanded && hasMenuItem('System Admin')">
+            <ng-container *ngIf="expandedMenus['System Administration'] && isExpanded && hasMenuItem('System Administration')">
                 <div class="submenu" role="menu">
                     <ng-container *ngFor="let item of menuItems">
-                        <ng-container *ngIf="item.name === 'System Admin' && item.children">
+                        <ng-container *ngIf="item.name === 'System Administration' && item.children">
                             <div *ngFor="let subItem of item.children" 
                                  class="submenu-item" 
                                  [routerLink]="subItem.path"
