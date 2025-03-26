@@ -416,10 +416,51 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       'Employee': [
         { name: 'Dashboard', path: '/dashboard/employee', icon: 'dashboard' },
         { name: 'My Profile', path: '/employee-self-service/my-profile', icon: 'person' },
-        { name: 'Self-Service', path: '/employee-self-service/employee-dashboard', icon: 'build' },
-        { name: 'Attendance', path: '/attendance/employee-attendance', icon: 'schedule' },
-        { name: 'Payslip Viewer', path: '/payroll/payslip-generator', icon: 'attach_money' },
-        { name: 'Leave Requests', path: '/leave/apply-leave', icon: 'event' }
+        { 
+          name: 'Request', 
+          path: '/request', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Leave Application', path: '/leave/apply-leave' },
+            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'Certifications', path: '/requests/certifications-membership' },
+            { name: 'Monetization Requests', path: '/requests/monetization-requests' },
+            { name: 'Document Requests', path: '/requests/document-requests ' },
+          ]
+        },
+        { 
+          name: 'Attendance & Timekeeping', 
+          path: '/attendance', 
+          icon: 'attach_money',
+          children: [
+            { name: 'My Daily Time Record', path: '/attendance/employee-attendance' },
+            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'Work Schedule & Shift Details', path: '/attendance/work-schedule-management' },
+          ]
+        },
+        { 
+          name: 'Payroll & Compensation', 
+          path: '/payroll', 
+          icon: 'attach_money',
+          children: [
+            { name: 'View Payslips', path: '/payroll/payslip-generator' },
+            { name: 'Salary Breakdown & Adjustments', path: '/payroll/employee-salary' },
+            { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
+          ]
+        },
+        { name: 'Leave & Benefits', path: '/leave/leave-dashboard', icon: 'receipt' },
+        { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'receipt' },
+        { 
+          name: 'Training & Development', 
+          path: '/learning-development', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Training Programs', path: '/learning-development/training-courses' },
+            { name: 'Training Enrollment & History', path: '/learning-development/enrollment' },
+            { name: 'Certification Records', path: '/learning-development/certification' },
+          ]
+        },
+        
       ],
       'Payroll_Manager': [
         { name: 'Dashboard', path: '/dashboard/payroll', icon: 'dashboard' },
