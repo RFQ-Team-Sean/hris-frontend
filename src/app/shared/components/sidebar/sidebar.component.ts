@@ -236,33 +236,80 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           icon: 'people',
           children: [
             { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
-            { name: 'Requests', path: '/personnel-management/requests' },
-            { name: 'Manage Personnel', path: '/personnel-management/employee-list' },
-            { name: 'Employee Reports', path: '/personnel-management/reports' }
+            { name: 'Personnel Movement', path: '/personnel-management/personnel-movement' }
           ]
         },
         { 
-          name: 'Payroll', 
+          name: 'Request Management', 
+          path: '/requests', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Overview', path: '/requests/request-dashboard' },
+            { name: 'Leave Application', path: '/requests/leave-requests' },
+            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+          ]
+        },
+        { 
+          name: 'Attendance & Timekeeping', 
+          path: '/attendance', 
+          icon: 'attach_money',
+          children: [
+            { name: 'attendance dashboard', path: '/attendance/attendance-dashboard' },
+            { name: 'Work Schedule Management', path: '/attendance/work-schedule-management' },
+          ]
+        },
+        { 
+          name: 'Payroll Management', 
           path: '/payroll', 
           icon: 'attach_money',
           children: [
-            { name: 'Overview', path: '/payroll/payroll-dashboard' },
-            { name: 'Tax Calculator', path: '/payroll/tax-calculator' }
+            { name: 'Payroll dashboard', path: '/payroll/payroll-dashboard' },
+            { name: 'employee salary', path: '/payroll/employee-salary' },
+            { name: 'payroll reports', path: '/reports/payroll-reports' },
+            { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { name: 'Attendance', path: '/attendance/attendance-dashboard', icon: 'schedule' },
-        { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'event' },
-        { name: 'Recruitment', path: '/recruitment/recruitment-dashboard', icon: 'work' },
-        { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'trending_up' },
         { 
-          name: 'System Admin', 
-          path: '/system-admin', 
-          icon: 'settings',
+          name: 'Leave Management', 
+          path: '/leave', 
+          icon: 'attach_money',
           children: [
-            { name: 'User Management', path: '/system-admin/user-management' },
-            { name: 'Audit Trail', path: '/system-admin/audit-trail' }
+            { name: 'Leave Application', path: '/leave/apply-leave' },
+            { name: 'Leave Reports & Analytics', path: '/reports/leave-reports' },
           ]
-        }
+        },
+        { 
+          name: 'Recruitment & Hiring', 
+          path: '/recruitment', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Recruitement Dashboard', path: '/recruitment/recruitment-dashboard' },
+            { name: 'Job Openings Management', path: '/recruitment/job-listings' },
+            { name: 'Applicant Tracker', path: '/recruitment/applicant-tracker' },
+            { name: 'Interview & Assessment Scheduling', path: '/recruitment/interview-scheduler' },
+          ]
+        },
+        { 
+          name: 'Performance Management', 
+          path: '/performance', 
+          icon: 'attach_money',
+          children: [
+            { name: 'KPI dashboard', path: '/performance/kpi-dashboard' },
+            { name: 'Employee Evaluation', path: '/performance/employee-self-assessment' },
+            { name: 'Performance Report', path: '/reports/performance-reports' },
+          ]
+        },
+        { 
+          name: 'Learning & Development', 
+          path: '/learning-development', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Training Program', path: '/learning-development/training-courses' },
+            { name: 'Enrollment & Tracking', path: '/learning-development/enrollment' },
+            { name: 'Certifications & Career Pathing', path: '/learning-development/certification' },
+          ]
+        },
+        
       ],
       'HR': [
         { name: 'Dashboard', path: '/dashboard/hr', icon: 'dashboard' },

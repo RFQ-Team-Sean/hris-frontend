@@ -34,6 +34,8 @@ export const routes: Routes = [
       { path: 'reports', loadChildren: () => import('./modules/reports/reports.module').then(m => m.ReportsModule), canActivate: [authGuard] },
       { path: 'employee-self-service', loadChildren: () => import('./modules/employee-self-service/employee-self-service.module').then(m => m.EmployeeSelfServiceModule), canActivate: [authGuard] },
       { path: 'system-admin', loadChildren: () => import('./modules/system-admin/system-admin.module').then(m => m.SystemAdminModule), canActivate: [authGuard] },
+      { path: 'requests', loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule), canActivate: [authGuard] },
+      { path: 'learning-development', loadChildren: () => import('./modules/learning-development/learning-development.module').then(m => m.LearningDevelopmentModule), canActivate: [authGuard] },
       
       // Default route for authenticated users
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
