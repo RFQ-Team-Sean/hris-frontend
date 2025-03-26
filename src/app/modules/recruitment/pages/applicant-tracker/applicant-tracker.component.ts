@@ -5,7 +5,7 @@ import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar.
 @Component({
   selector: 'app-applicant-tracker',
   standalone: true,
-  imports: [RouterModule, SidebarComponent],
+  imports: [RouterModule],
   templateUrl: './applicant-tracker.component.html',
   styleUrl: './applicant-tracker.component.scss'
 })

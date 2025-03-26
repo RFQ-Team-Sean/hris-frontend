@@ -68,11 +68,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   availableRoles: string[] = ['Admin', 'HR', 'Employee', 'Payroll_Manager', 'Recruiter', 'Manager'];
   
   constructor(private router: Router) {
-    this.expandedMenus = {
-      hrAdmin: false,
-      payroll: false,
-      sysAdmin: false
-    };
+    this.expandedMenus = {};
     this.checkMobileView();
   }
 
@@ -231,7 +227,104 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       'Admin': [
         { name: 'Dashboard', path: '/dashboard/admin', icon: 'dashboard' },
         { 
-          name: 'HR Admin', 
+          name: 'Personnel Management', 
+          path: '/personnel-management', 
+          icon: 'people',
+          children: [
+            { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
+            { name: 'Personnel Movement', path: '/personnel-management/personnel-movement' }
+          ]
+        },
+        { 
+          name: 'Request Management', 
+          path: '/requests', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Overview', path: '/requests/request-dashboard' },
+            { name: 'Leave Application', path: '/requests/leave-requests' },
+            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'Certifications & Membership Forms', path: '/requests/certifications-membership' },
+            { name: 'Monetization Requests', path: '/requests/monetization-requests' },
+            { name: 'Document Requests', path: '/requests/document-requests' },
+
+          ]
+        },
+        { 
+          name: 'Attendance & Timekeeping', 
+          path: '/attendance', 
+          icon: 'attach_money',
+          children: [
+            { name: 'attendance dashboard', path: '/attendance/attendance-dashboard' },
+            { name: 'Work Schedule Management', path: '/attendance/work-schedule-management' },
+          ]
+        },
+        { 
+          name: 'Payroll Management', 
+          path: '/payroll', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Payroll dashboard', path: '/payroll/payroll-dashboard' },
+            { name: 'employee salary', path: '/payroll/employee-salary' },
+            { name: 'payroll reports', path: '/reports/payroll-reports' },
+            { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
+          ]
+        },
+        { 
+          name: 'Leave Management', 
+          path: '/leave', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Leave Application', path: '/leave/apply-leave' },
+            { name: 'Leave Reports & Analytics', path: '/reports/leave-reports' },
+          ]
+        },
+        { 
+          name: 'Recruitment & Hiring', 
+          path: '/recruitment', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Recruitement Dashboard', path: '/recruitment/recruitment-dashboard' },
+            { name: 'Job Openings Management', path: '/recruitment/job-listings' },
+            { name: 'Applicant Tracker', path: '/recruitment/applicant-tracker' },
+            { name: 'Interview & Assessment Scheduling', path: '/recruitment/interview-scheduler' },
+          ]
+        },
+        { 
+          name: 'Performance Management', 
+          path: '/performance', 
+          icon: 'attach_money',
+          children: [
+            { name: 'KPI dashboard', path: '/performance/kpi-dashboard' },
+            { name: 'Employee Evaluation', path: '/performance/employee-self-assessment' },
+            { name: 'Performance Report', path: '/reports/performance-reports' },
+          ]
+        },
+        { 
+          name: 'Learning & Development', 
+          path: '/learning-development', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Training Program', path: '/learning-development/training-courses' },
+            { name: 'Enrollment & Tracking', path: '/learning-development/enrollment' },
+            { name: 'Certifications & Career Pathing', path: '/learning-development/certification' },
+          ]
+        },
+        { name: 'Reports & Analytics', path: '/reports/report-dashboard', icon: 'trending_up' },
+        { 
+          name: 'System Administration', 
+          path: '/system-admin', 
+          icon: 'attach_money',
+          children: [
+            { name: 'User Management', path: '/system-admin/user-management' },
+            { name: 'Audit Logs', path: '/system-admin/audit-logs' }
+          ]
+        },
+        
+      ],
+      'HR':[
+        { name: 'Dashboard', path: '/dashboard/admin', icon: 'dashboard' },
+        { 
+          name: 'Personnel Management', 
           path: '/personnel-management', 
           icon: 'people',
           children: [
@@ -318,25 +411,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'User Management', path: '/system-admin/user-management' },
             { name: 'Audit Logs', path: '/system-admin/audit-logs' }
           ]
-        },
-        
-      ],
-      'HR': [
-        { name: 'Dashboard', path: '/dashboard/hr', icon: 'dashboard' },
-        { 
-          name: 'HR Admin', 
-          path: '/personnel-management', 
-          icon: 'people',
-          children: [
-            { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
-            { name: 'Requests', path: '/personnel-management/requests' },
-            { name: 'Manage Personnel', path: '/personnel-management/employee-list' },
-            { name: 'Employee Reports', path: '/personnel-management/reports' }
-          ]
-        },
-        { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'event' },
-        { name: 'Recruitment', path: '/recruitment/recruitment-dashboard', icon: 'work' },
-        { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'trending_up' }
+        }
       ],
       'Employee': [
         { name: 'Dashboard', path: '/dashboard/employee', icon: 'dashboard' },
@@ -382,14 +457,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   
   toggleSubmenu(key: string) {
     if (this.isExpanded) {
-      this.expandedMenus[key] = !this.expandedMenus[key];
+        this.expandedMenus[key] = !this.expandedMenus[key];
     } else {
-      // If sidebar is collapsed, expand it first and then open the submenu
-      this.isExpanded = true;
-      this.toggleSidebarEvent.emit(this.isExpanded);
-      setTimeout(() => {
-        this.expandedMenus[key] = true;
-      }, 300);
+        this.isExpanded = true;
+        this.toggleSidebarEvent.emit(this.isExpanded);
+        setTimeout(() => {
+            this.expandedMenus[key] = true;
+        }, 300);
     }
   }
   

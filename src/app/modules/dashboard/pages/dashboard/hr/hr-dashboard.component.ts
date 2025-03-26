@@ -5,7 +5,7 @@ import { SidebarComponent } from '../../../../../shared/components/sidebar/sideb
 @Component({
   selector: 'app-hr-dashboard',
   standalone: true,
-  imports: [RouterModule, SidebarComponent],
+  imports: [RouterModule],
   templateUrl: './hr-dashboard.component.html',
   styleUrl: './hr-dashboard.component.scss'
 })

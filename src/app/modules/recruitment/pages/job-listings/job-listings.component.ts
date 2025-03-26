@@ -5,7 +5,7 @@ import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar.
 @Component({
   selector: 'app-job-listings',
   standalone: true,
-  imports: [RouterModule, SidebarComponent],
+  imports: [RouterModule],
   templateUrl: './job-listings.component.html',
   styleUrl: './job-listings.component.scss'
 })
