@@ -75,23 +75,23 @@
             </ng-container>
 
             <!-- Payroll Submenu -->
-            <div *ngIf="hasMenuItem('Payroll')" 
+            <div *ngIf="hasMenuItem('Request Management')" 
                  class="menu-item parent-menu" 
-                 [class.active]="isActiveRoute('/payroll')"
-                 [attr.aria-expanded]="expandedMenus['payroll']"
-                 (click)="toggleSubmenu('payroll')"
+                 [class.active]="isActiveRoute('/requests')"
+                 [attr.aria-expanded]="expandedMenus['Request Management']"
+                 (click)="toggleSubmenu('Request Management')"
                  role="menuitem">
                 <i class="material-icons" aria-hidden="true">attach_money</i>
-                <span *ngIf="isExpanded">Payroll</span>
+                <span *ngIf="isExpanded">Request Management</span>
                 <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
-                    {{ expandedMenus['payroll'] ? 'expand_less' : 'expand_more' }}
+                    {{ expandedMenus['Request Management'] ? 'expand_less' : 'expand_more' }}
                 </i>
             </div>
             
-            <ng-container *ngIf="expandedMenus['payroll'] && isExpanded && hasMenuItem('Payroll')">
+            <ng-container *ngIf="expandedMenus['Request Management'] && isExpanded && hasMenuItem('Request Management')">
                 <div class="submenu" role="menu">
                     <ng-container *ngFor="let item of menuItems">
-                        <ng-container *ngIf="item.name === 'Payroll' && item.children">
+                        <ng-container *ngIf="item.name === 'Request Management' && item.children">
                             <div *ngFor="let subItem of item.children" 
                                  class="submenu-item" 
                                  [routerLink]="subItem.path"
@@ -104,6 +104,195 @@
                     </ng-container>
                 </div>
             </ng-container>
+
+              <!-- Attendance & Timekeeping Submenu -->
+              <div *ngIf="hasMenuItem('Attendance & Timekeeping')" 
+              class="menu-item parent-menu" 
+              [class.active]="isActiveRoute('/attendance')"
+              [attr.aria-expanded]="expandedMenus['Attendance & Timekeeping']"
+              (click)="toggleSubmenu('Attendance & Timekeeping')"
+              role="menuitem">
+             <i class="material-icons" aria-hidden="true">settings</i>
+             <span *ngIf="isExpanded">Attendance & Timekeeping</span>
+             <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+                 {{ expandedMenus['Attendance & Timekeeping'] ? 'expand_less' : 'expand_more' }}
+             </i>
+         </div>
+         
+         <ng-container *ngIf="expandedMenus['Attendance & Timekeeping'] && isExpanded && hasMenuItem('Attendance & Timekeeping')">
+             <div class="submenu" role="menu">
+                 <ng-container *ngFor="let item of menuItems">
+                     <ng-container *ngIf="item.name === 'Attendance & Timekeeping' && item.children">
+                         <div *ngFor="let subItem of item.children" 
+                              class="submenu-item" 
+                              [routerLink]="subItem.path"
+                              [class.active]="isActiveRoute(subItem.path)"
+                              role="menuitem">
+                             <span class="submenu-dot" aria-hidden="true"></span>
+                             {{ subItem.name }}
+                         </div>
+                     </ng-container>
+                 </ng-container>
+             </div>
+         </ng-container>
+
+          <!-- payroll Submenu -->
+          <div *ngIf="hasMenuItem('Payroll Management')" 
+          class="menu-item parent-menu" 
+          [class.active]="isActiveRoute('/payroll')"
+          [attr.aria-expanded]="expandedMenus['Payroll Management']"
+          (click)="toggleSubmenu('Payroll Management')"
+          role="menuitem">
+         <i class="material-icons" aria-hidden="true">settings</i>
+         <span *ngIf="isExpanded">Payroll Management</span>
+         <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+             {{ expandedMenus['Payroll Management'] ? 'expand_less' : 'expand_more' }}
+         </i>
+     </div>
+     
+     <ng-container *ngIf="expandedMenus['Payroll Management'] && isExpanded && hasMenuItem('Payroll Management')">
+         <div class="submenu" role="menu">
+             <ng-container *ngFor="let item of menuItems">
+                 <ng-container *ngIf="item.name === 'Payroll Management' && item.children">
+                     <div *ngFor="let subItem of item.children" 
+                          class="submenu-item" 
+                          [routerLink]="subItem.path"
+                          [class.active]="isActiveRoute(subItem.path)"
+                          role="menuitem">
+                         <span class="submenu-dot" aria-hidden="true"></span>
+                         {{ subItem.name }}
+                     </div>
+                 </ng-container>
+             </ng-container>
+         </div>
+     </ng-container>
+
+
+     <!-- leave Submenu -->
+     <div *ngIf="hasMenuItem('Leave Management')" 
+     class="menu-item parent-menu" 
+     [class.active]="isActiveRoute('/leave')"
+     [attr.aria-expanded]="expandedMenus['Leave Management']"
+     (click)="toggleSubmenu('Leave Management')"
+     role="menuitem">
+    <i class="material-icons" aria-hidden="true">settings</i>
+    <span *ngIf="isExpanded">Leave Management</span>
+    <i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+        {{ expandedMenus['Leave Management'] ? 'expand_less' : 'expand_more' }}
+    </i>
+</div>
+
+<ng-container *ngIf="expandedMenus['Leave Management'] && isExpanded && hasMenuItem('Leave Management')">
+    <div class="submenu" role="menu">
+        <ng-container *ngFor="let item of menuItems">
+            <ng-container *ngIf="item.name === 'Leave Management' && item.children">
+                <div *ngFor="let subItem of item.children" 
+                     class="submenu-item" 
+                     [routerLink]="subItem.path"
+                     [class.active]="isActiveRoute(subItem.path)"
+                     role="menuitem">
+                    <span class="submenu-dot" aria-hidden="true"></span>
+                    {{ subItem.name }}
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</ng-container>
+
+ <!-- Recruitment & Hiring Submenu -->
+ <div *ngIf="hasMenuItem('Recruitment & Hiring')" 
+ class="menu-item parent-menu" 
+ [class.active]="isActiveRoute('/recruitment')"
+ [attr.aria-expanded]="expandedMenus['Recruitment & Hiring']"
+ (click)="toggleSubmenu('Recruitment & Hiring')"
+ role="menuitem">
+<i class="material-icons" aria-hidden="true">settings</i>
+<span *ngIf="isExpanded">Recruitment & Hiring</span>
+<i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+    {{ expandedMenus['Recruitment & Hiring'] ? 'expand_less' : 'expand_more' }}
+</i>
+</div>
+
+<ng-container *ngIf="expandedMenus['Recruitment & Hiring'] && isExpanded && hasMenuItem('Recruitment & Hiring')">
+<div class="submenu" role="menu">
+    <ng-container *ngFor="let item of menuItems">
+        <ng-container *ngIf="item.name === 'Recruitment & Hiring' && item.children">
+            <div *ngFor="let subItem of item.children" 
+                 class="submenu-item" 
+                 [routerLink]="subItem.path"
+                 [class.active]="isActiveRoute(subItem.path)"
+                 role="menuitem">
+                <span class="submenu-dot" aria-hidden="true"></span>
+                {{ subItem.name }}
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+</ng-container>
+
+<!-- Performance Management Submenu -->
+<div *ngIf="hasMenuItem('Performance Management')" 
+class="menu-item parent-menu" 
+[class.active]="isActiveRoute('/performance')"
+[attr.aria-expanded]="expandedMenus['Performance Management']"
+(click)="toggleSubmenu('Performance Management')"
+role="menuitem">
+<i class="material-icons" aria-hidden="true">settings</i>
+<span *ngIf="isExpanded">Performance Management</span>
+<i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+   {{ expandedMenus['Performance Management'] ? 'expand_less' : 'expand_more' }}
+</i>
+</div>
+
+<ng-container *ngIf="expandedMenus['Performance Management'] && isExpanded && hasMenuItem('Performance Management')">
+<div class="submenu" role="menu">
+   <ng-container *ngFor="let item of menuItems">
+       <ng-container *ngIf="item.name === 'Performance Management' && item.children">
+           <div *ngFor="let subItem of item.children" 
+                class="submenu-item" 
+                [routerLink]="subItem.path"
+                [class.active]="isActiveRoute(subItem.path)"
+                role="menuitem">
+               <span class="submenu-dot" aria-hidden="true"></span>
+               {{ subItem.name }}
+           </div>
+       </ng-container>
+   </ng-container>
+</div>
+</ng-container>
+
+
+ <!-- Learning & Developmentt Submenu -->
+<div *ngIf="hasMenuItem('Learning & Development')" 
+class="menu-item parent-menu" 
+[class.active]="isActiveRoute('/performance')"
+[attr.aria-expanded]="expandedMenus['Learning & Development']"
+(click)="toggleSubmenu('Learning & Development')"
+role="menuitem">
+<i class="material-icons" aria-hidden="true">settings</i>
+<span *ngIf="isExpanded">Learning & Development</span>
+<i *ngIf="isExpanded" class="material-icons expand-icon" aria-hidden="true">
+   {{ expandedMenus['Learning & Development'] ? 'expand_less' : 'expand_more' }}
+</i>
+</div>
+
+<ng-container *ngIf="expandedMenus['Learning & Development'] && isExpanded && hasMenuItem('Learning & Development')">
+<div class="submenu" role="menu">
+   <ng-container *ngFor="let item of menuItems">
+       <ng-container *ngIf="item.name === 'Learning & Development' && item.children">
+           <div *ngFor="let subItem of item.children" 
+                class="submenu-item" 
+                [routerLink]="subItem.path"
+                [class.active]="isActiveRoute(subItem.path)"
+                role="menuitem">
+               <span class="submenu-dot" aria-hidden="true"></span>
+               {{ subItem.name }}
+           </div>
+       </ng-container>
+   </ng-container>
+</div>
+</ng-container>
+           
 
             <!-- System Admin Submenu -->
             <div *ngIf="hasMenuItem('System Admin')" 
