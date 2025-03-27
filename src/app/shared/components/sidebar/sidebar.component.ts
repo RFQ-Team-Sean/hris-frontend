@@ -401,50 +401,54 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         { name: 'Dashboard', path: '/dashboard/employee', icon: 'dashboard' },
         { name: 'My Profile', path: '/employee-self-service/my-profile', icon: 'person' },
         { 
-          name: 'Request', 
-          path: '/request', 
-          icon: 'attach_money',
-          children: [
-            { name: 'Leave Application', path: '/leave/apply-leave' },
-            { name: 'Certifications', path: '/requests/certifications-membership' },
-            { name: 'Monetization Requests', path: '/requests/monetization-requests' },
-            { name: 'Document Requests', path: '/requests/document-requests ' },
-          ]
-        },
-        { 
           name: 'Attendance & Timekeeping', 
-          path: '/attendance', 
+          path: '/attendance/employee-attendance', 
           icon: 'attach_money',
           children: [
             { name: 'My Daily Time Record', path: '/attendance/employee-attendance' },
             { name: 'DTR Adjustment', path: '/attendance/request-adjustment' },
             { name: 'Work Schedule & Shift Details', path: '/attendance/work-schedule-management' },
+	          { name: 'Leave Application', path: '/leave/apply-leave' },
           ]
         },
         { 
           name: 'Payroll & Compensation', 
-          path: '/payroll', 
+          path: '/employee-self-service/payslip-viewer', 
           icon: 'attach_money',
           children: [
-            { name: 'View Payslips', path: '/payroll/payslip-generator' },
-            { name: 'Salary Breakdown & Adjustments', path: '/payroll/employee-salary' },
+            { name: 'View Payslips', path: '/employee-self-service/payslip-viewer' },
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { name: 'Leave & Benefits', path: '/leave/employee-leave-dashboard', icon: 'receipt' },
-        { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'receipt' },
         { 
-          name: 'Training & Development', 
-          path: '/learning-development', 
+          name: 'Leave & Benefits', 
+          path: '/leave/leave-application-status', 
           icon: 'attach_money',
           children: [
-            { name: 'Training Programs', path: '/learning-development/training-courses' },
-            { name: 'Training Enrollment & History', path: '/learning-development/enrollment' },
-            { name: 'Certification Records', path: '/learning-development/certification' },
+            { name: 'Leave Application Status', path: '/leave/leave-application-status' },
+            { name: 'Leave Balances & History', path: '/leave/leave-balance-history' },
           ]
         },
-        
-      ],
+        { 
+          name: 'Performance', 
+          path: '/performance/kpi-dashboard', 
+          icon: 'attach_money',
+          children: [
+            { name: 'KPIs & Performance', path: '/performance/kpi-dashboard' },
+            { name: 'Self-Assessment & Feedback', path: '/performance/employee-self-assessment' },
+          ]
+        },
+        { 
+          name: 'Document Requests', 
+          path: '/request/certifications-membership', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Certifications & Membership Forms', path: '/request/certifications-membership' },
+            { name: 'Monetization Requests', path: '/requests/monetization-requests' },
+            { name: 'Document Requests', path: '/requests/document-requests' },
+	        ]
+        },
+       ],
       'Payroll_Manager': [
         { name: 'Dashboard', path: '/dashboard/payroll', icon: 'dashboard' },
         { 
@@ -469,7 +473,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       ],
       'Manager': [
         { name: 'Dashboard', path: '/dashboard/manager', icon: 'dashboard' },
-        { name: 'Team Overview', path: '/team-overview', icon: 'group' },
+        { 
+          name: 'Team Management', 
+          path: '/personnel-management', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Employee List', path: 'personnel-management/personnel-dasboard' },
+            { name: 'Employee Requests', path: '/payroll/loan-deductions' }
+          ]
+        },
         { name: 'Attendance', path: '/attendance/attendance-dashboard', icon: 'schedule' },
         { name: 'Reports', path: '/reports/report-dashboard', icon: 'bar_chart' },
         { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'trending_up' }
