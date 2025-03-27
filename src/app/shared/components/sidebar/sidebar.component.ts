@@ -449,23 +449,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 	        ]
         },
        ],
-      'Payroll_Manager': [
+       'Payroll_Manager': [
         { name: 'Dashboard', path: '/dashboard/payroll', icon: 'dashboard' },
         { 
           name: 'Payroll Processing', 
-          path: '/payroll', 
+          path: '/payroll/payroll-dashboard', 
           icon: 'attach_money',
           children: [
             { name: 'Employee Salary Computation', path: '/payroll/payroll-dashboard' },
             { name: 'Loan & Deduction Processing', path: '/payroll/loan-deductions' }
           ]
         },
-        { name: 'Disbursement & Banking', path: '/payroll/disbursement-banking-dashboard', icon: 'receipt' },
+        { 
+          name: 'Disbursement & Banking', 
+          path: '/payroll/bank-files', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Generate Bank Files', path: '/payroll/bank-files' },
+            { name: ' Pay Settlements', path: '/payroll/pay-settlement' }
+          ]
+        },
         { name: 'Reports & Analytics', path: '/reports/payroll-reports', icon: 'bar_chart' }
       ],
       'Recruiter': [
         { name: 'Dashboard', path: '/dashboard/recruiter', icon: 'dashboard' },
-        { name: 'Job Openings Management', path: '/recruitment/job-management', icon: 'list' },
+        { name: 'Job Openings Management', path: '/recruitment/job-listings', icon: 'list' },
         { name: 'Application Processing', path: '/recruitment/interview-scheduler', icon: 'assignment' },
         { name: 'Appointment Processing', path: '/recruitment/applicant-tracker', icon: 'assignment' },
         { name: 'Reports & Analytics', path: '/reports/recruitment-reports', icon: 'assignment' },
