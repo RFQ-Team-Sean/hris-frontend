@@ -224,25 +224,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   loadMenuItems() {
     // Define menu structure with explicit type
     const menus: { [key: string]: MenuItem[] } = {
-      'Admin': [
+     'Admin': [
         { name: 'Dashboard', path: '/dashboard/admin', icon: 'dashboard' },
-        { 
-          name: 'Personnel Management', 
-          path: '/personnel-management', 
-          icon: 'people',
-          children: [
-            { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
-            { name: 'Personnel Movement', path: '/personnel-management/personnel-movement' }
-          ]
-        },
+         { name: 'Personnel Management', path: '/personnel-management/personnel-dashboard', icon: 'trending_up' },
         { 
           name: 'Request Management', 
-          path: '/requests', 
+          path: '/requests/dtr-adjustments', 
           icon: 'attach_money',
           children: [
-            { name: 'Overview', path: '/requests/request-dashboard' },
-            { name: 'Leave Application', path: '/requests/leave-requests' },
-            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'DTR Adjustments', path: '/requests/dtr-adjustments' },
             { name: 'Certifications & Membership Forms', path: '/requests/certifications-membership' },
             { name: 'Monetization Requests', path: '/requests/monetization-requests' },
             { name: 'Document Requests', path: '/requests/document-requests' },
@@ -251,31 +241,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         },
         { 
           name: 'Attendance & Timekeeping', 
-          path: '/attendance', 
+          path: '/attendance/attendance-dashboard', 
           icon: 'attach_money',
           children: [
-            { name: 'attendance dashboard', path: '/attendance/attendance-dashboard' },
+            { name: 'Daily Time Record', path: '/attendance/attendance-dashboard' },
             { name: 'Work Schedule Management', path: '/attendance/work-schedule-management' },
           ]
         },
         { 
           name: 'Payroll Management', 
-          path: '/payroll', 
+          path: '/payroll/payroll-dashboard', 
           icon: 'attach_money',
           children: [
-            { name: 'Payroll dashboard', path: '/payroll/payroll-dashboard' },
-            { name: 'employee salary', path: '/payroll/employee-salary' },
-            { name: 'payroll reports', path: '/reports/payroll-reports' },
+            { name: 'Employee Salary & Deductions', path: '/payroll/employee-salary' },
+            { name: 'Payslips & Payroll Reports', path: '/payroll/payroll-audit-logs' },
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
           { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'bar_chart' },
         { 
           name: 'Recruitment & Hiring', 
-          path: '/recruitment', 
+          path: '/recruitment/job-listings', 
           icon: 'attach_money',
           children: [
-            { name: 'Recruitement Dashboard', path: '/recruitment/recruitment-dashboard' },
             { name: 'Job Openings Management', path: '/recruitment/job-listings' },
             { name: 'Applicant Tracker', path: '/recruitment/applicant-tracker' },
             { name: 'Interview & Assessment Scheduling', path: '/recruitment/interview-scheduler' },
@@ -313,54 +301,46 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         },
         
       ],
-      'HR':[
+      'HR': [
         { name: 'Dashboard', path: '/dashboard/admin', icon: 'dashboard' },
-        { 
-          name: 'Personnel Management', 
-          path: '/personnel-management', 
-          icon: 'people',
-          children: [
-            { name: 'Personnel 201 File', path: '/personnel-management/personnel-dashboard' },
-            { name: 'Personnel Movement', path: '/personnel-management/personnel-movement' }
-          ]
-        },
+         { name: 'Personnel Management', path: '/personnel-management/personnel-dashboard', icon: 'trending_up' },
         { 
           name: 'Request Management', 
-          path: '/requests', 
+          path: '/requests/dtr-adjustments', 
           icon: 'attach_money',
           children: [
-            { name: 'Overview', path: '/requests/request-dashboard' },
-            { name: 'Leave Application', path: '/requests/leave-requests' },
-            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'DTR Adjustments', path: '/requests/dtr-adjustments' },
+            { name: 'Certifications & Membership Forms', path: '/requests/certifications-membership' },
+            { name: 'Monetization Requests', path: '/requests/monetization-requests' },
+            { name: 'Document Requests', path: '/requests/document-requests' },
+
           ]
         },
         { 
           name: 'Attendance & Timekeeping', 
-          path: '/attendance', 
+          path: '/attendance/attendance-dashboard', 
           icon: 'attach_money',
           children: [
-            { name: 'attendance dashboard', path: '/attendance/attendance-dashboard' },
+            { name: 'Daily Time Record', path: '/attendance/attendance-dashboard' },
             { name: 'Work Schedule Management', path: '/attendance/work-schedule-management' },
           ]
         },
         { 
           name: 'Payroll Management', 
-          path: '/payroll', 
+          path: '/payroll/payroll-dashboard', 
           icon: 'attach_money',
           children: [
-            { name: 'Payroll dashboard', path: '/payroll/payroll-dashboard' },
-            { name: 'employee salary', path: '/payroll/employee-salary' },
-            { name: 'payroll reports', path: '/reports/payroll-reports' },
+            { name: 'Employee Salary & Deductions', path: '/payroll/employee-salary' },
+            { name: 'Payslips & Payroll Reports', path: '/payroll/payroll-audit-logs' },
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'bar_chart' },
+          { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'bar_chart' },
         { 
           name: 'Recruitment & Hiring', 
-          path: '/recruitment', 
+          path: '/recruitment/job-listings', 
           icon: 'attach_money',
           children: [
-            { name: 'Recruitement Dashboard', path: '/recruitment/recruitment-dashboard' },
             { name: 'Job Openings Management', path: '/recruitment/job-listings' },
             { name: 'Applicant Tracker', path: '/recruitment/applicant-tracker' },
             { name: 'Interview & Assessment Scheduling', path: '/recruitment/interview-scheduler' },
@@ -395,7 +375,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'User Management', path: '/system-admin/user-management' },
             { name: 'Audit Logs', path: '/system-admin/audit-logs' }
           ]
-        }
+        },
+        
       ],
       'Employee': [
         { name: 'Dashboard', path: '/dashboard/employee', icon: 'dashboard' },
@@ -443,7 +424,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           path: '/request/certifications-membership', 
           icon: 'attach_money',
           children: [
-            { name: 'Certifications & Membership Forms', path: '/request/certifications-membership' },
+            { name: 'Certifications & Membership Forms', path: '/requests/certifications-membership' },
             { name: 'Monetization Requests', path: '/requests/monetization-requests' },
             { name: 'Document Requests', path: '/requests/document-requests' },
 	        ]
@@ -466,7 +447,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           icon: 'attach_money',
           children: [
             { name: 'Generate Bank Files', path: '/payroll/bank-files' },
-            { name: ' Pay Settlements', path: '/payroll/pay-settlement' }
+            { name: ' Pay Settlements', path: '/payroll/pay-settlements' }
           ]
         },
         { name: 'Reports & Analytics', path: '/reports/payroll-reports', icon: 'bar_chart' }
