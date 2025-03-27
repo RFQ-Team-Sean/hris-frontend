@@ -448,7 +448,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { name: 'Leave & Benefits', path: '/leave/leave-dashboard', icon: 'receipt' },
+        { name: 'Leave & Benefits', path: '/leave/employee-leave-dashboard', icon: 'receipt' },
         { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'receipt' },
         { 
           name: 'Training & Development', 
@@ -465,16 +465,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       'Payroll_Manager': [
         { name: 'Dashboard', path: '/dashboard/payroll', icon: 'dashboard' },
         { 
-          name: 'Payroll', 
+          name: 'Payroll Processing', 
           path: '/payroll', 
           icon: 'attach_money',
           children: [
-            { name: 'Overview', path: '/payroll/payroll-dashboard' },
-            { name: 'Tax Calculator', path: '/payroll/tax-calculator' }
+            { name: 'Employee Salary Computation', path: '/payroll/payroll-dashboard' },
+            { name: 'Loan & Deduction Processing', path: '/payroll/loan-deductions' }
           ]
         },
-        { name: 'Payslip Viewer', path: '/payroll/payslip-generator', icon: 'receipt' },
-        { name: 'Reports', path: '/reports/report-dashboard', icon: 'bar_chart' }
+        { name: 'Disbursement & Banking', path: '/payroll/disbursement-banking-dashboard', icon: 'receipt' },
+        { name: 'Reports & Analytics', path: '/reports/payroll-reports', icon: 'bar_chart' }
       ],
       'Recruiter': [
         { name: 'Dashboard', path: '/dashboard/recruiter', icon: 'dashboard' },
