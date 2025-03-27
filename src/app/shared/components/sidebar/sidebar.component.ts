@@ -269,15 +269,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { 
-          name: 'Leave Management', 
-          path: '/leave', 
-          icon: 'attach_money',
-          children: [
-            { name: 'Leave Application', path: '/leave/apply-leave' },
-            { name: 'Leave Reports & Analytics', path: '/reports/leave-reports' },
-          ]
-        },
+          { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'bar_chart' },
         { 
           name: 'Recruitment & Hiring', 
           path: '/recruitment', 
@@ -362,15 +354,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'Loan & Contribution Deductions', path: '/payroll/loan-deductions' },
           ]
         },
-        { 
-          name: 'Leave Management', 
-          path: '/leave', 
-          icon: 'attach_money',
-          children: [
-            { name: 'Leave Application', path: '/leave/apply-leave' },
-            { name: 'Leave Reports & Analytics', path: '/reports/leave-reports' },
-          ]
-        },
+        { name: 'Leave Management', path: '/leave/leave-dashboard', icon: 'bar_chart' },
         { 
           name: 'Recruitment & Hiring', 
           path: '/recruitment', 
@@ -422,7 +406,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           icon: 'attach_money',
           children: [
             { name: 'Leave Application', path: '/leave/apply-leave' },
-            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
             { name: 'Certifications', path: '/requests/certifications-membership' },
             { name: 'Monetization Requests', path: '/requests/monetization-requests' },
             { name: 'Document Requests', path: '/requests/document-requests ' },
@@ -434,7 +417,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           icon: 'attach_money',
           children: [
             { name: 'My Daily Time Record', path: '/attendance/employee-attendance' },
-            { name: 'DTR Adjustment', path: '/requests/dtr-adjustments' },
+            { name: 'DTR Adjustment', path: '/attendance/request-adjustment' },
             { name: 'Work Schedule & Shift Details', path: '/attendance/work-schedule-management' },
           ]
         },
@@ -478,9 +461,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       ],
       'Recruiter': [
         { name: 'Dashboard', path: '/dashboard/recruiter', icon: 'dashboard' },
-        { name: 'Recruitment', path: '/recruitment/recruitment-dashboard', icon: 'work' },
-        { name: 'Applicant Tracker', path: '/recruitment/applicant-tracker', icon: 'assignment' },
-        { name: 'Job Listings', path: '/recruitment/job-listings', icon: 'list' }
+        { name: 'Job Openings Management', path: '/recruitment/job-management', icon: 'list' },
+        { name: 'Application Processing', path: '/recruitment/interview-scheduler', icon: 'assignment' },
+        { name: 'Appointment Processing', path: '/recruitment/applicant-tracker', icon: 'assignment' },
+        { name: 'Reports & Analytics', path: '/reports/recruitment-reports', icon: 'assignment' },
+        
       ],
       'Manager': [
         { name: 'Dashboard', path: '/dashboard/manager', icon: 'dashboard' },

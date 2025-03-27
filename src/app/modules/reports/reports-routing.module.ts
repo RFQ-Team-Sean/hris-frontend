@@ -7,6 +7,7 @@ import { AttendanceReportsComponent } from './pages/attendance-reports/attendanc
 import { CustomReportsComponent } from './pages/custom-reports/custom-reports.component';
 import { HrReportsComponent } from './pages/hr-reports/hr-reports.component';
 import { PerformanceReportsComponent } from './pages/performance-reports/performance-reports.component';
+import { RecruitmentReportsComponent } from './pages/recruitment-reports/recruitment-reports.component';
 
 const routes: Routes = [
   { path: 'report-dashboard', component: ReportDashboardComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'attendance-reports', component: AttendanceReportsComponent },
   { path: 'custom-reports', component: CustomReportsComponent },
   { path: 'hr-reports', component: HrReportsComponent },
-  { path: 'performance-reports', component: PerformanceReportsComponent }
+  { path: 'performance-reports', component: PerformanceReportsComponent },
+  { path: 'recruitment-reports', component: RecruitmentReportsComponent },
 ];
 
 @NgModule({
