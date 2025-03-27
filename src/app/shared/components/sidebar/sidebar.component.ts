@@ -481,18 +481,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       ],
       'Manager': [
         { name: 'Dashboard', path: '/dashboard/manager', icon: 'dashboard' },
+        { name: 'Team Management', path: '/personnel-management/personnel-dashboard', icon: 'schedule' },
         { 
-          name: 'Team Management', 
-          path: '/personnel-management', 
+          name: 'Attendance Monitoring', 
+          path: '/attendance/attendance-dashboard', 
           icon: 'attach_money',
           children: [
-            { name: 'Employee List', path: 'personnel-management/personnel-dasboard' },
-            { name: 'Employee Requests', path: '/payroll/loan-deductions' }
+            { name: 'Team Attendance Reports', path: 'attendance/attendance-dashboard' },
+            { name: 'Adjustments & Approvals', path: '/requests/dtr-adjustments' },
+	          { name: 'Work Schedule Management', path: '/attendance/work-schedule-management' }
           ]
         },
-        { name: 'Attendance', path: '/attendance/attendance-dashboard', icon: 'schedule' },
-        { name: 'Reports', path: '/reports/report-dashboard', icon: 'bar_chart' },
-        { name: 'Performance', path: '/performance/kpi-dashboard', icon: 'trending_up' }
+        { 
+          name: 'Leave Management', 
+          path: '/leave/leave-approvals', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Leave Request', path: '/leave/leave-approvals' },
+            { name: 'Team Leave Balances & History', path: '/leave/leave-balance-history' }
+          ]
+        },
+	      { name: 'Payroll Overview', path: '/payroll/payroll-dashboard', icon: 'trending_up' },
+        { 
+          name: 'Performance Management', 
+          path: '/performance/manager-feedback', 
+          icon: 'attach_money',
+          children: [
+            { name: '360-Degree Feedback', path: 'performance/manager-feedback' },
+            { name: 'Monitor KPI Trends', path: '/performance/kpi-dashboard' }
+          ]
+        },
+        { name: 'Reports & Analytics', path: '/reports/report-dashboard', icon: 'trending_up' }
       ]
     };
 
