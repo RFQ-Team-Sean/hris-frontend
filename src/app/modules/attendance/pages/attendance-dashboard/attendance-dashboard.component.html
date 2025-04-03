@@ -1,11 +1,236 @@
 <div class="flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">Attendance Dashboard</h1>
-      <p>Attendance-dashboard works!</p>
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Attendance Dashboard</h1>
+      <p style="color: white; margin-bottom: 0; opacity: 0.9;">Monitor employee attendance and daily time records</p>
+    </div>
+
+    <!-- Date and Quick Filters -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date</label>
+          <input type="date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;" [value]="currentDate">
+        </div>
+        
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">All Departments</option>
+            <option>IT</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Operations</option>
+          </select>
+        </div>
+        
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">All Status</option>
+            <option>Present</option>
+            <option>Absent</option>
+            <option>Late</option>
+            <option>On Leave</option>
+          </select>
+        </div>
+        
+        <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Total Employees</p>
+        <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">142</p>
+      </div>
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Present Today</p>
+        <p style="font-size: 1.5rem; font-weight: 700; color: #10b981;">128</p>
+      </div>
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Late Arrivals</p>
+        <p style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">14</p>
+      </div>
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Absent</p>
+        <p style="font-size: 1.5rem; font-weight: 700; color: #ef4444;">8</p>
+      </div>
+    </div>
+
+    <!-- Attendance Overview Chart -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Attendance Overview (This Week)</h2>
+        <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option>This Week</option>
+          <option>Last Week</option>
+          <option>This Month</option>
+        </select>
+      </div>
+      
+      <!-- Chart Placeholder -->
+      <div style="height: 300px; background-color: #f9fafb; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+        Attendance Chart Visualization
+      </div>
+    </div>
+
+    <!-- Daily Time Records Table -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Daily Time Records</h2>
+        <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Export
+        </button>
+      </div>
+      
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Employee</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Department</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Time In</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Time Out</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Hours Worked</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Status</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Employee 1 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                    <img src="assets/user1.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Juan Dela Cruz</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-001</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">IT</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">08:15 AM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">05:30 PM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">8h 45m</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                  Present
+                </span>
+              </td>
+              <td style="padding: 16px; text-align: center;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+            
+            <!-- Employee 2 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                    <img src="assets/user2.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Maria Santos</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-002</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">HR</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">09:30 AM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">06:15 PM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">7h 45m</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fef3c7; color: #92400e;">
+                  Late
+                </span>
+              </td>
+              <td style="padding: 16px; text-align: center;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+            
+            <!-- Employee 3 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                    <img src="assets/user3.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Pedro Reyes</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-003</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Finance</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">0h 0m</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fee2e2; color: #991b1b;">
+                  Absent
+                </span>
+              </td>
+              <td style="padding: 16px; text-align: center;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+            
+            <!-- Employee 4 -->
+            <tr>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                    <img src="assets/user4.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Anna Lopez</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-004</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Operations</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: center;">0h 0m</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #e0e7ff; color: #4338ca;">
+                  On Leave
+                </span>
+              </td>
+              <td style="padding: 16px; text-align: center;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+        <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 4 of 142 records</p>
+        <div style="display: flex; gap: 8px;">
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>
