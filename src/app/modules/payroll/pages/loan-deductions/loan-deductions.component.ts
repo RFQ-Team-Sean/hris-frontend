@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-loan-deductions',
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule],
   templateUrl: './loan-deductions.component.html',
   styleUrls: ['./loan-deductions.component.scss']
 })
