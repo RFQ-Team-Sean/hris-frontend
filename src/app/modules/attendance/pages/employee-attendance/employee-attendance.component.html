@@ -1,11 +1,187 @@
 <div class="flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">Employee Attendance</h1>
-      <p>Employee Attendance works!</p>
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Daily Time Record</h1>
+      <p style="color: white; margin-bottom: 0; opacity: 0.9;">Track your daily attendance and working hours</p>
+    </div>
+
+    <!-- Current Date and Time Card -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 4px;">
+            {{ currentDate | date:'EEEE, MMMM d, yyyy' }}
+          </h2>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">
+            {{ currentTime | date:'hh:mm:ss a' }}
+          </p>
+        </div>
+        
+        <!-- Time In/Out Buttons -->
+        <div style="display: flex; gap: 16px;">
+          <button 
+            style="padding: 12px 24px; background-color: #10b981; color: white; border-radius: 6px; font-size: 1rem; font-weight: 600;"
+            (click)="timeIn()"
+            [disabled]="hasTimeInToday">
+            {{ hasTimeInToday ? 'Time In Recorded' : 'Time In' }}
+          </button>
+          <button 
+            style="padding: 12px 24px; background-color: #ef4444; color: white; border-radius: 6px; font-size: 1rem; font-weight: 600;"
+            (click)="timeOut()"
+            [disabled]="!hasTimeInToday || hasTimeOutToday">
+            {{ hasTimeOutToday ? 'Time Out Recorded' : 'Time Out' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's Summary -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; color: #1f2937;">Today's Summary</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <!-- Time In -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">Time In</p>
+          <p style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">
+            {{ todayRecord.timeIn || '--:-- --' }}
+          </p>
+        </div>
+        
+        <!-- Time Out -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">Time Out</p>
+          <p style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">
+            {{ todayRecord.timeOut || '--:-- --' }}
+          </p>
+        </div>
+        
+        <!-- Hours Worked -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">Hours Worked</p>
+          <p style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">
+            {{ todayRecord.hoursWorked || '0h 0m' }}
+          </p>
+        </div>
+        
+        <!-- Status -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">Status</p>
+          <p style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">
+            <span [ngStyle]="{
+              'color': todayRecord.status === 'Present' ? '#065f46' : 
+                      todayRecord.status === 'Absent' ? '#991b1b' : '#92400e'
+            }">
+              {{ todayRecord.status || 'Pending' }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendance History -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Attendance History</h2>
+        
+        <div style="display: flex; gap: 8px;">
+          <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option>This Month</option>
+            <option>Last Month</option>
+            <option>This Year</option>
+            <option>Custom Range</option>
+          </select>
+          <button style="padding: 8px 12px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem;">
+            Export
+          </button>
+        </div>
+      </div>
+      
+      <!-- Attendance Table -->
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Date</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Day</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Time In</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Time Out</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Hours</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Status</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Data Row 1 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">May 15, 2024</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Wednesday</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">08:15 AM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">05:30 PM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">8h 45m</td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                  Present
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+            
+            <!-- Sample Data Row 2 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">May 14, 2024</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Tuesday</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">08:30 AM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">05:45 PM</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">8h 15m</td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                  Present
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+              </td>
+            </tr>
+            
+            <!-- Sample Data Row 3 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">May 13, 2024</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Monday</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">--:-- --</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">0h 0m</td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fee2e2; color: #991b1b;">
+                  Absent
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Report</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+        <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 15 records</p>
+        <div style="display: flex; gap: 8px;">
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>
