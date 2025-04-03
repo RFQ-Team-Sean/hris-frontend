@@ -7,6 +7,7 @@ import { LoanDeductionsComponent } from './pages/loan-deductions/loan-deductions
 import { DisbursementBankingDashboardComponent } from './pages/disbursement-banking-dashboard/disbursement-banking-dashboard.component';
 import { BankFilesComponent } from './pages/bank-files/bank-files.component';
 import { PaySettlementsComponent } from './pages/pay-settlements/pay-settlements.component';
+import { PayrollAuditLogsComponent } from './pages/payroll-audit-logs/payroll-audit-logs.component';
 
 const routes: Routes = [
   { path: 'payroll-dashboard', component: PayrollDashboardComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'loan-deductions', component: LoanDeductionsComponent },
   { path: 'disbursement-banking-dashboard', component: DisbursementBankingDashboardComponent },
   { path: 'bank-files', component: BankFilesComponent },
-  { path: 'pay-settlements', component: PaySettlementsComponent }
+  { path: 'pay-settlements', component: PaySettlementsComponent },
+  { path: 'payroll-audit-logs', component: PayrollAuditLogsComponent }
   
 ];
 @NgModule({
