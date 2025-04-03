@@ -1,1 +1,265 @@
-<p>recruitment-reports works!</p>
+<!-- src\app\modules\reports\pages\recruitment-reports\recruitment-reports.component.html -->
+<div class="flex">
+    <!-- Sidebar -->
+  
+    <!-- Main Content Area -->
+    <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+      <!-- Header Container with Purple Background -->
+      <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Recruitment Reports</h1>
+            <p style="color: white; margin-bottom: 0; opacity: 0.9;">Comprehensive analytics and insights for your recruitment process</p>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: white;">
+              <option>Last 30 Days</option>
+              <option>Last Quarter</option>
+              <option>Last 6 Months</option>
+              <option>Year to Date</option>
+              <option>Custom Range</option>
+            </select>
+            <button style="padding: 8px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Export
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+        <!-- Total Applicants Card -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Total Applicants</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">1,248</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #e0f2fe; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+            <span style="font-weight: 500;">↑ 12.5%</span> from last period
+          </p>
+        </div>
+
+        <!-- Hires Card -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Hires</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">84</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #dcfce7; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+            <span style="font-weight: 500;">↑ 8.3%</span> from last period
+          </p>
+        </div>
+
+        <!-- Time to Hire Card -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Avg. Time to Hire</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">23 days</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #fef3c7; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: #ef4444; margin-top: 8px;">
+            <span style="font-weight: 500;">↑ 2 days</span> from last period
+          </p>
+        </div>
+
+        <!-- Open Positions Card -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Open Positions</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">32</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #e9d5ff; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7e22ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+            <span style="font-weight: 500;">↓ 15.8%</span> from last period
+          </p>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+        <!-- Applications Over Time Chart -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Applications Over Time</h2>
+            <select style="padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem;">
+              <option>By Week</option>
+              <option>By Month</option>
+              <option>By Quarter</option>
+            </select>
+          </div>
+          <div style="height: 300px; background-color: #f9fafb; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+            <!-- Chart placeholder - would be replaced with actual chart component -->
+            <p style="color: #9ca3af;">Line chart showing applications over time</p>
+          </div>
+        </div>
+
+        <!-- Hiring Funnel Chart -->
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Hiring Funnel</h2>
+          <div style="height: 300px; background-color: #f9fafb; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+            <!-- Chart placeholder - would be replaced with actual chart component -->
+            <p style="color: #9ca3af;">Funnel chart showing conversion rates</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Reports Section -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Detailed Recruitment Metrics</h2>
+          <button style="padding: 6px 12px; background-color: #5046e5; color: white; border-radius: 4px; font-size: 0.75rem;">
+            View Full Report
+          </button>
+        </div>
+        
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Position</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Applicants</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Interviews</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Offers</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Hires</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Conversion</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Avg. Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Position 1 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Frontend Developer</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">245</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">48</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">12</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">8</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">3.3%</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">21 days</td>
+              </tr>
+              
+              <!-- Position 2 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Backend Developer</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">198</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">42</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">10</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">7</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">3.5%</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">24 days</td>
+              </tr>
+              
+              <!-- Position 3 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">UX Designer</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">156</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">35</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">8</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">5</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">3.2%</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">19 days</td>
+              </tr>
+              
+              <!-- Position 4 -->
+              <tr>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Product Manager</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">87</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">22</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">6</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">4</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">4.6%</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">28 days</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Source Analytics -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Applicant Sources</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div>
+            <div style="height: 300px; background-color: #f9fafb; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+              <!-- Chart placeholder - would be replaced with actual chart component -->
+              <p style="color: #9ca3af;">Pie chart showing applicant sources</p>
+            </div>
+          </div>
+          <div>
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Source</th>
+                  <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Applicants</th>
+                  <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Hires</th>
+                  <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Conversion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">LinkedIn</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">428</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">32</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">7.5%</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">Company Website</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">356</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">28</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">7.9%</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">Job Boards</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">298</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">18</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">6.0%</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">Referrals</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">166</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">16</td>
+                  <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">9.6%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

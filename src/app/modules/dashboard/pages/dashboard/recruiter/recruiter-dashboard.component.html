@@ -1,11 +1,296 @@
+<!-- src\app\modules\reports\pages\report-dashboard\report-dashboard.component.html -->
 <div class="flex">
-    <!-- Sidebar -->
-  
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">Recruiter Dashboard</h1>
-      <p>Recuiter-dashboard works!</p>
+  <!-- Sidebar -->
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Recruitment Dashboard</h1>
+          <p style="color: white; margin-bottom: 0; opacity: 0.9;">Overview of your recruitment pipeline and performance</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: white;">
+            <option>Last 30 Days</option>
+            <option>Last Quarter</option>
+            <option>Year to Date</option>
+            <option>Custom Range</option>
+          </select>
+          <button style="padding: 8px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Row -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+      <!-- Active Jobs -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Active Jobs</p>
+            <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">24</p>
+          </div>
+          <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #e0f2fe; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+          </div>
+        </div>
+        <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+          <span style="font-weight: 500;">↑ 4</span> from last month
+        </p>
+      </div>
+
+      <!-- Total Applicants -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Total Applicants</p>
+            <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">1,248</p>
+          </div>
+          <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #d1fae5; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#065f46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </div>
+        </div>
+        <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+          <span style="font-weight: 500;">↑ 12.5%</span> from last month
+        </p>
+      </div>
+
+      <!-- Upcoming Interviews -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Upcoming Interviews</p>
+            <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">18</p>
+          </div>
+          <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #fef3c7; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+        </div>
+        <p style="font-size: 0.75rem; color: #ef4444; margin-top: 8px;">
+          <span style="font-weight: 500;">↓ 3</span> from last week
+        </p>
+      </div>
+
+      <!-- Hires This Month -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Hires This Month</p>
+            <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">14</p>
+          </div>
+          <div style="width: 48px; height: 48px; border-radius: 8px; background-color: #dcfce7; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+        </div>
+        <p style="font-size: 0.75rem; color: #10b981; margin-top: 8px;">
+          <span style="font-weight: 500;">↑ 8.3%</span> from last month
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+      <!-- Recruitment Pipeline -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Recruitment Pipeline</h2>
+        <div style="height: 300px; background-color: #f9fafb; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+          <!-- Chart placeholder - would be replaced with actual chart component -->
+          <p style="color: #9ca3af;">Funnel chart showing applicant progression</p>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Recent Activity</h2>
+          <button style="color: #5046e5; font-size: 0.75rem; font-weight: 500;">View All</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <!-- Activity Item 1 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/user1.jpg" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Maria scheduled interview with John Doe</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Today, 10:30 AM</p>
+            </div>
+          </div>
+          
+          <!-- Activity Item 2 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/user2.jpg" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Sarah Chen was hired as Frontend Developer</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Yesterday, 3:45 PM</p>
+            </div>
+          </div>
+          
+          <!-- Activity Item 3 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/user3.jpg" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">New job posting: Senior UX Designer</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">2 days ago</p>
+            </div>
+          </div>
+          
+          <!-- Activity Item 4 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/user4.jpg" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Michael completed interview feedback</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">3 days ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Section -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <!-- Open Positions -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Open Positions</h2>
+          <button style="color: #5046e5; font-size: 0.75rem; font-weight: 500;">View All</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Position</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Applicants</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">Senior Frontend Developer</td>
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">45</td>
+                <td style="padding: 12px 16px; text-align: right;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                    Active
+                  </span>
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">UX Designer</td>
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">32</td>
+                <td style="padding: 12px 16px; text-align: right;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                    Active
+                  </span>
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">Product Manager</td>
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">28</td>
+                <td style="padding: 12px 16px; text-align: right;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fef3c7; color: #92400e;">
+                    Draft
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937;">DevOps Engineer</td>
+                <td style="padding: 12px 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">18</td>
+                <td style="padding: 12px 16px; text-align: right;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                    Active
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Upcoming Interviews -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Upcoming Interviews</h2>
+          <button style="color: #5046e5; font-size: 0.75rem; font-weight: 500;">View All</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <!-- Interview 1 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/applicant1.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex: 1;">
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">John Doe - Technical Interview</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Tomorrow, 10:00 AM - 11:00 AM</p>
+            </div>
+            <button style="align-self: center; color: #2563eb; font-size: 0.75rem; font-weight: 500;">View</button>
+          </div>
+          
+          <!-- Interview 2 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/applicant2.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex: 1;">
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Sarah Chen - HR Interview</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Tomorrow, 2:30 PM - 3:15 PM</p>
+            </div>
+            <button style="align-self: center; color: #2563eb; font-size: 0.75rem; font-weight: 500;">View</button>
+          </div>
+          
+          <!-- Interview 3 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/applicant3.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex: 1;">
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Michael Brown - Final Interview</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Jun 15, 9:00 AM - 10:00 AM</p>
+            </div>
+            <button style="align-self: center; color: #2563eb; font-size: 0.75rem; font-weight: 500;">View</button>
+          </div>
+          
+          <!-- Interview 4 -->
+          <div style="display: flex; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+              <img src="assets/applicant4.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex: 1;">
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">Emily Wilson - Technical Interview</p>
+              <p style="font-size: 0.75rem; color: #6b7280;">Jun 16, 11:30 AM - 12:30 PM</p>
+            </div>
+            <button style="align-self: center; color: #2563eb; font-size: 0.75rem; font-weight: 500;">View</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>
