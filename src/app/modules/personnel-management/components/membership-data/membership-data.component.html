@@ -1,0 +1,118 @@
+<div class="space-y-6">
+  <!-- Membership Data Header -->
+  <h3 class="text-lg font-semibold mb-4">Membership Data</h3>
+
+  <!-- Main Content Area -->
+  <div class="rounded-lg border border-gray-200 overflow-hidden">
+    <div class="p-6 space-y-6">
+      <!-- Government Memberships Cards -->
+      <div class="space-y-4">
+        <!-- GSIS -->
+        <div *ngFor="let membership of memberships" class="border-b border-gray-100 pb-4 last:border-b-0 last:pb-0">
+          <div class="font-medium mb-2">{{ membership.type }}</div>
+          
+          <!-- Two Column Layout -->
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <label class="text-sm text-gray-600">Status:</label>
+                <span class="px-3 py-1 text-xs rounded-full"
+                  [ngClass]="membership.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                  {{ membership.status }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div>
+              <div class="flex items-center gap-2">
+                <label class="text-sm text-gray-600">Document:</label>
+                <div class="flex items-center">
+                  <div *ngIf="membership.document" class="flex items-center gap-2">
+                    <span class="flex items-center text-gray-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>
+                      {{ membership.document.filename }}
+                    </span>
+                    <span class="text-xs text-gray-500">{{ membership.document.filesize }}</span>
+                    <div class="flex gap-1 ml-2">
+                      <button (click)="downloadDocument(membership)" class="text-xs text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded">Download</button>
+                      <button (click)="viewDocument(membership)" class="text-xs text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded">View</button>
+                      <button class="text-xs text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded ml-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="!membership.document" class="flex items-center gap-1">
+                    <span class="text-gray-500">n/a</span>
+                    <input type="file" [id]="'file-upload-' + membership.type" class="hidden" (change)="uploadDocument(membership, $event)">
+                    <label [for]="'file-upload-' + membership.type" class="ml-2 text-xs text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded cursor-pointer">Upload</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Details Section -->
+      <div class="mb-4 bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <h4 class="text-sm font-semibold text-gray-700 mb-2">Additional Details:</h4>
+        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+          <li>Contribution Start Date - When the employee began contributing to this membership</li>
+          <li>Total Contributions to Date - Accumulated contributions since enrollment</li>
+          <li>Pending Contributions (if any) - Outstanding contributions yet to be processed</li>
+          <li>Last Updated By - Person who last modified this membership information</li>
+        </ul>
+      </div>
+
+      <!-- Membership Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Membership Type</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Number</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contribution Start</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monthly Contribution</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employer Share</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee Share</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Contributions to Date</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pending Contributions</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Payment Date</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated By</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let membership of memberships">
+              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">{{ membership.type.split('(')[0].trim() }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ membership.accountNumber || 'N/A' }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ membership.contributionStartDate }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">₱{{ membership.monthlyContribution }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">₱{{ membership.employerShare }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">₱{{ membership.employeeShare }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">₱{{ membership.totalContributionsToDate }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                <span *ngIf="membership.pendingContributions && membership.pendingContributions > 0" class="text-amber-600">₱{{ membership.pendingContributions }}</span>
+                <span *ngIf="!membership.pendingContributions || membership.pendingContributions === 0">None</span>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ membership.lastPaymentDate }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ membership.lastUpdatedBy }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Button - Only shown when displayed in the modal -->
+  <div class="flex justify-end mt-6" *ngIf="showEditButton">
+    <button (click)="editInformation()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+      Edit Information
+    </button>
+  </div>
+</div>

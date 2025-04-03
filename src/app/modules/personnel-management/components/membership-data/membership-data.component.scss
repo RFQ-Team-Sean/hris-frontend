@@ -1,0 +1,144 @@
+// Main container
+.space-y-6 {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+// Border container styling
+.rounded-lg.border {
+    border-color: #e5e7eb;
+    transition: all 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    }
+}
+
+// Section borders
+.border-b {
+    border-color: #f3f4f6;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+// Membership type heading
+.font-medium {
+    color: #4b5563;
+}
+
+// Status badges
+.px-3.py-1.rounded-full {
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    &.bg-green-100 {
+        background-color: #dcfce7;
+        color: #166534;
+
+        &:hover {
+            background-color: #bbf7d0;
+        }
+    }
+
+    &.bg-red-100 {
+        background-color: #fee2e2;
+        color: #b91c1c;
+
+        &:hover {
+            background-color: #fecaca;
+        }
+    }
+}
+
+// Document display
+.flex.items-center {
+    &.gap-2 {
+        svg {
+            color: #9ca3af;
+        }
+    }
+}
+
+// Document buttons
+button.text-indigo-600 {
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background-color: #e0e7ff;
+    }
+}
+
+// Table styling
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    thead {
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #6b7280;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+    }
+
+    tbody {
+        tr {
+            transition: background-color 0.15s ease;
+
+            &:hover {
+                background-color: #f9fafb;
+            }
+
+            td {
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+    }
+}
+
+// Edit button
+button.bg-indigo-600 {
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: #4f46e5;
+    }
+}
+
+// Animation keyframes
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Highlight for pending contributions
+.text-amber-600 {
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: #d97706; // darker amber on hover
+    }
+}
