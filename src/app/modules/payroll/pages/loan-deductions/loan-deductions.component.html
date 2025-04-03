@@ -1,1 +1,224 @@
-<p>loan-deductions works!</p>
+<div class="flex">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+  
+    <!-- Main Content Area -->
+    <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+      <!-- Header Container with Purple Background -->
+      <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Loan & Contribution Deductions</h1>
+            <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage employee loan repayments and mandatory contributions</p>
+          </div>
+          <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+            + Add New Deduction
+          </button>
+        </div>
+      </div>
+  
+      <!-- Tabs for Loan Types -->
+      <div style="display: flex; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;">
+        <button style="padding: 12px 16px; border-bottom: 2px solid #5046e5; font-size: 0.875rem; font-weight: 500; color: #5046e5;">
+          Active Deductions
+        </button>
+        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+          Completed Loans
+        </button>
+        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+          Mandatory Contributions
+        </button>
+        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+          Deduction History
+        </button>
+      </div>
+  
+      <!-- Filters and Search -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+          <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Deduction Type</label>
+            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Types</option>
+              <option>SSS Loan</option>
+              <option>Pag-IBIG Loan</option>
+              <option>Company Loan</option>
+              <option>SSS Contribution</option>
+              <option>Pag-IBIG Contribution</option>
+              <option>PhilHealth</option>
+            </select>
+          </div>
+          
+          <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
+            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Departments</option>
+              <option>IT</option>
+              <option>HR</option>
+              <option>Finance</option>
+              <option>Operations</option>
+            </select>
+          </div>
+          
+          <div style="flex: 2; min-width: 300px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Employee</label>
+            <div style="position: relative;">
+              <input type="text" placeholder="Search by name or employee ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+          
+          <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+            Apply Filters
+          </button>
+        </div>
+      </div>
+  
+      <!-- Deductions Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Active Loans</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">24</p>
+        </div>
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Total Monthly Deductions</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">₱87,450.00</p>
+        </div>
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">SSS Contributions</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">₱32,150.00</p>
+        </div>
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Pag-IBIG Contributions</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">₱15,300.00</p>
+        </div>
+      </div>
+  
+      <!-- Deductions Table -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Employee</th>
+                <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Deduction Type</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Amount</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Start Date</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">End Date</th>
+                <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Balance</th>
+                <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Status</th>
+                <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Employee 1 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                      <img src="assets/user1.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                      <p style="font-weight: 500;">Juan Dela Cruz</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-001</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">SSS Loan</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱1,200.00</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">May 1, 2024</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">Nov 1, 2024</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱7,200.00</td>
+                <td style="padding: 16px; text-align: center;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                    Active
+                  </span>
+                </td>
+                <td style="padding: 16px; text-align: center;">
+                  <div style="display: flex; justify-content: center; gap: 8px;">
+                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Stop</button>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Employee 2 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                      <img src="assets/user2.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                      <p style="font-weight: 500;">Maria Santos</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-002</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Pag-IBIG Contribution</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱100.00</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">Jan 1, 2024</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">-</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">-</td>
+                <td style="padding: 16px; text-align: center;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                    Active
+                  </span>
+                </td>
+                <td style="padding: 16px; text-align: center;">
+                  <div style="display: flex; justify-content: center; gap: 8px;">
+                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Employee 3 -->
+              <tr>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+                      <img src="assets/user3.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                      <p style="font-weight: 500;">Pedro Reyes</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-003</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Company Loan</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱2,500.00</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">Mar 1, 2024</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">Aug 1, 2024</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱12,500.00</td>
+                <td style="padding: 16px; text-align: center;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fef3c7; color: #92400e;">
+                    Pending Approval
+                  </span>
+                </td>
+                <td style="padding: 16px; text-align: center;">
+                  <div style="display: flex; justify-content: center; gap: 8px;">
+                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Approve</button>
+                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Reject</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Pagination -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 15 deductions</p>
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
