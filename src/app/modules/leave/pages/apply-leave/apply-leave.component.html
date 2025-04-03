@@ -1,10 +1,128 @@
 <div class="flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">apply leave</h1>
-      <p>apply leave works!</p>
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Apply for Leave</h1>
+      <p style="color: white; margin-bottom: 0; opacity: 0.9;">Submit your leave request for approval</p>
+    </div>
+
+    <!-- Leave Application Form -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <form>
+        <!-- Leave Type -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Leave Type*</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">Select leave type</option>
+            <option value="vacation">Vacation Leave</option>
+            <option value="sick">Sick Leave</option>
+            <option value="personal">Personal Leave</option>
+            <option value="bereavement">Bereavement Leave</option>
+            <option value="maternity">Maternity/Paternity Leave</option>
+          </select>
+        </div>
+
+        <!-- Date Range -->
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Start Date*</label>
+            <input type="date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">End Date*</label>
+            <input type="date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Duration*</label>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <label style="display: inline-flex; align-items: center;">
+              <input type="radio" name="duration" style="margin-right: 8px;" checked>
+              <span style="font-size: 0.875rem;">Full Day</span>
+            </label>
+            <label style="display: inline-flex; align-items: center;">
+              <input type="radio" name="duration" style="margin-right: 8px;">
+              <span style="font-size: 0.875rem;">Half Day</span>
+            </label>
+            <label style="display: inline-flex; align-items: center;">
+              <input type="radio" name="duration" style="margin-right: 8px;">
+              <span style="font-size: 0.875rem;">Multiple Days</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Reason -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Reason*</label>
+          <textarea 
+            rows="4" 
+            style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;"
+            placeholder="Please provide details about your leave request"></textarea>
+        </div>
+
+        <!-- Contact During Leave -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Emergency Contact During Leave</label>
+          <input 
+            type="text" 
+            style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;"
+            placeholder="Name and phone number">
+        </div>
+
+        <!-- Supporting Documents -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Supporting Documents (if any)</label>
+          <div style="border: 2px dashed #e5e7eb; border-radius: 6px; padding: 24px; text-align: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 48px; height: 48px; color: #9ca3af;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+              <p style="margin-top: 8px; font-size: 0.875rem; color: #6b7280;">Drag and drop files here or click to upload</p>
+              <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 4px;">PDF, JPG, PNG up to 5MB</p>
+            </div>
+            <input type="file" style="display: none;">
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div style="display: flex; justify-content: flex-end; gap: 16px;">
+          <button type="button" style="padding: 10px 20px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+            Cancel
+          </button>
+          <button type="submit" style="padding: 10px 20px; background-color: #2563eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white;">
+            Submit Request
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Leave Balance Summary -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+      <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; color: #1f2937;">Your Leave Balance</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <div style="background-color: #eff6ff; padding: 16px; border-radius: 6px;">
+          <h3 style="font-size: 0.75rem; font-weight: 500; color: #1e40af; margin-bottom: 4px;">Vacation</h3>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #1d4ed8;">12 days</p>
+        </div>
+        <div style="background-color: #ecfdf5; padding: 16px; border-radius: 6px;">
+          <h3 style="font-size: 0.75rem; font-weight: 500; color: #065f46; margin-bottom: 4px;">Sick</h3>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #047857;">8 days</p>
+        </div>
+        <div style="background-color: #f5f3ff; padding: 16px; border-radius: 6px;">
+          <h3 style="font-size: 0.75rem; font-weight: 500; color: #5b21b6; margin-bottom: 4px;">Personal</h3>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #7c3aed;">5 days</p>
+        </div>
+        <div style="background-color: #fef3c7; padding: 16px; border-radius: 6px;">
+          <h3 style="font-size: 0.75rem; font-weight: 500; color: #92400e; margin-bottom: 4px;">Emergency</h3>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #d97706;">3 days</p>
+        </div>
+      </div>
     </div>
   </div>
+</div>

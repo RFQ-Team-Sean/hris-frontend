@@ -387,7 +387,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           icon: 'attach_money',
           children: [
             { name: 'My Daily Time Record', path: '/attendance/employee-attendance' },
-            { name: 'DTR Adjustment', path: '/attendance/request-adjustment' },
             { name: 'Work Schedule & Shift Details', path: '/attendance/work-schedule-management' },
 	          { name: 'Leave Application', path: '/leave/apply-leave' },
           ]
