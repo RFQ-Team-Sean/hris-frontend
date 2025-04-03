@@ -1,5 +1,203 @@
-<!-- Main Content Area -->
-<div class="p-6 bg-gray-100 min-h-screen">
-  <h1 class="text-3xl font-bold mb-4">Job Listings</h1>
-  <p>job listings works!</p>
+<!-- src\app\modules\recruitment\pages\job-listings\job-listings.component.html -->
+<div class="flex">
+  <!-- Sidebar -->
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Job Listings</h1>
+          <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage all job postings for your organization</p>
+        </div>
+        <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+          + Create New Job
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Status</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">All Statuses</option>
+            <option>Active</option>
+            <option>Draft</option>
+            <option>Closed</option>
+            <option>Archived</option>
+          </select>
+        </div>
+        
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">All Departments</option>
+            <option>Engineering</option>
+            <option>Marketing</option>
+            <option>Sales</option>
+            <option>Human Resources</option>
+          </select>
+        </div>
+        
+        <div style="flex: 1; min-width: 200px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Type</label>
+          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <option value="">All Types</option>
+            <option>Full-time</option>
+            <option>Part-time</option>
+            <option>Contract</option>
+            <option>Internship</option>
+          </select>
+        </div>
+        
+        <div style="flex: 2; min-width: 300px;">
+          <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Jobs</label>
+          <div style="position: relative;">
+            <input type="text" placeholder="Search by job title or reference number" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+        
+        <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Job Listings Table -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Job Title</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Department</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Type</th>
+              <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Applications</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Status</th>
+              <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Posted Date</th>
+              <th style="padding: 12px 16px; text-align: center; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Job 1 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #e0e7ff; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5046e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Senior Frontend Developer</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Req #DEV-1024</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Engineering</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Full-time</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">24</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                  Active
+                </span>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">May 15, 2023</td>
+              <td style="padding: 16px; text-align: center;">
+                <div style="display: flex; justify-content: center; gap: 12px;">
+                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Job 2 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #f3e8ff; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Product Designer</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Req #DES-2048</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Product</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Contract</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">18</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+                  Active
+                </span>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Jun 1, 2023</td>
+              <td style="padding: 16px; text-align: center;">
+                <div style="display: flex; justify-content: center; gap: 12px;">
+                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Job 3 -->
+            <tr>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #dcfce7; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500;">Cybersecurity Specialist</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Req #SEC-4096</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">IT Security</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Full-time</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">32</td>
+              <td style="padding: 16px; text-align: center;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #dbeafe; color: #1e40af;">
+                  Draft
+                </span>
+              </td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Jun 15, 2023</td>
+              <td style="padding: 16px; text-align: center;">
+                <div style="display: flex; justify-content: center; gap: 12px;">
+                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination and Summary -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+        <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 12 jobs</p>
+        <div style="display: flex; gap: 8px;">
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

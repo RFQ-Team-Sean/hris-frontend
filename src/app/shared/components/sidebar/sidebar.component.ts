@@ -454,8 +454,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       'Recruiter': [
         { name: 'Dashboard', path: '/dashboard/recruiter', icon: 'dashboard' },
         { name: 'Job Openings Management', path: '/recruitment/job-listings', icon: 'list' },
-        { name: 'Application Processing', path: '/recruitment/interview-scheduler', icon: 'assignment' },
-        { name: 'Appointment Processing', path: '/recruitment/applicant-tracker', icon: 'assignment' },
+        { name: 'Appointment Processing', path: '/recruitment/interview-scheduler', icon: 'assignment' },
+        { name: 'Application Processing', path: '/recruitment/applicant-tracker', icon: 'assignment' },
         { name: 'Reports & Analytics', path: '/reports/recruitment-reports', icon: 'assignment' },
         
       ],
