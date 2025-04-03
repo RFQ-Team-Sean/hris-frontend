@@ -1,1 +1,379 @@
-<p>bank-files works!</p>
+<!-- src\app\modules\payroll\pages\bank-files\bank-files.component.html -->
+<div class="flex">
+    <!-- Sidebar would be here -->
+    
+    <!-- Main Content Area -->
+    <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+      <!-- Header Container with Purple Background -->
+      <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Bank Files</h1>
+            <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage employee bank accounts for salary disbursement</p>
+          </div>
+          <button style="padding: 10px 20px; background-color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #5046e5; display: flex; align-items: center; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Generate Bank File
+          </button>
+        </div>
+      </div>
+  
+      <!-- Bank Files Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <p style="font-size: 0.75rem; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Active Bank Accounts</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1d4ed8;">142</p>
+            </div>
+            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #eff6ff; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; color: #1d4ed8;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <p style="font-size: 0.75rem; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Pending Updates</p>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #92400e;">8</p>
+            </div>
+            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #fef3c7; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; color: #92400e;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <p style="font-size: 0.75rem; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Primary Bank</p>
+              <p style="font-size: 1.125rem; font-weight: 600; color: #065f46;">BPI</p>
+            </div>
+            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #ecfdf5; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; color: #065f46;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <p style="font-size: 0.75rem; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Last Generated</p>
+              <p style="font-size: 1.125rem; font-weight: 600; color: #7c3aed;">Jun 15, 2023</p>
+            </div>
+            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f5f3ff; display: flex; align-items: center; justify-content: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; color: #7c3aed;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Bank Files Management Section -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Employee Bank Accounts</h2>
+          <div style="display: flex; gap: 16px;">
+            <div style="position: relative;">
+              <input type="text" placeholder="Search employees..." style="padding: 8px 12px 8px 36px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; width: 240px;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #9ca3af; position: absolute; left: 12px; top: 10px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Banks</option>
+              <option value="bpi">BPI</option>
+              <option value="bdo">BDO</option>
+              <option value="metrobank">Metrobank</option>
+              <option value="chinabank">China Bank</option>
+            </select>
+            <button style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Upload Bulk
+            </button>
+          </div>
+        </div>
+  
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #f9fafb; text-align: left;">
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Employee</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Bank Name</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Account Number</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Account Type</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Account Name</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Last Updated</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Status</th>
+                <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Sample Row 1 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                      <span style="font-weight: 600; color: #4b5563;">JD</span>
+                    </div>
+                    <div>
+                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">John Doe</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-1001</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">BPI</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">•••• 4567</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Savings</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">John M. Doe</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Jun 12, 2023</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 500;">
+                    Verified
+                  </span>
+                </td>
+                <td style="padding: 16px;">
+                  <div style="display: flex; gap: 8px;">
+                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                      </svg>
+                      View
+                    </button>
+                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+                </td>
+              </tr>
+  
+              <!-- Sample Row 2 -->
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                      <span style="font-weight: 600; color: #4b5563;">AS</span>
+                    </div>
+                    <div>
+                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Alice Smith</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-1002</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">BDO</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">•••• 8910</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Checking</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Alice R. Smith</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Jun 10, 2023</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 500;">
+                    Pending
+                  </span>
+                </td>
+                <td style="padding: 16px;">
+                  <div style="display: flex; gap: 8px;">
+                    <button style="padding: 6px 12px; background-color: #ecfdf5; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #065f46; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      Verify
+                    </button>
+                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+  
+              <!-- Sample Row 3 -->
+              <tr>
+                <td style="padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                      <span style="font-weight: 600; color: #4b5563;">RJ</span>
+                    </div>
+                    <div>
+                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Robert Johnson</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-1003</p>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Metrobank</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">•••• 1122</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Savings</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">Robert P. Johnson</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="font-weight: 500; color: #111827;">May 28, 2023</span>
+                </td>
+                <td style="padding: 16px;">
+                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fee2e2; color: #b91c1c; font-size: 0.75rem; font-weight: 500;">
+                    Rejected
+                  </span>
+                </td>
+                <td style="padding: 16px;">
+                  <div style="display: flex; gap: 8px;">
+                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                      </svg>
+                      View
+                    </button>
+                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Pagination -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #e5e7eb;">
+          <div style="font-size: 0.875rem; color: #6b7280;">
+            Showing <span style="font-weight: 500; color: #111827;">1</span> to <span style="font-weight: 500; color: #111827;">3</span> of <span style="font-weight: 500; color: #111827;">12</span> entries
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              Previous
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; background-color: #5046e5;">
+              1
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+              2
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+              3
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Recent Bank Files Section -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; color: #1f2937;">Recent Bank Files</h2>
+        <div style="display: grid; gap: 16px;">
+          <!-- Bank File Item 1 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 48px; height: 48px; border-radius: 6px; background-color: #eff6ff; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: #1d4ed8;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">BPI_Salary_June_2023.xlsx</p>
+                <p style="font-size: 0.875rem; color: #6b7280;">Generated on June 15, 2023 • 142 records</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                Download
+              </button>
+              <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                View
+              </button>
+            </div>
+          </div>
+          
+          <!-- Bank File Item 2 -->
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 48px; height: 48px; border-radius: 6px; background-color: #ecfdf5; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: #065f46;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">BDO_Salary_May_2023.xlsx</p>
+                <p style="font-size: 0.875rem; color: #6b7280;">Generated on May 15, 2023 • 138 records</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                Download
+              </button>
+              <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
