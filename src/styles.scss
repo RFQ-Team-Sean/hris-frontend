@@ -1,7 +1,13 @@
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* You can add global styles to this file, and also import other style files */
 
 /* Reset default margins and padding */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -26,6 +32,8 @@ body {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 * {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

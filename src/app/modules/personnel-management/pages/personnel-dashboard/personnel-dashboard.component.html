@@ -1,11 +1,499 @@
 <div class="flex">
-    <!-- Sidebar -->
-  
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">Personnel Management</h1>
-      <p>Personnel management works!</p>
+  <!-- Sidebar -->
+
+  <!-- Main Content Area -->
+  <div class="flex-1 p-6 bg-gray-100 min-h-screen">
+    <!-- Header Section -->
+    <div class="bg-indigo-600 rounded-lg p-6 mb-6 text-white">
+      <h1 class="text-2xl font-bold">Personnel 201 File</h1>
+      <p class="text-sm mt-1">
+        Access and manage employee records, including personal information,
+        contracts, performance reviews, and other essential documents.
+      </p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-6 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-lg shadow flex items-center">
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">{{ statusStats.totalEmployees }}</div>
+          <div class="text-gray-500 text-sm">Employees</div>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow flex items-center">
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">{{ statusStats.inOffice }}</div>
+          <div class="text-gray-500 text-sm">In Office</div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onEmploymentTypeCardClick('Full-Time')"
+        [class.bg-indigo-50]="selectedEmploymentType === 'Full-Time'"
+      >
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">
+            {{ employmentTypeStats.fullTime }}
+          </div>
+          <div class="text-gray-500 text-sm">Full Time</div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onEmploymentTypeCardClick('Part-Time')"
+        [class.bg-indigo-50]="selectedEmploymentType === 'Part-Time'"
+      >
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">
+            {{ employmentTypeStats.partTime }}
+          </div>
+          <div class="text-gray-500 text-sm">Part Time</div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onEmploymentTypeCardClick('Regular')"
+        [class.bg-indigo-50]="selectedEmploymentType === 'Regular'"
+      >
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">{{ statusStats.regulars }}</div>
+          <div class="text-gray-500 text-sm">Regulars</div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onEmploymentTypeCardClick('Intern')"
+        [class.bg-indigo-50]="selectedEmploymentType === 'Intern'"
+      >
+        <div class="p-3 rounded-lg mr-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="text-3xl font-bold">{{ statusStats.interns }}</div>
+          <div class="text-gray-500 text-sm">Interns</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="flex justify-between mb-6">
+      <div class="relative w-1/3">
+        <input
+          type="text"
+          placeholder="Search by name, role, department..."
+          class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300"
+          (input)="onSearch($event)"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 absolute left-3 top-2.5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
+      <div class="flex gap-3 relative">
+        <button
+          class="flex items-center px-4 py-2 bg-white rounded-lg border border-gray-300"
+          (click)="toggleFilterDropdown()"
+        >
+          <span>{{ getActiveFilterLabel() }}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+            />
+          </svg>
+        </button>
+
+        <!-- Filter Dropdown Menu -->
+        <div
+          *ngIf="showFilterDropdown"
+          class="absolute top-12 right-28 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
+        >
+          <!-- Filter Types -->
+          <div class="p-2 border-b border-gray-200">
+            <div class="font-medium text-gray-700 mb-1">Filter by:</div>
+            <div class="flex gap-2 text-sm">
+              <button
+                class="px-2 py-1 rounded"
+                [ngClass]="{
+                  'bg-indigo-100 text-indigo-800': currentFilter === 'all',
+                  'text-gray-600 hover:bg-gray-100': currentFilter !== 'all'
+                }"
+                (click)="resetFilters()"
+              >
+                All
+              </button>
+              <button
+                class="px-2 py-1 rounded"
+                [ngClass]="{
+                  'bg-indigo-100 text-indigo-800':
+                    currentFilter === 'department',
+                  'text-gray-600 hover:bg-gray-100':
+                    currentFilter !== 'department'
+                }"
+                (click)="setFilterType('department')"
+              >
+                Department
+              </button>
+              <button
+                class="px-2 py-1 rounded"
+                [ngClass]="{
+                  'bg-indigo-100 text-indigo-800':
+                    currentFilter === 'employmentType',
+                  'text-gray-600 hover:bg-gray-100':
+                    currentFilter !== 'employmentType'
+                }"
+                (click)="setFilterType('employmentType')"
+              >
+                Type
+              </button>
+              <button
+                class="px-2 py-1 rounded"
+                [ngClass]="{
+                  'bg-indigo-100 text-indigo-800':
+                    currentFilter === 'attendanceStatus',
+                  'text-gray-600 hover:bg-gray-100':
+                    currentFilter !== 'attendanceStatus'
+                }"
+                (click)="setFilterType('attendanceStatus')"
+              >
+                Status
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Values -->
+          <div class="p-2">
+            <!-- Department Filter Options -->
+            <div *ngIf="currentFilter === 'department'">
+              <div class="font-medium text-gray-700 mb-1">
+                Select Department:
+              </div>
+              <div class="max-h-48 overflow-y-auto">
+                <div
+                  *ngFor="let dept of departments"
+                  class="py-1 px-2 cursor-pointer hover:bg-gray-100 rounded text-sm"
+                  (click)="applyDepartmentFilter(dept)"
+                >
+                  {{ dept }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Employment Type Filter Options -->
+            <div *ngIf="currentFilter === 'employmentType'">
+              <div class="font-medium text-gray-700 mb-1">
+                Select Employment Type:
+              </div>
+              <div class="max-h-48 overflow-y-auto">
+                <div
+                  *ngFor="let type of employmentTypes"
+                  class="py-1 px-2 cursor-pointer hover:bg-gray-100 rounded text-sm"
+                  (click)="applyEmploymentTypeFilter(type)"
+                >
+                  {{ type }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Attendance Status Filter Options -->
+            <div *ngIf="currentFilter === 'attendanceStatus'">
+              <div class="font-medium text-gray-700 mb-1">
+                Select Attendance Status:
+              </div>
+              <div class="max-h-48 overflow-y-auto">
+                <div
+                  *ngFor="let status of attendanceStatuses"
+                  class="py-1 px-2 cursor-pointer hover:bg-gray-100 rounded text-sm"
+                  (click)="applyAttendanceStatusFilter(status)"
+                >
+                  {{ status }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="flex items-center px-4 py-2 bg-white rounded-lg border border-gray-300"
+        >
+          <span>Default</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Employee Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <!-- Table Headers -->
+      <div class="bg-gray-100 px-4 py-3 text-gray-700 grid grid-cols-5 gap-4">
+        <div class="font-medium">Employee Name</div>
+        <div class="font-medium">Position</div>
+        <div class="font-medium">Department</div>
+        <div class="font-medium">Employment Type</div>
+        <div class="font-medium">Attendance Status</div>
+      </div>
+
+      <!-- Table Body -->
+      <div class="divide-y divide-gray-200">
+        <div
+          *ngIf="employees.length === 0"
+          class="px-4 py-6 text-center text-gray-500"
+        >
+          No employees match your search or filter criteria. Please try
+          different parameters.
+        </div>
+
+        <div
+          *ngFor="let employee of employees"
+          class="px-4 py-3 grid grid-cols-5 gap-4 items-center hover:bg-gray-50"
+        >
+          <!-- Employee Name with Avatar -->
+          <div
+            class="flex items-center cursor-pointer"
+            (click)="openEmployeeDetails(employee)"
+          >
+            <div
+              class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3 text-indigo-500 overflow-hidden"
+            >
+              <!-- Display actual avatar image if available -->
+              <img
+                *ngIf="employee.avatar"
+                [src]="employee.avatar"
+                alt="{{ employee.name }}"
+                class="h-full w-full object-cover"
+              />
+              <!-- Fallback to generic icon if no avatar -->
+              <svg
+                *ngIf="!employee.avatar"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+            </div>
+            <span class="font-medium hover:text-indigo-600">{{
+              employee.name
+            }}</span>
+          </div>
+
+          <!-- Position -->
+          <div class="text-gray-600 truncate">{{ employee.position }}</div>
+
+          <!-- Department -->
+          <div class="text-gray-600">{{ employee.department }}</div>
+
+          <!-- Employment Type -->
+          <div>
+            <span
+              class="px-3 py-1 rounded-full text-sm font-medium"
+              [ngClass]="getEmploymentTypeColorClass(employee.employmentType)"
+            >
+              {{ employee.employmentType }}
+            </span>
+          </div>
+
+          <!-- Attendance Status -->
+          <div>
+            <span
+              class="px-3 py-1 rounded-full text-sm font-medium"
+              [ngClass]="getStatusColorClass(employee.attendanceStatus)"
+            >
+              {{ employee.attendanceStatus }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div
+        class="px-4 py-3 bg-white border-t border-gray-200 flex items-center justify-between"
+      >
+        <div class="text-sm text-gray-700">
+          Showing <span class="font-medium">1</span> to
+          <span class="font-medium">{{
+            employees.length < itemsPerPage ? employees.length : itemsPerPage
+          }}</span>
+          of
+          <span class="font-medium">{{ allEmployees.length }}</span> employees
+        </div>
+        <div class="flex space-x-1">
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            &laquo;
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            1
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            2
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            ...
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            {{ Math.ceil(allEmployees.length / itemsPerPage) }}
+          </button>
+          <button
+            class="px-3 py-1 border border-gray-300 bg-white rounded-md hover:bg-gray-50 text-gray-500 disabled:opacity-50"
+          >
+            &raquo;
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>
+
+<!-- Employee Details Modal -->
+<app-employee-details
+  *ngIf="showEmployeeDetails"
+  [isOpen]="showEmployeeDetails"
+  [employee]="selectedEmployee"
+  (closeModal)="closeEmployeeDetails()"
+></app-employee-details>
