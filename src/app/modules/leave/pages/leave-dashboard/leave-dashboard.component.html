@@ -1,11 +1,274 @@
+<!-- src\app\modules\leave\pages\leave-dashboard\leave-dashboard.component.html -->
 <div class="flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">Leave Dashboard</h1>
-      <p>leave-dashboard works!</p>
+
+  <!-- Main Content Area -->
+  <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+    <!-- Header Container with Purple Background -->
+    <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Leave Applications</h1>
+      <p style="color: white; margin-bottom: 0; opacity: 0.9;">Review and manage employee leave requests</p>
+    </div>
+
+    <!-- Filters and Actions -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
+            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Leave Type</label>
+            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Types</option>
+              <option value="vacation">Vacation</option>
+              <option value="sick">Sick</option>
+              <option value="personal">Personal</option>
+              <option value="bereavement">Bereavement</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date Range</label>
+            <input type="date" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+        </div>
+        <button style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <!-- Leave Applications Table -->
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;">
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #f9fafb; text-align: left;">
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Employee</th>
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Leave Type</th>
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Dates</th>
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Duration</th>
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Status</th>
+              <th style="padding: 12px 16px; font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Row 1 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <span style="font-weight: 600; color: #4b5563;">JD</span>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">John Doe</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Engineering</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Vacation</span>
+              </td>
+              <td style="padding: 16px;">
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Jun 12 - Jun 15, 2023</p>
+                <p style="font-size: 0.75rem; color: #6b7280;">3 days</p>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Full Day</span>
+              </td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 500;">
+                  Pending
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <div style="display: flex; gap: 8px;">
+                  <button style="padding: 6px 12px; background-color: #ecfdf5; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #065f46; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Approve
+                  </button>
+                  <button style="padding: 6px 12px; background-color: #fee2e2; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #b91c1c; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    Reject
+                  </button>
+                  <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    View
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Sample Row 2 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <span style="font-weight: 600; color: #4b5563;">AS</span>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Alice Smith</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Marketing</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Sick</span>
+              </td>
+              <td style="padding: 16px;">
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Jun 10 - Jun 10, 2023</p>
+                <p style="font-size: 0.75rem; color: #6b7280;">1 day</p>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Half Day</span>
+              </td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 500;">
+                  Approved
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <div style="display: flex; gap: 8px;">
+                  <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    View
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Sample Row 3 -->
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <span style="font-weight: 600; color: #4b5563;">RJ</span>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Robert Johnson</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Sales</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Personal</span>
+              </td>
+              <td style="padding: 16px;">
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Jun 5 - Jun 7, 2023</p>
+                <p style="font-size: 0.75rem; color: #6b7280;">3 days</p>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Full Day</span>
+              </td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fee2e2; color: #b91c1c; font-size: 0.75rem; font-weight: 500;">
+                  Rejected
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <div style="display: flex; gap: 8px;">
+                  <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    View
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Sample Row 4 -->
+            <tr>
+              <td style="padding: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <span style="font-weight: 600; color: #4b5563;">MB</span>
+                  </div>
+                  <div>
+                    <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Maria Brown</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">HR</p>
+                  </div>
+                </div>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Bereavement</span>
+              </td>
+              <td style="padding: 16px;">
+                <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Jun 1 - Jun 3, 2023</p>
+                <p style="font-size: 0.75rem; color: #6b7280;">3 days</p>
+              </td>
+              <td style="padding: 16px;">
+                <span style="font-weight: 500; color: #111827;">Multiple Days</span>
+              </td>
+              <td style="padding: 16px;">
+                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 500;">
+                  Approved
+                </span>
+              </td>
+              <td style="padding: 16px;">
+                <div style="display: flex; gap: 8px;">
+                  <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    View
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #e5e7eb;">
+        <div style="font-size: 0.875rem; color: #6b7280;">
+          Showing <span style="font-weight: 500; color: #111827;">1</span> to <span style="font-weight: 500; color: #111827;">4</span> of <span style="font-weight: 500; color: #111827;">12</span> entries
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Previous
+          </button>
+          <button style="padding: 8px 12px; border: 1px solid #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; background-color: #5046e5;">
+            1
+          </button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+            2
+          </button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+            3
+          </button>
+          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>
