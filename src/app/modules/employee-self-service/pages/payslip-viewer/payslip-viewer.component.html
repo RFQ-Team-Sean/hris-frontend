@@ -1,1 +1,201 @@
-<p>payslip-viewer works!</p>
+<div class="flex">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+  
+    <!-- Main Content Area -->
+    <div style="flex: 1; padding: 24px; background-color: #f3f4f6; min-height: 100vh;">
+      <!-- Header Container with Purple Background -->
+      <div style="background-color: #5046e5; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Payslip Viewer</h1>
+        <p style="color: white; margin-bottom: 0; opacity: 0.9;">View and download your monthly payslips</p>
+      </div>
+  
+      <!-- Payslip Filters -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+          <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Year</label>
+            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option>2024</option>
+              <option>2023</option>
+              <option>2022</option>
+            </select>
+          </div>
+          
+          <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Month</label>
+            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">All Months</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+          
+          <div style="align-self: flex-end;">
+            <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+              Search Payslips
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Payslip List -->
+      <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 24px; color: #1f2937;">Your Payslips</h2>
+        
+        <!-- Payslip Card 1 -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">May 2024 Payslip</h3>
+              <p style="font-size: 0.875rem; color: #6b7280;">Pay Period: May 1 - May 31, 2024</p>
+            </div>
+            <span style="display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+              Paid
+            </span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 12px;">
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Basic Salary</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱25,000.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Gross Pay</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱28,750.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Net Pay</p>
+              <p style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">₱24,312.50</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Details
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download PDF
+            </button>
+          </div>
+        </div>
+        
+        <!-- Payslip Card 2 -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">April 2024 Payslip</h3>
+              <p style="font-size: 0.875rem; color: #6b7280;">Pay Period: April 1 - April 30, 2024</p>
+            </div>
+            <span style="display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+              Paid
+            </span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 12px;">
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Basic Salary</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱25,000.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Gross Pay</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱27,500.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Net Pay</p>
+              <p style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">₱23,187.50</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Details
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download PDF
+            </button>
+          </div>
+        </div>
+        
+        <!-- Payslip Card 3 -->
+        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">March 2024 Payslip</h3>
+              <p style="font-size: 0.875rem; color: #6b7280;">Pay Period: March 1 - March 31, 2024</p>
+            </div>
+            <span style="display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
+              Paid
+            </span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 12px;">
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Basic Salary</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱25,000.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Gross Pay</p>
+              <p style="font-size: 0.875rem; color: #1f2937;">₱26,250.00</p>
+            </div>
+            <div>
+              <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Net Pay</p>
+              <p style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">₱22,062.50</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Details
+            </button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #2563eb;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download PDF
+            </button>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 12 payslips</p>
+          <div style="display: flex; gap: 8px;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
