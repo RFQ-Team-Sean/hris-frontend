@@ -1,0 +1,127 @@
+<div class="merits-violations-modal">
+  <div class="modal-header">
+    <h2 class="modal-title">[201 File] {{ employeeName }}</h2>
+    <div class="header-actions">
+      <button class="dropdown-btn">Merits & Violations</button>
+      <button class="close-btn" (click)="onClose()">×</button>
+    </div>
+  </div>
+
+  <!-- Merits & Recognitions Section -->
+  <div class="section">
+    <h3 class="section-title">Merits & Recognitions</h3>
+    <div class="table-container">
+      <div class="data-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Awarding Body</th>
+              <th>Supporting Document</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let merit of merits; let i = index">
+              <td>{{ merit.date }}</td>
+              <td>{{ merit.type }}</td>
+              <td>{{ merit.description }}</td>
+              <td>{{ merit.awardingBody }}</td>
+              <td>
+                <a
+                  href="javascript:void(0)"
+                  class="view-link"
+                  (click)="viewDocument('merit', i)"
+                  >View</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-summary">
+        <div class="summary-content">
+          <div class="summary-item">
+            <span class="summary-label">Total Merits Earned:</span>
+            <span class="summary-value">{{ merits.length }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Last Updated By:</span>
+            <span class="summary-value">{{ lastUpdatedByMerits }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Last Updated:</span>
+            <span class="summary-value">{{ lastUpdatedMerits }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Violations & Disciplinary Actions Section -->
+  <div class="section">
+    <h3 class="section-title">Violations & Disciplinary Actions</h3>
+    <div class="table-container">
+      <div class="data-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Action Taken</th>
+              <th>Status</th>
+              <th>Supporting Document</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let violation of violations; let i = index">
+              <td>{{ violation.date }}</td>
+              <td>{{ violation.type }}</td>
+              <td>{{ violation.description }}</td>
+              <td>{{ violation.actionTaken }}</td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="{
+                    resolved: violation.status === 'Resolved',
+                    pending: violation.status === 'Pending'
+                  }"
+                >
+                  {{ violation.status }}
+                </span>
+              </td>
+              <td>
+                <a
+                  href="javascript:void(0)"
+                  class="view-link"
+                  (click)="viewDocument('violation', i)"
+                  >View</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-summary">
+        <div class="summary-content">
+          <div class="summary-item">
+            <span class="summary-label">Total Violations Recorded:</span>
+            <span class="summary-value">{{ violations.length }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Last Updated By:</span>
+            <span class="summary-value">{{ lastUpdatedByViolations }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Last Updated:</span>
+            <span class="summary-value">{{ lastUpdatedViolations }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

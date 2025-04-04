@@ -1,0 +1,71 @@
+<div class="space-y-6">
+  <!-- Employment Records & History Header -->
+  <h3 class="text-lg font-semibold mb-4">Employment Records & History</h3>
+
+  <!-- Main Grid Layout -->
+  <div class="grid grid-cols-2 gap-6">
+    <!-- Left Column -->
+    <div class="space-y-6 border-r pr-4">
+      <!-- Employment Basic Info -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-600">Date of Hire:</label>
+          <div class="text-sm font-medium">{{employee?.dateHired || 'March 11, 2025'}}</div>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600">Status:</label>
+          <div class="text-sm font-medium">{{employee?.status || 'Part-Time'}}</div>
+        </div>
+      </div>
+
+      <!-- Job History -->
+      <div class="space-y-3">
+        <label class="block text-sm text-gray-600 font-medium">Job History</label>
+        <div *ngFor="let record of employmentHistory" class="pl-0">
+          <div class="font-medium">{{record.position}}</div>
+          <div *ngIf="record.promotionDate" class="text-xs text-gray-600">
+            Promoted on {{record.promotionDate | date:'MMMM d, yyyy'}}
+          </div>
+          <div class="text-xs text-gray-600 mt-1">
+            {{record.startDate | date:'MMMM d, yyyy'}} - {{record.endDate | date:'MMMM d, yyyy'}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Salary History -->
+      <div class="space-y-3">
+        <label class="block text-sm text-gray-600 font-medium">Salary History</label>
+        <div>
+          <div class="text-sm">Current Salary Grade</div>
+          <div class="font-medium">{{employee?.salaryHistory?.currentGrade || 'GRADE 5'}}</div>
+        </div>
+        <div>
+          <div class="text-sm">Compensation History</div>
+          <div class="font-medium">{{employee?.salaryHistory?.compensationHistory || '₱10,000 - ₱70,000'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="space-y-6 pl-2">
+      <!-- Work Schedule & Location -->
+      <div class="space-y-3">
+        <label class="block text-sm text-gray-600 font-medium">Work Schedule & Location</label>
+        <div>
+          <div class="text-sm font-medium">Scheduled Work Hours</div>
+          <div class="text-gray-600">{{employee?.workSchedule?.start || '9 AM'}} - {{employee?.workSchedule?.end || '5 PM'}}</div>
+        </div>
+        <div>
+          <div class="text-sm font-medium">Assigned Location</div>
+          <div class="text-gray-600">{{employee?.assignedLocation || 'Head Office'}}</div>
+        </div>
+      </div>
+
+      <!-- Resignation/Termination Details -->
+      <div class="space-y-3">
+        <label class="block text-sm text-gray-600 font-medium">Resignation/Termination Details</label>
+        <div class="text-gray-600">N/A</div>
+      </div>
+    </div>
+  </div>
+</div>
