@@ -278,6 +278,39 @@ export class DummyDataService {
       status: 'Pending', 
       reason: 'Family vacation', 
       request_date: new Date() 
+    },
+    {
+      id: '2',
+      personnel_id: '2', 
+      leave_type_id: '1',
+      start_date: new Date('2024-03-15'),
+      end_date: new Date('2024-03-17'),
+      total_days: 3,
+      status: 'Approved',
+      reason: 'Personal matters',
+      request_date: new Date()
+    },
+    {
+      id: '3',
+      personnel_id: '1',
+      leave_type_id: '1', 
+      start_date: new Date('2024-04-10'),
+      end_date: new Date('2024-04-14'),
+      total_days: 5,
+      status: 'Rejected',
+      reason: 'Team building event',
+      request_date: new Date()
+    },
+    {
+      id: '4',
+      personnel_id: '3',
+      leave_type_id: '1',
+      start_date: new Date('2024-05-01'),
+      end_date: new Date('2024-05-02'),
+      total_days: 2,
+      status: 'Pending',
+      reason: 'Wedding anniversary',
+      request_date: new Date()
     }
   ];
 
