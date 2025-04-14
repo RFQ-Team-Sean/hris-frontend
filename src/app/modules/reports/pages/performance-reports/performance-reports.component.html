@@ -1,1 +1,142 @@
-<p>performance-reports works!</p>
+<div class="performance-reports">
+    <!-- Header Section -->
+    <div class="header">
+      <div class="title-section">
+        <h1>Performance Reports & Trends</h1>
+        <p class="subtitle">Track and analyze employee performance metrics</p>
+      </div>
+      <div class="actions">
+        <button class="action-btn" (click)="exportReport()">
+          <i class="fas fa-download"></i>
+          Export Report
+        </button>
+        <button class="action-btn" (click)="printReport()">
+          <i class="fas fa-print"></i>
+          Print
+        </button>
+      </div>
+    </div>
+  
+    <!-- Filters Section -->
+    <div class="filters">
+      <div class="filter-group">
+        <label>Timeframe</label>
+        <div class="timeframe-selector">
+          <button
+            *ngFor="let timeframe of ['monthly', 'quarterly', 'yearly']"
+            [class.active]="selectedTimeframe === timeframe"
+            (click)="onTimeframeChange(timeframe)"
+          >
+            {{ timeframe | titlecase }}
+          </button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Department</label>
+        <select
+          [(ngModel)]="selectedDepartment"
+          (change)="onDepartmentChange(selectedDepartment)"
+        >
+          <option value="all">All Departments</option>
+          <option
+            *ngFor="let dept of departmentPerformance"
+            [value]="dept.department"
+          >
+            {{ dept.department }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Performance Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card" *ngFor="let metric of performanceMetrics">
+        <div class="metric-header">
+          <h3>{{ metric.name }}</h3>
+          <div
+            class="trend-indicator"
+            [class.up]="metric.trend === 'up'"
+            [class.down]="metric.trend === 'down'"
+          >
+            <i
+              class="fas"
+              [class.fa-arrow-up]="metric.trend === 'up'"
+              [class.fa-arrow-down]="metric.trend === 'down'"
+            ></i>
+            {{ metric.percentage }}%
+          </div>
+        </div>
+        <div class="metric-value">
+          <span class="current">{{ metric.current }}</span>
+          <span class="previous">vs {{ metric.previous }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Department Performance -->
+    <div class="section">
+      <h2>Department Performance</h2>
+      <div class="department-grid">
+        <div class="department-card" *ngFor="let dept of departmentPerformance">
+          <div class="dept-header">
+            <h3>{{ dept.department }}</h3>
+            <div
+              class="trend-indicator"
+              [class.up]="dept.trend === 'up'"
+              [class.down]="dept.trend === 'down'"
+            >
+              <i
+                class="fas"
+                [class.fa-arrow-up]="dept.trend === 'up'"
+                [class.fa-arrow-down]="dept.trend === 'down'"
+              ></i>
+            </div>
+          </div>
+          <div class="dept-metrics">
+            <div class="metric">
+              <span class="label">Overall Score</span>
+              <span class="value">{{ dept.overallScore }}</span>
+            </div>
+            <div class="metric">
+              <span class="label">Employees</span>
+              <span class="value">{{ dept.employees }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Top Performers -->
+    <div class="section">
+      <h2>Top Performers</h2>
+      <div class="performers-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Position</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Last Review</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let performer of topPerformers">
+              <td>{{ performer.name }}</td>
+              <td>{{ performer.department }}</td>
+              <td>{{ performer.position }}</td>
+              <td>{{ performer.score }}</td>
+              <td>
+                <span class="status-badge" [class]="performer.status">
+                  {{ performer.status | titlecase }}
+                </span>
+              </td>
+              <td>{{ performer.lastReview | date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

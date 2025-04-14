@@ -1,1 +1,273 @@
-<p>employee-self-assessment works!</p>
+<div class="evaluation-container">
+    <!-- Header Section -->
+    <div class="evaluation-header">
+      <div class="header-content">
+        <h1>Employee Evaluations</h1>
+        <p class="subtitle">Performance Assessment and Feedback</p>
+      </div>
+      <div class="header-actions">
+        <button class="action-btn" (click)="exportReport()">
+          <i class="fas fa-download"></i>
+          Export Report
+        </button>
+        <button class="action-btn" (click)="printReport()">
+          <i class="fas fa-print"></i>
+          Print
+        </button>
+      </div>
+    </div>
+  
+    <!-- Navigation Tabs -->
+    <div class="evaluation-nav">
+      <div
+        class="nav-item"
+        [class.active]="activeSection === 'self'"
+        (click)="setActiveSection('self')"
+      >
+        <i class="fas fa-user"></i>
+        <span>Self-Assessment</span>
+      </div>
+      <div
+        class="nav-item"
+        [class.active]="activeSection === 'manager'"
+        (click)="setActiveSection('manager')"
+      >
+        <i class="fas fa-user-tie"></i>
+        <span>Manager Evaluation</span>
+      </div>
+      <div
+        class="nav-item"
+        [class.active]="activeSection === 'feedback'"
+        (click)="setActiveSection('feedback')"
+      >
+        <i class="fas fa-users"></i>
+        <span>360-Degree Feedback</span>
+      </div>
+    </div>
+  
+    <!-- Self-Assessment Section -->
+    <div class="evaluation-section" [class.active]="activeSection === 'self'">
+      <div class="section-header">
+        <h2>Self-Assessment</h2>
+        <div class="status-badge in-progress">In Progress</div>
+      </div>
+  
+      <div class="assessment-form">
+        <div class="form-section">
+          <h3>Core Competencies</h3>
+          <div class="competency-item" *ngFor="let competency of competencies">
+            <div class="competency-header">
+              <div class="competency-info">
+                <h4>{{ competency.name }}</h4>
+                <p>{{ competency.description }}</p>
+              </div>
+              <div class="rating-selector">
+                <span>Poor</span>
+                <div class="rating-stars">
+                  <i
+                    class="fas fa-star"
+                    *ngFor="let star of [1, 2, 3, 4, 5]"
+                    [class.active]="
+                      star <=
+                      assessmentForm.get(
+                        'competency_' + competency.id + '_rating'
+                      )?.value
+                    "
+                    (click)="setRating(competency.id, star)"
+                  ></i>
+                </div>
+                <span>Excellent</span>
+              </div>
+            </div>
+            <textarea
+              [formControl]="
+                getFormControl('competency_' + competency.id + '_comments')
+              "
+              placeholder="Add your comments here..."
+            ></textarea>
+          </div>
+        </div>
+  
+        <div class="form-section">
+          <h3>Goals and Achievements</h3>
+          <div class="goal-item" *ngFor="let goal of goals">
+            <div class="goal-header">
+              <div class="goal-info">
+                <h4>{{ goal.title }}</h4>
+                <p>{{ goal.description }}</p>
+              </div>
+              <div
+                class="goal-status"
+                [ngClass]="goal.status.toLowerCase().replace(' ', '_')"
+              >
+                {{ goal.status }}
+              </div>
+            </div>
+            <textarea
+              [formControl]="getFormControl('goal_' + goal.id + '_comments')"
+              placeholder="Describe your achievements..."
+            ></textarea>
+          </div>
+        </div>
+  
+        <div class="form-actions">
+          <button class="btn btn-secondary" (click)="saveAssessment()">
+            Save Draft
+          </button>
+          <button class="btn btn-primary" (click)="submitAssessment()">
+            Submit Assessment
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Manager Evaluation Section -->
+    <div class="evaluation-section" [class.active]="activeSection === 'manager'">
+      <div class="section-header">
+        <h2>Manager Evaluation</h2>
+        <div class="status-badge" [ngClass]="managerEvaluation.status">
+          {{ managerEvaluation.status | titlecase }}
+        </div>
+      </div>
+  
+      <div class="evaluation-content">
+        <div class="manager-info">
+          <div class="manager-avatar">
+            <img [src]="managerEvaluation.manager.avatar" alt="Manager Avatar" />
+          </div>
+          <div class="manager-details">
+            <h3>{{ managerEvaluation.manager.name }}</h3>
+            <p>{{ managerEvaluation.manager.role }}</p>
+            <div class="last-updated">
+              Last Updated: {{ managerEvaluation.lastUpdated | date }}
+            </div>
+          </div>
+        </div>
+  
+        <div class="evaluation-summary">
+          <div class="overall-rating">
+            <h3>Overall Rating</h3>
+            <div class="rating-display">
+              <div class="rating-value">
+                {{ managerEvaluation.overallRating }}
+              </div>
+              <div class="rating-stars">
+                <i
+                  class="fas fa-star"
+                  *ngFor="let star of [1, 2, 3, 4, 5]"
+                  [class.active]="star <= managerEvaluation.overallRating"
+                ></i>
+              </div>
+            </div>
+          </div>
+  
+          <div class="strengths-section">
+            <h3>Strengths</h3>
+            <ul class="strengths-list">
+              <li *ngFor="let strength of managerEvaluation.strengths">
+                <i class="fas fa-check-circle"></i>
+                {{ strength }}
+              </li>
+            </ul>
+          </div>
+  
+          <div class="improvement-section">
+            <h3>Areas for Improvement</h3>
+            <ul class="improvement-list">
+              <li *ngFor="let area of managerEvaluation.areasForImprovement">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ area }}
+              </li>
+            </ul>
+          </div>
+  
+          <div class="comments-section">
+            <h3>Manager's Comments</h3>
+            <div class="comments-content">
+              {{ managerEvaluation.comments }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- 360-Degree Feedback Section -->
+    <div class="evaluation-section" [class.active]="activeSection === 'feedback'">
+      <div class="section-header">
+        <h2>360-Degree Feedback</h2>
+        <div class="status-badge in-progress">In Progress</div>
+      </div>
+  
+      <div class="feedback-content">
+        <div class="feedback-summary">
+          <div class="summary-card">
+            <h3>Feedback Received</h3>
+            <div class="summary-value">{{ feedbacks.length }}/12</div>
+            <div class="progress-bar">
+              <div
+                class="progress"
+                [style.width.%]="(feedbacks.length / 12) * 100"
+              ></div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="feedback-list">
+          <div class="feedback-item" *ngFor="let feedback of feedbacks">
+            <div class="feedback-header">
+              <div class="reviewer-info">
+                <div class="reviewer-avatar">
+                  <img [src]="feedback.reviewer.avatar" alt="Reviewer Avatar" />
+                </div>
+                <div class="reviewer-details">
+                  <h4>{{ feedback.reviewer.name }}</h4>
+                  <p>{{ feedback.reviewer.role }}</p>
+                </div>
+              </div>
+              <div class="feedback-status" [ngClass]="feedback.status">
+                {{ feedback.status | titlecase }}
+              </div>
+            </div>
+            <div class="feedback-content">
+              <div class="rating-summary">
+                <div class="rating-item">
+                  <span>Competency</span>
+                  <div class="rating-stars">
+                    <i
+                      class="fas fa-star"
+                      *ngFor="let star of [1, 2, 3, 4, 5]"
+                      [class.active]="star <= feedback.ratings.competency"
+                    ></i>
+                  </div>
+                </div>
+                <div class="rating-item">
+                  <span>Performance</span>
+                  <div class="rating-stars">
+                    <i
+                      class="fas fa-star"
+                      *ngFor="let star of [1, 2, 3, 4, 5]"
+                      [class.active]="star <= feedback.ratings.performance"
+                    ></i>
+                  </div>
+                </div>
+                <div class="rating-item">
+                  <span>Teamwork</span>
+                  <div class="rating-stars">
+                    <i
+                      class="fas fa-star"
+                      *ngFor="let star of [1, 2, 3, 4, 5]"
+                      [class.active]="star <= feedback.ratings.teamwork"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+              <div class="feedback-comments">
+                <p>"{{ feedback.comments }}"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

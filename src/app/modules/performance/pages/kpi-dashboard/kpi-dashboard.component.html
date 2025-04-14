@@ -1,11 +1,480 @@
-<div class="flex">
-    <!-- Sidebar -->
-  
-  
-    <!-- Main Content Area -->
-    <div class="flex-1 p-6 bg-gray-100 min-h-screen">
-      <h1 class="text-3xl font-bold mb-4">KPI Dashboard</h1>
-      <p>kpi-dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Header Section with Filters -->
+  <div class="dashboard-header">
+    <h1 class="text-3xl font-bold">KPI Dashboard</h1>
+    <div class="header-actions">
+      <div class="filters-section">
+        <div class="filter-group">
+          <label>Organization</label>
+          <select class="filter-select">
+            <option>All Organizations</option>
+            <option>TechCorp Inc.</option>
+            <option>Acme Corporation</option>
+            <option>Global Solutions Ltd.</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Department</label>
+          <select class="filter-select">
+            <option>All Departments</option>
+            <option>Sales</option>
+            <option>Marketing</option>
+            <option>Engineering</option>
+            <option>HR</option>
+            <option>Finance</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Time Period</label>
+          <select class="filter-select">
+            <option>Last 30 Days</option>
+            <option>Last Quarter</option>
+            <option>Last Year</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
-  
+
+  <!-- Three Main Panels Section -->
+  <div class="panels-container">
+    <!-- Organization Panel -->
+    <div class="panel org-panel">
+      <div class="panel-header">
+        <h2>Organization Performance</h2>
+        <div class="panel-actions">
+          <button class="panel-btn"><i class="fas fa-sync-alt"></i></button>
+          <button class="panel-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+      </div>
+      <div class="panel-content">
+        <div class="org-overview">
+          <div class="org-card">
+            <div class="org-logo">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="org-details">
+              <h3>TechCorp Inc.</h3>
+              <span class="rating excellent">92%</span>
+              <p>Overall Performance</p>
+            </div>
+          </div>
+          <div class="org-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Growth</span>
+              <div class="metric-bar">
+                <div class="bar-fill" style="width: 88%"></div>
+              </div>
+              <span class="metric-value">88%</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Efficiency</span>
+              <div class="metric-bar">
+                <div class="bar-fill" style="width: 95%"></div>
+              </div>
+              <span class="metric-value">95%</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Innovation</span>
+              <div class="metric-bar">
+                <div class="bar-fill" style="width: 85%"></div>
+              </div>
+              <span class="metric-value">85%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Department Panel -->
+    <div class="panel dept-panel">
+      <div class="panel-header">
+        <h2>Department Performance</h2>
+        <div class="panel-actions">
+          <button class="panel-btn"><i class="fas fa-sync-alt"></i></button>
+          <button class="panel-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+      </div>
+      <div class="panel-content">
+        <div class="departments-grid">
+          <div class="dept-card">
+            <div class="dept-icon sales">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="dept-info">
+              <h4>Sales</h4>
+              <p class="dept-score excellent">95%</p>
+            </div>
+          </div>
+          <div class="dept-card">
+            <div class="dept-icon marketing">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="dept-info">
+              <h4>Marketing</h4>
+              <p class="dept-score good">87%</p>
+            </div>
+          </div>
+          <div class="dept-card">
+            <div class="dept-icon engineering">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="dept-info">
+              <h4>Engineering</h4>
+              <p class="dept-score excellent">91%</p>
+            </div>
+          </div>
+          <div class="dept-card">
+            <div class="dept-icon hr">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="dept-info">
+              <h4>HR</h4>
+              <p class="dept-score good">89%</p>
+            </div>
+          </div>
+          <div class="dept-card">
+            <div class="dept-icon finance">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="dept-info">
+              <h4>Finance</h4>
+              <p class="dept-score excellent">93%</p>
+            </div>
+          </div>
+          <div class="dept-card">
+            <div class="dept-icon operations">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div class="dept-info">
+              <h4>Operations</h4>
+              <p class="dept-score average">78%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Panel -->
+    <div class="panel emp-panel">
+      <div class="panel-header">
+        <h2>Employee Performance</h2>
+        <div class="panel-actions">
+          <button class="panel-btn"><i class="fas fa-sync-alt"></i></button>
+          <button class="panel-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+      </div>
+      <div class="panel-content">
+        <div class="employee-filter">
+          <input
+            type="text"
+            placeholder="Search employees..."
+            class="emp-search"
+          />
+          <select class="emp-filter-select">
+            <option>All Departments</option>
+            <option>Sales</option>
+            <option>Marketing</option>
+            <option>Engineering</option>
+          </select>
+        </div>
+        <div class="employees-grid">
+          <div class="employee-item">
+            <div class="employee-avatar">
+              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
+            </div>
+            <div class="employee-details">
+              <h4>John Smith</h4>
+              <p>Sales Executive</p>
+              <div class="employee-metrics">
+                <div class="emp-metric">
+                  <span>Performance</span>
+                  <div class="emp-progress">
+                    <div class="emp-progress-bar" style="width: 98%"></div>
+                  </div>
+                  <span>98%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="employee-item">
+            <div class="employee-avatar">
+              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
+            </div>
+            <div class="employee-details">
+              <h4>Sarah Johnson</h4>
+              <p>Senior Developer</p>
+              <div class="employee-metrics">
+                <div class="emp-metric">
+                  <span>Performance</span>
+                  <div class="emp-progress">
+                    <div class="emp-progress-bar" style="width: 96%"></div>
+                  </div>
+                  <span>96%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="employee-item">
+            <div class="employee-avatar">
+              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
+            </div>
+            <div class="employee-details">
+              <h4>Michael Chen</h4>
+              <p>Product Manager</p>
+              <div class="employee-metrics">
+                <div class="emp-metric">
+                  <span>Performance</span>
+                  <div class="emp-progress">
+                    <div class="emp-progress-bar" style="width: 95%"></div>
+                  </div>
+                  <span>95%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Summary Section -->
+  <div class="section-header">
+    <h2>Performance Summary</h2>
+  </div>
+  <div class="kpi-cards">
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Overall Performance</h3>
+        <p class="kpi-value">85%</p>
+        <span class="trend positive">↑ 5% from last month</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-tasks"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Goals Achieved</h3>
+        <p class="kpi-value">92%</p>
+        <span class="trend positive">↑ 3% from last month</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Team Performance</h3>
+        <p class="kpi-value">78%</p>
+        <span class="trend negative">↓ 2% from last month</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Employee Rating</h3>
+        <p class="kpi-value">4.2/5</p>
+        <span class="trend positive">↑ 0.3 from last month</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics and Reporting Section -->
+  <div class="dual-column-layout">
+    <!-- Left Column - Charts -->
+    <div class="main-column">
+      <div class="section-header">
+        <h2>Performance Analytics</h2>
+      </div>
+      <div class="charts-section">
+        <div class="chart-container">
+          <h3>Performance Trend</h3>
+          <div class="chart-placeholder">
+            <!-- Chart will be implemented here -->
+            <p>Performance trend chart will be displayed here</p>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Goal Completion</h3>
+          <div class="chart-placeholder">
+            <!-- Chart will be implemented here -->
+            <p>Goal completion chart will be displayed here</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Report Section -->
+      <div class="section-header">
+        <h2>KPI Details</h2>
+      </div>
+      <div class="kpi-report-section">
+        <div class="section-header">
+          <h3>Key Performance Indicator Report</h3>
+          <div class="report-actions">
+            <button class="export-btn">
+              <i class="fas fa-download"></i>
+              Export Report
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="kpi-table">
+            <thead>
+              <tr>
+                <th>KPI Category</th>
+                <th>Current Value</th>
+                <th>Target</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="kpi-category">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Sales Performance</span>
+                  </div>
+                </td>
+                <td>$1,250,000</td>
+                <td>$1,500,000</td>
+                <td>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 83%"></div>
+                    <span>83%</span>
+                  </div>
+                </td>
+                <td><span class="status on-track">On Track</span></td>
+                <td>2024-04-08</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="kpi-category">
+                    <i class="fas fa-users"></i>
+                    <span>Employee Retention</span>
+                  </div>
+                </td>
+                <td>92%</td>
+                <td>95%</td>
+                <td>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 92%"></div>
+                    <span>92%</span>
+                  </div>
+                </td>
+                <td><span class="status on-track">On Track</span></td>
+                <td>2024-04-07</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="kpi-category">
+                    <i class="fas fa-clock"></i>
+                    <span>Project Completion</span>
+                  </div>
+                </td>
+                <td>75%</td>
+                <td>85%</td>
+                <td>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 75%"></div>
+                    <span>75%</span>
+                  </div>
+                </td>
+                <td><span class="status at-risk">At Risk</span></td>
+                <td>2024-04-06</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="kpi-category">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Customer Satisfaction</span>
+                  </div>
+                </td>
+                <td>4.5/5</td>
+                <td>4.7/5</td>
+                <td>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 90%"></div>
+                    <span>90%</span>
+                  </div>
+                </td>
+                <td><span class="status on-track">On Track</span></td>
+                <td>2024-04-05</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Recent Activities -->
+    <div class="side-column">
+      <div class="section-header">
+        <h2>Recent Activities</h2>
+      </div>
+      <div class="evaluation-section">
+        <div class="activities-list">
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="activity-content">
+              <p>John Doe completed Q1 performance review</p>
+              <span class="activity-time">2 hours ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="activity-content">
+              <p>Team exceeded sales target by 15%</p>
+              <span class="activity-time">1 day ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-flag"></i>
+            </div>
+            <div class="activity-content">
+              <p>New quarterly goals set for Marketing team</p>
+              <span class="activity-time">2 days ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="activity-content">
+              <p>3 new employees added to performance tracking</p>
+              <span class="activity-time">3 days ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="activity-content">
+              <p>Monthly KPI report generated for Engineering</p>
+              <span class="activity-time">4 days ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

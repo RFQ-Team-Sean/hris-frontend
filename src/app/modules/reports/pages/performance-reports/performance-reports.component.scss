@@ -1,0 +1,303 @@
+.performance-reports {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+      .title-section {
+        h1 {
+          font-size: 1.75rem;
+          font-weight: 600;
+          color: #1e293b;
+          margin-bottom: 0.5rem;
+        }
+  
+        .subtitle {
+          color: #64748b;
+          font-size: 0.875rem;
+        }
+      }
+  
+      .actions {
+        display: flex;
+        gap: 1rem;
+  
+        .action-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid #e2e8f0;
+          background-color: white;
+          color: #64748b;
+          font-size: 0.875rem;
+          cursor: pointer;
+          transition: all 0.2s;
+  
+          &:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+          }
+        }
+      }
+    }
+  
+    .filters {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+  
+        label {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: #64748b;
+        }
+  
+        .timeframe-selector {
+          display: flex;
+          gap: 0.5rem;
+  
+          button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background-color: white;
+            color: #64748b;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+  
+            &:hover {
+              background-color: #f1f5f9;
+            }
+  
+            &.active {
+              background-color: #3b82f6;
+              color: white;
+              border-color: #3b82f6;
+            }
+          }
+        }
+  
+        select {
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          border: 1px solid #e2e8f0;
+          background-color: white;
+          color: #1e293b;
+          font-size: 0.875rem;
+          min-width: 200px;
+        }
+      }
+    }
+  
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+  
+      .metric-card {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+        .metric-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+  
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+          }
+  
+          .trend-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+  
+            &.up {
+              color: #10b981;
+            }
+  
+            &.down {
+              color: #ef4444;
+            }
+          }
+        }
+  
+        .metric-value {
+          .current {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+          }
+  
+          .previous {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  
+    .section {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+  
+      h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+      }
+  
+      .department-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+  
+        .department-card {
+          background-color: #f8fafc;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+  
+          .dept-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+  
+            h3 {
+              font-size: 1rem;
+              font-weight: 600;
+              color: #1e293b;
+            }
+  
+            .trend-indicator {
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+              font-size: 0.875rem;
+              font-weight: 500;
+  
+              &.up {
+                color: #10b981;
+              }
+  
+              &.down {
+                color: #ef4444;
+              }
+            }
+          }
+  
+          .dept-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+  
+            .metric {
+              display: flex;
+              flex-direction: column;
+              gap: 0.25rem;
+  
+              .label {
+                font-size: 0.75rem;
+                color: #64748b;
+              }
+  
+              .value {
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: #1e293b;
+              }
+            }
+          }
+        }
+      }
+  
+      .performers-table {
+        overflow-x: auto;
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+  
+          th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+          }
+  
+          th {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748b;
+            background-color: #f8fafc;
+          }
+  
+          td {
+            font-size: 0.875rem;
+            color: #1e293b;
+  
+            .status-badge {
+              padding: 0.25rem 0.75rem;
+              border-radius: 1rem;
+              font-size: 0.75rem;
+              font-weight: 500;
+  
+              &.excellent {
+                background-color: #dcfce7;
+                color: #166534;
+              }
+  
+              &.good {
+                background-color: #dbeafe;
+                color: #1e40af;
+              }
+  
+              &.average {
+                background-color: #fef3c7;
+                color: #92400e;
+              }
+  
+              &.needs_improvement {
+                background-color: #fee2e2;
+                color: #991b1b;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
