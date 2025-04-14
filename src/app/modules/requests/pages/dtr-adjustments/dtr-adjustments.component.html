@@ -16,25 +16,16 @@
           <div style="display: flex; gap: 16px;">
             <div>
               <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
-              <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <select [(ngModel)]="selectedStatus" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
                 <option value="">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </div>
             <div>
               <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date Range</label>
-              <input type="date" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employee</label>
-              <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
-                <option value="">All Employees</option>
-                <option value="1">John Doe</option>
-                <option value="2">Jane Smith</option>
-                <option value="3">Robert Johnson</option>
-              </select>
+              <input type="date" [(ngModel)]="selectedDate" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             </div>
           </div>
           <button style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;">
@@ -63,139 +54,53 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Sample Row 1 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
+              <tr *ngFor="let adjustment of paginatedData" style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 16px;">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                      <span style="font-weight: 600; color: #4b5563;">JD</span>
+                      <span style="font-weight: 600; color: #4b5563;">{{ adjustment.personnel_id }}</span>
                     </div>
                     <div>
-                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">John Doe</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">Engineering</p>
+                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">{{ getEmployeeName(adjustment.personnel_id) }}</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">{{ getEmployeeDepartment(adjustment.personnel_id) }}</p>
                     </div>
                   </div>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Jun 12, 2023</span>
+                  <span style="font-weight: 500; color: #111827;">{{ formatDate(adjustment.log_date) }}</span>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Time In</span>
+                  <span style="font-weight: 500; color: #111827;">{{ formatTime(adjustment.original_time_in) }} / {{ formatTime(adjustment.original_time_out) }}</span>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">08:45 AM</span>
+                  <span style="font-weight: 500; color: #111827;">{{ formatTime(adjustment.original_time_in) }} / {{ formatTime(adjustment.original_time_out) }}</span>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">08:30 AM</span>
+                  <span style="font-weight: 500; color: #111827;">{{ formatTime(adjustment.requested_time_in) }} / {{ formatTime(adjustment.requested_time_out) }}</span>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Forgot to log in</span>
+                  <span style="font-weight: 500; color: #111827;">{{ adjustment.reason }}</span>
                 </td>
                 <td style="padding: 16px;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 500;">
-                    Pending
+                  <span [ngClass]="getStatusBadgeClass(adjustment.status)" style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+                    {{ adjustment.status }}
                   </span>
                 </td>
                 <td style="padding: 16px;">
                   <div style="display: flex; gap: 8px;">
-                    <button style="padding: 6px 12px; background-color: #ecfdf5; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #065f46; display: flex; align-items: center; gap: 4px;">
+                    <button *ngIf="adjustment.status === 'Pending'" (click)="approveRequest(adjustment.id)" style="padding: 6px 12px; background-color: #ecfdf5; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #065f46; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                       </svg>
                       Approve
                     </button>
-                    <button style="padding: 6px 12px; background-color: #fee2e2; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #b91c1c; display: flex; align-items: center; gap: 4px;">
+                    <button *ngIf="adjustment.status === 'Pending'" (click)="rejectRequest(adjustment.id)" style="padding: 6px 12px; background-color: #fee2e2; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #b91c1c; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                       </svg>
                       Reject
                     </button>
-                  </div>
-                </td>
-              </tr>
-  
-              <!-- Sample Row 2 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
-                <td style="padding: 16px;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                      <span style="font-weight: 600; color: #4b5563;">AS</span>
-                    </div>
-                    <div>
-                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Alice Smith</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">Marketing</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Jun 10, 2023</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Time Out</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">05:15 PM</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">06:00 PM</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Worked late</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 500;">
-                    Approved
-                  </span>
-                </td>
-                <td style="padding: 16px;">
-                  <div style="display: flex; gap: 8px;">
-                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
-                      <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                      </svg>
-                      View
-                    </button>
-                  </div>
-                </td>
-              </tr>
-  
-              <!-- Sample Row 3 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
-                <td style="padding: 16px;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                      <span style="font-weight: 600; color: #4b5563;">RJ</span>
-                    </div>
-                    <div>
-                      <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">Robert Johnson</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">Sales</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Jun 5, 2023</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">Time In</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">09:30 AM</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">08:30 AM</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="font-weight: 500; color: #111827;">System issues</span>
-                </td>
-                <td style="padding: 16px;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; background-color: #fee2e2; color: #b91c1c; font-size: 0.75rem; font-weight: 500;">
-                    Rejected
-                  </span>
-                </td>
-                <td style="padding: 16px;">
-                  <div style="display: flex; gap: 8px;">
-                    <button style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+                    <button (click)="viewRequest(adjustment.id)" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -212,25 +117,23 @@
         <!-- Pagination -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #e5e7eb;">
           <div style="font-size: 0.875rem; color: #6b7280;">
-            Showing <span style="font-weight: 500; color: #111827;">1</span> to <span style="font-weight: 500; color: #111827;">3</span> of <span style="font-weight: 500; color: #111827;">8</span> entries
+            Showing <span style="font-weight: 500; color: #111827;">{{ currentPage }}</span> to <span style="font-weight: 500; color: #111827;">{{ pageSize }}</span> of <span style="font-weight: 500; color: #111827;">{{ totalItems }}</span> entries
           </div>
           <div style="display: flex; gap: 8px;">
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+            <button (click)="previousPage()" [disabled]="currentPage === 1" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
               </svg>
               Previous
             </button>
-            <button style="padding: 8px 12px; border: 1px solid #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; background-color: #5046e5;">
-              1
+            <button *ngFor="let page of getPageNumbers()" 
+                    (click)="goToPage(page)"
+                    [style.backgroundColor]="page === currentPage ? '#5046e5' : 'transparent'"
+                    [style.color]="page === currentPage ? 'white' : '#374151'"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+              {{ page }}
             </button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
-              2
-            </button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
-              3
-            </button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
