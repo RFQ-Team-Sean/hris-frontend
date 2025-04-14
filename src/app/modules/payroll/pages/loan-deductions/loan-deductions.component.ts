@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DummyDataService } from '../../../../core/services/dummy-data.service';
+import { Observable, map, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-loan-deductions',
@@ -8,43 +10,51 @@ import { CommonModule } from '@angular/common';
   templateUrl: './loan-deductions.component.html',
   styleUrls: ['./loan-deductions.component.scss']
 })
-export class LoanDeductionsComponent {
-  // Sample data - in a real app, this would come from an API
-  deductions = [
-    {
-      id: 1,
-      employee: 'Juan Dela Cruz',
-      employeeId: 'EMP-2023-001',
-      type: 'SSS Loan',
-      amount: 1200,
-      startDate: '2024-05-01',
-      endDate: '2024-11-01',
-      balance: 7200,
-      status: 'Active'
-    },
-    {
-      id: 2,
-      employee: 'Maria Santos',
-      employeeId: 'EMP-2023-002',
-      type: 'Pag-IBIG Contribution',
-      amount: 100,
-      startDate: '2024-01-01',
-      endDate: null,
-      balance: null,
-      status: 'Active'
-    },
-    {
-      id: 3,
-      employee: 'Pedro Reyes',
-      employeeId: 'EMP-2023-003',
-      type: 'Company Loan',
-      amount: 2500,
-      startDate: '2024-03-01',
-      endDate: '2024-08-01',
-      balance: 12500,
-      status: 'Pending Approval'
-    }
-  ];
+export class LoanDeductionsComponent implements OnInit {
+  deductions$: Observable<any[]>;
+  personnel$: Observable<any[]>;
+  departments$: Observable<any[]>;
+  
+  // Summary calculations
+  totalMonthlyDeductions$: Observable<number>;
+  totalSssContributions$: Observable<number>;
+  totalPagibigContributions$: Observable<number>;
+
+  // Combined data for template
+  personnelWithDepartments$: Observable<any[]>;
+
+  constructor(private dummyDataService: DummyDataService) {
+    this.deductions$ = this.dummyDataService.getDeductions();
+    this.personnel$ = this.dummyDataService.getPersonnel();
+    this.departments$ = this.dummyDataService.getDepartments();
+
+    // Combine personnel and departments data
+    this.personnelWithDepartments$ = combineLatest([this.personnel$, this.departments$]).pipe(
+      map(([personnel, departments]) => {
+        return personnel.map(p => ({
+          ...p,
+          department_name: departments.find(d => d.id === p.department_id)?.department_name || 'Unknown'
+        }));
+      })
+    );
+
+    // Calculate totals
+    this.totalMonthlyDeductions$ = this.deductions$.pipe(
+      map(deductions => deductions.reduce((sum, d) => sum + this.calculateTotalDeductions(d), 0))
+    );
+
+    this.totalSssContributions$ = this.deductions$.pipe(
+      map(deductions => deductions.reduce((sum, d) => sum + d.sss, 0))
+    );
+
+    this.totalPagibigContributions$ = this.deductions$.pipe(
+      map(deductions => deductions.reduce((sum, d) => sum + d.pagibig, 0))
+    );
+  }
+
+  ngOnInit(): void {
+    // Additional initialization if needed
+  }
 
   // Format currency (Philippine Peso)
   formatCurrency(amount: number): string {
@@ -70,6 +80,27 @@ export class LoanDeductionsComponent {
       default:
         return { background: '#e5e7eb', text: '#1f2937' };
     }
+  }
+
+  // Calculate total deductions
+  calculateTotalDeductions(deduction: any): number {
+    return deduction.bir + deduction.pagibig + deduction.philhealth + deduction.sss + deduction.loans + deduction.other_deductions;
+  }
+
+  // Get personnel name by ID
+  getPersonnelName(personnelId: string, personnelList: any[] | null): string {
+    if (!personnelList) return 'Unknown';
+    const personnel = personnelList.find(p => p.id === personnelId);
+    return personnel ? `${personnel.first_name} ${personnel.last_name}` : 'Unknown';
+  }
+
+  // Get personnel department by ID
+  getPersonnelDepartment(personnelId: string, personnelList: any[] | null): string {
+    if (!personnelList) return 'Unknown';
+    const personnel = personnelList.find(p => p.id === personnelId);
+    if (!personnel) return 'Unknown';
+    
+    return personnel.department_name || 'Unknown';
   }
 
   // In a real app, you would have methods to:
