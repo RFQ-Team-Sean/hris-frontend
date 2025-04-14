@@ -24,11 +24,7 @@
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
             <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Departments</option>
-              <option>IT</option>
-              <option>HR</option>
-              <option>Finance</option>
-              <option>Operations</option>
-              <option>Marketing</option>
+              <option *ngFor="let dept of departments$ | async">{{ dept.department_name }}</option>
             </select>
           </div>
           
@@ -76,92 +72,29 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Employee 1 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
+              <tr *ngFor="let employee of employees$ | async" style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/user1.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
+                      <img [src]="employee.profilePicture || 'assets/default-avatar.png'" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div>
-                      <p style="font-weight: 500;">Juan Dela Cruz</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-001</p>
+                      <p style="font-weight: 500;">{{ employee.first_name }} {{ employee.last_name }}</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-{{ employee.id }}</p>
                     </div>
                   </div>
                 </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Senior Developer</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">IT</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱45,000.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱5,000.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱3,750.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; font-weight: 600; color: #1f2937; text-align: right;">₱46,250.00</td>
-                <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                    Active
-                  </span>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{ employee.designation }}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{ employee.department?.department_name }}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">{{ formatCurrency(employee.salary) }}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">{{ formatCurrency(employee.allowances || 0) }}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">{{ formatCurrency(employee.deductions || 0) }}</td>
+                <td style="padding: 16px; font-size: 0.875rem; font-weight: 600; color: #1f2937; text-align: right;">
+                  {{ formatCurrency(calculateNetSalary(employee.salary, employee.allowances || 0, employee.deductions || 0)) }}
                 </td>
                 <td style="padding: 16px; text-align: center;">
-                  <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
-                  </div>
-                </td>
-              </tr>
-              
-              <!-- Employee 2 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/user2.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <div>
-                      <p style="font-weight: 500;">Maria Santos</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-002</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">HR Manager</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Human Resources</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱50,000.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱7,500.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱4,375.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; font-weight: 600; color: #1f2937; text-align: right;">₱53,125.00</td>
-                <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                    Active
-                  </span>
-                </td>
-                <td style="padding: 16px; text-align: center;">
-                  <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
-                  </div>
-                </td>
-              </tr>
-              
-              <!-- Employee 3 -->
-              <tr>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/user3.jpg" alt="Employee" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <div>
-                      <p style="font-weight: 500;">Pedro Reyes</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">EMP-2023-003</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Finance Officer</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Finance</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱40,000.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱4,000.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">₱3,300.00</td>
-                <td style="padding: 16px; font-size: 0.875rem; font-weight: 600; color: #1f2937; text-align: right;">₱40,700.00</td>
-                <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fef3c7; color: #92400e;">
-                    On Leave
+                  <span [class]="getStatusBadgeClass(employee.status)" style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+                    {{ employee.status || 'Active' }}
                   </span>
                 </td>
                 <td style="padding: 16px; text-align: center;">
@@ -177,12 +110,10 @@
   
         <!-- Pagination and Summary -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 24 employees</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to {{ (employees$ | async)?.length }} of {{ (employees$ | async)?.length }} employees</p>
           <div style="display: flex; gap: 8px;">
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
           </div>
         </div>
