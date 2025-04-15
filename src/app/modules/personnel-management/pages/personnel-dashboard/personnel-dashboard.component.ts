@@ -3,50 +3,35 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeDetailsComponent } from '../../components/employee-details/employee-details.component';
+import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
 import { DummyDataService } from '../../../../core/services/dummy-data.service';
 import { forkJoin } from 'rxjs';
 
 interface Employee {
   id: number;
   name: string;
-  firstName?: string;
-  middleName?: string;
-  lastName?: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
   suffix?: string;
-  email?: string;
-  phone?: string;
-  avatar: string;
+  date_of_birth?: string;
+  gender: string;
+  civil_status: string;
+  email: string;
+  phone: string;
+  address: string;
   position: string;
   department: string;
-  employmentType: 'Full-Time' | 'Part-Time' | 'Regular' | 'Intern';
-  attendanceStatus: 'Present' | 'Absent' | 'Late';
-  dateOfBirth?: string;
-  gender?: string;
-  civilStatus?: string;
-  address?: string;
-  dateHired?: string;
+  employment_type?: string;
+  date_hired?: string;
   salary?: number;
-  gsisNumber?: string;
-  pagibigNumber?: string;
-  philhealthNumber?: string;
-  sssNumber?: string;
-  tinNumber?: string;
-  status?: string;
-  workSchedule?: {
-    start: string;
-    end: string;
-  };
-  assignedLocation?: string;
-  employmentHistory?: Array<{
-    position: string;
-    promotionDate?: string;
-    startDate: string;
-    endDate?: string;
-  }>;
-  salaryHistory?: {
-    currentGrade: string;
-    compensationHistory: string;
-  };
+  status: string;
+  gsis_number?: string;
+  pagibig_number?: string;
+  philhealth_number?: string;
+  sss_number?: string;
+  tin_number?: string;
+  avatar?: string;
 }
 
 type FilterOption = 'all' | 'department' | 'employmentType' | 'attendanceStatus';
@@ -59,7 +44,8 @@ type FilterOption = 'all' | 'department' | 'employmentType' | 'attendanceStatus'
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    AddEmployeeComponent
   ],
   templateUrl: './personnel-dashboard.component.html',
   styleUrls: ['./personnel-dashboard.component.scss']
@@ -116,6 +102,12 @@ export class PersonnelDashboardComponent implements OnInit {
   showEmployeeDetails = false;
   selectedEmployee: Employee | null = null;
 
+  // Add Employee Modal
+  showAddModal = false;
+
+  roles = ['Admin', 'HR', 'Employee', 'Payroll_Manager', 'Recruiter', 'Manager'];
+  designations = ['System Administrator', 'HR Manager', 'Software Engineer', 'Payroll Head', 'Recruitment Specialist', 'Project Manager'];
+
   constructor(private dummyDataService: DummyDataService) { }
 
   ngOnInit(): void {
@@ -162,43 +154,21 @@ export class PersonnelDashboardComponent implements OnInit {
         return {
           id: person.personnel_id,
           name: `${person.first_name} ${person.last_name}`,
-          firstName: person.first_name,
-          lastName: person.last_name,
+          first_name: person.first_name,
+          middle_name: person.middle_name || '',
+          last_name: person.last_name,
+          gender: person.gender,
+          civil_status: person.civil_status,
           email: user?.email || '',
-          avatar: 'assets/images/Quanby Logo-png.gif',
+          phone: user?.phone || '',
+          address: user?.address || '',
           position: person.designation,
           department: dept?.department_name || '',
-          employmentType: employmentType,
-          attendanceStatus: attendanceStatus,
           status: user?.status || '',
-          phone: `09${Math.floor(100000000 + Math.random() * 900000000)}`,
-          dateOfBirth: '1990-01-01',
-          gender: index % 2 === 0 ? 'Male' : 'Female',
-          civilStatus: index % 3 === 0 ? 'Married' : 'Single',
-          address: `${index + 100} Main Street, ${dept?.department_name || 'City'} Area`,
-          dateHired: `202${index}-01-15`,
-          salary: 25000 + (index * 5000),
-          gsisNumber: `GSIS-${1000000 + index}`,
-          pagibigNumber: `PAGIBIG-${2000000 + index}`,
-          philhealthNumber: `PHIC-${3000000 + index}`,
-          sssNumber: `SSS-${4000000 + index}`,
-          tinNumber: `TIN-${5000000 + index}`,
-          workSchedule: {
-            start: '9 AM',
-            end: '5 PM'
-          },
-          assignedLocation: dept?.department_name || 'Head Office',
-          employmentHistory: [
-            {
-              position: person.designation,
-              startDate: `202${index}-01-15`,
-              endDate: undefined
-            }
-          ],
-          salaryHistory: {
-            currentGrade: `Grade ${index + 1}`,
-            compensationHistory: `₱${20000 + (index * 5000)} - ₱${25000 + (index * 5000)}`
-          }
+          employment_type: user?.employment_type,
+          date_hired: user?.date_hired || '',
+          salary: user?.salary || 0,
+          avatar: 'assets/images/Quanby Logo-png.gif'
         };
       });
 
@@ -219,12 +189,12 @@ export class PersonnelDashboardComponent implements OnInit {
   // Update statistics based on current employee data
   private updateStats(): void {
     this.statusStats.totalEmployees = this.allEmployees.length;
-    this.statusStats.inOffice = this.allEmployees.filter(emp => emp.attendanceStatus === 'Present').length;
-    this.statusStats.regulars = this.allEmployees.filter(emp => emp.employmentType === 'Regular').length;
-    this.statusStats.interns = this.allEmployees.filter(emp => emp.employmentType === 'Intern').length;
+    this.statusStats.inOffice = this.allEmployees.filter(emp => emp.status === 'Present').length;
+    this.statusStats.regulars = this.allEmployees.filter(emp => emp.employment_type === 'Regular').length;
+    this.statusStats.interns = this.allEmployees.filter(emp => emp.employment_type === 'Intern').length;
 
-    this.employmentTypeStats.fullTime = this.allEmployees.filter(emp => emp.employmentType === 'Full-Time').length;
-    this.employmentTypeStats.partTime = this.allEmployees.filter(emp => emp.employmentType === 'Part-Time').length;
+    this.employmentTypeStats.fullTime = this.allEmployees.filter(emp => emp.employment_type === 'Full-Time').length;
+    this.employmentTypeStats.partTime = this.allEmployees.filter(emp => emp.employment_type === 'Part-Time').length;
     this.employmentTypeStats.regulars = this.statusStats.regulars;
     this.employmentTypeStats.interns = this.statusStats.interns;
   }
@@ -309,9 +279,9 @@ export class PersonnelDashboardComponent implements OnInit {
     if (this.currentFilter === 'department' && this.selectedDepartment) {
       filteredEmployees = filteredEmployees.filter(emp => emp.department === this.selectedDepartment);
     } else if (this.currentFilter === 'employmentType' && this.selectedEmploymentType) {
-      filteredEmployees = filteredEmployees.filter(emp => emp.employmentType === this.selectedEmploymentType);
+      filteredEmployees = filteredEmployees.filter(emp => emp.employment_type === this.selectedEmploymentType);
     } else if (this.currentFilter === 'attendanceStatus' && this.selectedAttendanceStatus) {
-      filteredEmployees = filteredEmployees.filter(emp => emp.attendanceStatus === this.selectedAttendanceStatus);
+      filteredEmployees = filteredEmployees.filter(emp => emp.status === this.selectedAttendanceStatus);
     }
 
     this.employees = filteredEmployees;
@@ -368,5 +338,45 @@ export class PersonnelDashboardComponent implements OnInit {
   closeEmployeeDetails() {
     this.showEmployeeDetails = false;
     this.selectedEmployee = null;
+  }
+
+  toggleAddModal() {
+    this.showAddModal = !this.showAddModal;
+  }
+
+  handleAddEmployeeSubmit(newEmployee: any) {
+    // Create new employee data
+    const newEmployeeData = {
+      id: this.allEmployees.length + 1,
+      name: `${newEmployee.first_name} ${newEmployee.last_name}`,
+      first_name: newEmployee.first_name,
+      middle_name: newEmployee.middle_name || '',
+      last_name: newEmployee.last_name,
+      gender: newEmployee.gender,
+      civil_status: newEmployee.civil_status,
+      email: newEmployee.email,
+      phone: newEmployee.phone || '',
+      address: newEmployee.address || '',
+      position: newEmployee.designation,
+      department: newEmployee.department,
+      status: 'Active',
+      employment_type: newEmployee.employment_type,
+      date_hired: newEmployee.date_hired || '',
+      salary: newEmployee.salary || 0,
+      avatar: 'assets/images/Quanby Logo-png.gif'
+    };
+
+    // Add to the employees list
+    this.allEmployees.push(newEmployeeData);
+
+    // Update the filtered employees list
+    this.employees = [...this.allEmployees];
+
+    // Update statistics
+    this.updateStats();
+
+    // Close modal
+    this.toggleAddModal();
+    alert('Employee added successfully!');
   }
 }

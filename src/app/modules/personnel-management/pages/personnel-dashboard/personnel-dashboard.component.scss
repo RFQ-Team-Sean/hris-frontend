@@ -24,6 +24,7 @@
         position: absolute;
         top: 0;
         right: 0;
+        z-index: -1;
         width: 200px;
         height: 100%;
         background: linear-gradient(90deg, rgba(79, 70, 229, 0) 0%, rgba(99, 102, 241, 0.3) 100%);
@@ -98,4 +99,95 @@ button {
     &:active {
         transform: translateY(0);
     }
+}
+
+// Add Employee Modal Styles
+.modal-backdrop {
+  .bg-white {
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    // Custom scrollbar for modal content
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 4px;
+      
+      &:hover {
+        background: #a5b4fc;
+      }
+    }
+  }
+
+  // Form input and select styles
+  input, select {
+    transition: all 0.2s ease-in-out;
+    background-color: #fff;
+    
+    &:focus {
+      outline: none;
+      border-color: #6366F1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+  }
+
+  // Button styles
+  button {
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Submit button specific styles
+  button[type="submit"] {
+    background-color: #4F46E5;
+    
+    &:hover {
+      background-color: #4338CA;
+    }
+  }
+
+  // Cancel button specific styles
+  button[type="button"] {
+    &:hover {
+      background-color: #F9FAFB;
+      border-color: #9CA3AF;
+    }
+  }
+
+  // Form group spacing
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  // Label styles
+  label {
+    color: #374151;
+    font-weight: 500;
+  }
+
+  // Sticky header and footer
+  .sticky {
+    &.top-0 {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    &.bottom-0 {
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+    }
+  }
 }

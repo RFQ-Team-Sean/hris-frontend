@@ -53,7 +53,7 @@
           </div>
         </div>
         <button
-          (click)="closeModal()"
+          (click)="onClose()"
           class="text-gray-500 hover:text-gray-700"
         >
           <svg
@@ -134,9 +134,11 @@
                     >
                     <input
                       type="text"
-                      [value]="employee?.firstName || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
+                      [value]="isEditing ? editingEmployee?.first_name : employee?.first_name"
+                      (input)="onInputChange($event, 'first_name')"
+                      [readonly]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
                     />
                   </div>
                   <div>
@@ -145,9 +147,11 @@
                     >
                     <input
                       type="text"
-                      [value]="employee?.middleName || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
+                      [value]="isEditing ? editingEmployee?.middle_name : employee?.middle_name"
+                      (input)="onInputChange($event, 'middle_name')"
+                      [readonly]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
                     />
                   </div>
                   <div>
@@ -156,9 +160,11 @@
                     >
                     <input
                       type="text"
-                      [value]="employee?.lastName || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
+                      [value]="isEditing ? editingEmployee?.last_name : employee?.last_name"
+                      (input)="onInputChange($event, 'last_name')"
+                      [readonly]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
                     />
                   </div>
                   <div>
@@ -176,30 +182,43 @@
                     >
                     <input
                       type="date"
-                      [value]="employee?.dateOfBirth || ''"
+                      [value]="employee?.date_of_birth || ''"
                       class="w-full p-2 border rounded-lg bg-gray-50"
                       readonly
                     />
                   </div>
                   <div>
                     <label class="block text-sm text-gray-600">Gender*</label>
-                    <input
-                      type="text"
-                      [value]="employee?.gender || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <select
+                      [value]="isEditing ? editingEmployee?.gender : employee?.gender"
+                      (change)="onSelectChange($event, 'gender')"
+                      [disabled]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                   <div>
                     <label class="block text-sm text-gray-600"
                       >Civil Status*</label
                     >
-                    <input
-                      type="text"
-                      [value]="employee?.civilStatus || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <select
+                      [value]="isEditing ? editingEmployee?.civil_status : employee?.civil_status"
+                      (change)="onSelectChange($event, 'civil_status')"
+                      [disabled]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
+                    >
+                      <option value="">Select Civil Status</option>
+                      <option value="Single">Single</option>
+                      <option value="Married">Married</option>
+                      <option value="Divorced">Divorced</option>
+                      <option value="Widowed">Widowed</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -217,29 +236,48 @@
                     <label class="block text-sm text-gray-600">Email*</label>
                     <input
                       type="email"
-                      [value]="employee?.email || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
+                      [value]="isEditing ? editingEmployee?.email : employee?.email"
+                      (input)="onInputChange($event, 'email')"
+                      [readonly]="!isEditing"
+                      class="w-full p-2 border rounded-lg"
+                      [class.bg-gray-50]="!isEditing"
                     />
                   </div>
                   <div>
-                    <label class="block text-sm text-gray-600"
-                      >Contact Number*</label
-                    >
-                    <input
-                      type="text"
-                      [value]="employee?.phone || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <label class="block text-sm text-gray-600">Phone Number*</label>
+                    <div class="flex items-center gap-2">
+                      <input
+                        type="text"
+                        [value]="isEditing ? editingEmployee?.phone : employee?.phone"
+                        (input)="onInputChange($event, 'phone')"
+                        [readonly]="!isEditing"
+                        class="w-full p-2 border rounded-lg"
+                        [class.bg-gray-50]="!isEditing"
+                      />
+                      <button *ngIf="!isEditing" class="p-2 text-indigo-600 hover:text-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <label class="block text-sm text-gray-600">Address*</label>
-                    <textarea
-                      [value]="employee?.address || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50 h-24"
-                      readonly
-                    ></textarea>
+                    <div class="flex items-start gap-2">
+                      <textarea
+                        [value]="isEditing ? editingEmployee?.address : employee?.address"
+                        (input)="onInputChange($event, 'address')"
+                        [readonly]="!isEditing"
+                        class="w-full p-2 border rounded-lg h-24"
+                        [class.bg-gray-50]="!isEditing"
+                      ></textarea>
+                      <button *ngIf="!isEditing" class="p-2 text-indigo-600 hover:text-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -251,64 +289,89 @@
                 </h4>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-sm text-gray-600">Position*</label>
-                    <input
-                      type="text"
-                      [value]="employee?.position"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <label class="block text-sm text-gray-600">Designation*</label>
+                    <div class="flex items-center gap-2">
+                      <ng-container *ngIf="isEditing && editingEmployee; else viewMode">
+                        <select
+                          [(ngModel)]="editingEmployee.position"
+                          (change)="onSelectChange($event, 'position')"
+                          class="w-full p-2 border rounded-lg"
+                        >
+                          <option [ngValue]="editingEmployee.position" selected>{{ editingEmployee.position }}</option>
+                          <option *ngFor="let designation of designations" [value]="designation">
+                            {{ designation }}
+                          </option>
+                        </select>
+                      </ng-container>
+                      <ng-template #viewMode>
+                        <input
+                          type="text"
+                          [value]="employee?.position"
+                          class="w-full p-2 border rounded-lg bg-gray-50"
+                          readonly
+                        />
+                      </ng-template>
+                      <button *ngIf="!isEditing" class="p-2 text-indigo-600 hover:text-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <div>
-                    <label class="block text-sm text-gray-600"
-                      >Department*</label
-                    >
-                    <input
-                      type="text"
-                      [value]="employee?.department"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-sm text-gray-600"
-                      >Employment Type*</label
-                    >
-                    <input
-                      type="text"
-                      [value]="employee?.employmentType"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-sm text-gray-600"
-                      >Date Hired*</label
-                    >
-                    <input
-                      type="date"
-                      [value]="employee?.dateHired || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-sm text-gray-600">Salary*</label>
-                    <input
-                      type="text"
-                      [value]="employee?.salary || ''"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <label class="block text-sm text-gray-600">Department*</label>
+                    <div class="flex items-center gap-2">
+                      <ng-container *ngIf="isEditing && editingEmployee; else viewModeDept">
+                        <select
+                          [(ngModel)]="editingEmployee.department"
+                          (change)="onSelectChange($event, 'department')"
+                          class="w-full p-2 border rounded-lg"
+                        >
+                          <option [ngValue]="editingEmployee.department" selected>{{ editingEmployee.department }}</option>
+                          <option *ngFor="let department of departments" [value]="department">
+                            {{ department }}
+                          </option>
+                        </select>
+                      </ng-container>
+                      <ng-template #viewModeDept>
+                        <input
+                          type="text"
+                          [value]="employee?.department"
+                          class="w-full p-2 border rounded-lg bg-gray-50"
+                          readonly
+                        />
+                      </ng-template>
+                      <button *ngIf="!isEditing" class="p-2 text-indigo-600 hover:text-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <label class="block text-sm text-gray-600">Status</label>
-                    <input
-                      type="text"
-                      [value]="employeeStatus"
-                      class="w-full p-2 border rounded-lg bg-gray-50"
-                      readonly
-                    />
+                    <div class="flex items-center gap-2">
+                      <ng-container *ngIf="isEditing && editingEmployee; else viewModeStatus">
+                        <select
+                          [(ngModel)]="editingEmployee.status"
+                          (change)="onSelectChange($event, 'status')"
+                          class="w-full p-2 border rounded-lg"
+                        >
+                          <option [ngValue]="editingEmployee.status" selected>{{ editingEmployee.status }}</option>
+                          <option *ngFor="let status of statuses" [value]="status">
+                            {{ status }}
+                          </option>
+                        </select>
+                      </ng-container>
+                      <ng-template #viewModeStatus>
+                        <input
+                          type="text"
+                          [value]="employee?.status"
+                          class="w-full p-2 border rounded-lg bg-gray-50"
+                          readonly
+                        />
+                      </ng-template>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -325,7 +388,7 @@
                 <label class="block text-sm text-gray-600">GSIS Number</label>
                 <input
                   type="text"
-                  [value]="employee?.gsisNumber || ''"
+                  [value]="employee?.gsis_number || ''"
                   class="w-full p-2 border rounded-lg bg-gray-50"
                   readonly
                 />
@@ -336,7 +399,7 @@
                 >
                 <input
                   type="text"
-                  [value]="employee?.pagibigNumber || ''"
+                  [value]="employee?.pagibig_number || ''"
                   class="w-full p-2 border rounded-lg bg-gray-50"
                   readonly
                 />
@@ -347,7 +410,7 @@
                 >
                 <input
                   type="text"
-                  [value]="employee?.philhealthNumber || ''"
+                  [value]="employee?.philhealth_number || ''"
                   class="w-full p-2 border rounded-lg bg-gray-50"
                   readonly
                 />
@@ -356,7 +419,7 @@
                 <label class="block text-sm text-gray-600">SSS Number</label>
                 <input
                   type="text"
-                  [value]="employee?.sssNumber || ''"
+                  [value]="employee?.sss_number || ''"
                   class="w-full p-2 border rounded-lg bg-gray-50"
                   readonly
                 />
@@ -365,7 +428,7 @@
                 <label class="block text-sm text-gray-600">TIN</label>
                 <input
                   type="text"
-                  [value]="employee?.tinNumber || ''"
+                  [value]="employee?.tin_number || ''"
                   class="w-full p-2 border rounded-lg bg-gray-50"
                   readonly
                 />
@@ -484,16 +547,24 @@
         <!-- Action Buttons -->
         <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
           <button
-            (click)="closeModal()"
+            (click)="isEditing ? cancelEdit() : onClose()"
             class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
-            Cancel
+            {{ isEditing ? 'Cancel' : 'Close' }}
           </button>
           <button
-            (click)="editInformation()"
+            *ngIf="!isEditing"
+            (click)="onEdit()"
             class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
             Edit Information
+          </button>
+          <button
+            *ngIf="isEditing"
+            (click)="submitEdit()"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            Save Changes
           </button>
         </div>
       </div>

@@ -1,10 +1,12 @@
-import { Component, Input, HostListener, OnInit } from '@angular/core';
+import { Component, Input, HostListener, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmploymentRecordsComponent } from '../employment-records/employment-records.component';
 import { MembershipDataComponent } from '../membership-data/membership-data.component';
 import { MeritsAndViolationsComponent } from '../merits-and-violations/merits-and-violations.component';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { DummyDataService } from '../../../../core/services/dummy-data.service';
+import { forkJoin } from 'rxjs';
 
 interface EmploymentRecord {
   position: string;
@@ -20,40 +22,30 @@ interface EmployeeDocument {
 }
 
 interface Employee {
-  id?: number;
-  name?: string;
-  firstName?: string;
-  middleName?: string;
-  lastName?: string;
+  id: number;
+  name: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
   suffix?: string;
-  email?: string;
-  phone?: string;
-  avatar?: string;
-  position?: string;
-  department?: string;
-  employmentType?: string;
-  dateOfBirth?: string;
-  gender?: string;
-  civilStatus?: string;
-  address?: string;
-  dateHired?: string;
+  date_of_birth?: string;
+  gender: string;
+  civil_status: string;
+  email: string;
+  phone: string;
+  address: string;
+  position: string;
+  department: string;
+  employment_type?: string;
+  date_hired?: string;
   salary?: number;
-  gsisNumber?: string;
-  pagibigNumber?: string;
-  philhealthNumber?: string;
-  sssNumber?: string;
-  tinNumber?: string;
-  status?: string;
-  workSchedule?: {
-    start: string;
-    end: string;
-  };
-  assignedLocation?: string;
-  employmentHistory?: EmploymentRecord[];
-  salaryHistory?: {
-    currentGrade: string;
-    compensationHistory: string;
-  };
+  status: string;
+  gsis_number?: string;
+  pagibig_number?: string;
+  philhealth_number?: string;
+  sss_number?: string;
+  tin_number?: string;
+  avatar?: string;
 }
 
 @Component({
@@ -75,17 +67,30 @@ interface Employee {
   ]
 })
 export class EmployeeDetailsComponent implements OnInit {
-  @Input() isOpen: boolean = false;
   @Input() employee: Employee | null = null;
+  @Input() isOpen: boolean = false;
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() editInformation = new EventEmitter<Employee>();
 
   isDropdownOpen: boolean = false;
+  selectedSection: string = 'Employee Details';
   sections: string[] = [
     'Employee Details',
     'Employment Records',
     'Membership Data',
     'Merits & Violations'
   ];
-  selectedSection: string = 'Employee Details';
+
+  // Edit form data
+  editingEmployee: Employee | null = null;
+  isEditing: boolean = false;
+
+  // Dropdown options
+  roles: string[] = ['Admin', 'HR', 'Employee', 'Payroll_Manager', 'Recruiter', 'Manager'];
+  designations: string[] = [];
+  departments: string[] = [];
+  employmentTypes: string[] = ['Regular', 'Contractual', 'Probationary', 'Part-time'];
+  statuses: string[] = ['Active', 'Inactive'];
 
   documents: EmployeeDocument[] = [
     {
@@ -102,10 +107,62 @@ export class EmployeeDetailsComponent implements OnInit {
 
   employeeStatus: string = 'Active';
 
+  constructor(private dummyDataService: DummyDataService) {}
+
   ngOnInit() {
-    if (this.employee?.status) {
-      this.employeeStatus = this.employee.status;
+    if (this.employee) {
+      this.loadEmployeeData();
+      this.loadDesignations();
+      this.loadDepartments();
     }
+  }
+
+  loadDesignations() {
+    this.dummyDataService.getPersonnel().subscribe(personnel => {
+      // Extract unique designations from personnel data
+      this.designations = [...new Set(personnel.map(p => p.designation))];
+    });
+  }
+
+  loadDepartments() {
+    this.dummyDataService.getDepartments().subscribe(departments => {
+      this.departments = departments.map(dept => dept.department_name);
+    });
+  }
+
+  loadEmployeeData() {
+    if (!this.employee) return;
+
+    forkJoin({
+      personnel: this.dummyDataService.getPersonnel(),
+      users: this.dummyDataService.getUsers(),
+      departments: this.dummyDataService.getDepartments()
+    }).subscribe(data => {
+      const personnel = data.personnel.find(p => p.personnel_id === this.employee?.id);
+      const user = data.users.find(u => u.user_id === personnel?.user_id);
+      const department = data.departments.find(d => d.department_id === personnel?.department_id);
+
+      if (personnel && user) {
+        this.employee = {
+          id: personnel.personnel_id,
+          name: `${personnel.first_name} ${personnel.last_name}`,
+          first_name: personnel.first_name,
+          middle_name: personnel.middle_name || '',
+          last_name: personnel.last_name,
+          gender: personnel.gender,
+          civil_status: personnel.civil_status,
+          email: user.email,
+          phone: personnel.contact || '',
+          address: user.address || '',
+          position: personnel.designation,
+          department: department?.department_name || '',
+          status: user.status,
+          employment_type: user.employment_type,
+          date_hired: user.date_hired || '',
+          salary: user.salary || 0
+        };
+      }
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -125,8 +182,81 @@ export class EmployeeDetailsComponent implements OnInit {
     this.isDropdownOpen = false;
   }
 
-  closeModal() {
-    this.isOpen = false;
+  onClose() {
+    this.closeModal.emit();
+  }
+
+  onEdit() {
+    if (this.employee) {
+      this.isEditing = true;
+      this.editingEmployee = { ...this.employee };
+    }
+  }
+
+  submitEdit() {
+    if (this.editingEmployee) {
+      // Update the dummy data
+      this.dummyDataService.getPersonnel().subscribe(personnel => {
+        const updatedPersonnel = personnel.map(person => {
+          if (person.personnel_id === this.editingEmployee?.id) {
+            return {
+              ...person,
+              first_name: this.editingEmployee?.first_name || '',
+              middle_name: this.editingEmployee?.middle_name || '',
+              last_name: this.editingEmployee?.last_name || '',
+              gender: this.editingEmployee?.gender || '',
+              civil_status: this.editingEmployee?.civil_status || '',
+              designation: this.editingEmployee?.position || '',
+              department_id: this.departments.indexOf(this.editingEmployee?.department || '') + 1
+            };
+          }
+          return person;
+        });
+
+        // Update the local employee data
+        if (this.employee && this.editingEmployee) {
+          this.employee = {
+            ...this.editingEmployee,
+            id: this.editingEmployee.id,
+            name: `${this.editingEmployee.first_name} ${this.editingEmployee.last_name}`
+          };
+        }
+
+        // Emit the updated employee data
+        if (this.editingEmployee) {
+          this.editInformation.emit(this.editingEmployee);
+        }
+        
+        // Reset editing state
+        this.isEditing = false;
+        this.editingEmployee = null;
+
+        alert('Employee information updated successfully!');
+      });
+    }
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editingEmployee = null;
+  }
+
+  onInputChange(event: Event, property: keyof Employee) {
+    if (this.isEditing && this.editingEmployee) {
+      const target = event.target as HTMLInputElement;
+      if (target) {
+        (this.editingEmployee[property] as any) = target.value;
+      }
+    }
+  }
+
+  onSelectChange(event: Event, property: keyof Employee) {
+    if (this.isEditing && this.editingEmployee) {
+      const target = event.target as HTMLSelectElement;
+      if (target) {
+        (this.editingEmployee[property] as any) = target.value;
+      }
+    }
   }
 
   onFileUpload(event: any, documentType: string) {
@@ -145,11 +275,6 @@ export class EmployeeDetailsComponent implements OnInit {
   viewDocument(document: EmployeeDocument) {
     console.log('Viewing:', document.fileName);
     // Add view logic here
-  }
-
-  editInformation() {
-    console.log('Editing employee information');
-    // Add edit logic here
   }
 
   removeDocument(document: EmployeeDocument) {

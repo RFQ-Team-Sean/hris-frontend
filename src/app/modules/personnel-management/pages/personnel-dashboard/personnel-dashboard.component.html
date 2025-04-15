@@ -4,12 +4,23 @@
   <!-- Main Content Area -->
   <div class="flex-1 p-6 bg-gray-100 min-h-screen">
     <!-- Header Section -->
-    <div class="bg-indigo-600 rounded-lg p-6 mb-6 text-white">
-      <h1 class="text-2xl font-bold">Personnel 201 File</h1>
-      <p class="text-sm mt-1">
-        Access and manage employee records, including personal information,
-        contracts, performance reviews, and other essential documents.
-      </p>
+    <div class="bg-indigo-600 rounded-lg p-6 mb-6 text-white flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">Personnel 201 File</h1>
+        <p class="text-sm mt-1">
+          Access and manage employee records, including personal information,
+          contracts, performance reviews, and other essential documents.
+        </p>
+      </div>
+      <!-- Button Section -->
+      <div class="relative group">
+        <button (click)="toggleAddModal()" class="flex items-center space-x-2 px-4 py-2 bg-white text-indigo-600 border border-gray-200 hover:border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          <span>Add New Employee</span>
+        </button>
+      </div>
     </div>
 
     <!-- Statistics Cards -->
@@ -423,9 +434,9 @@
           <div>
             <span
               class="px-3 py-1 rounded-full text-sm font-medium"
-              [ngClass]="getEmploymentTypeColorClass(employee.employmentType)"
+              [ngClass]="getEmploymentTypeColorClass(employee.employment_type || '')"
             >
-              {{ employee.employmentType }}
+              {{ employee.employment_type || 'N/A' }}
             </span>
           </div>
 
@@ -433,9 +444,9 @@
           <div>
             <span
               class="px-3 py-1 rounded-full text-sm font-medium"
-              [ngClass]="getStatusColorClass(employee.attendanceStatus)"
+              [ngClass]="getStatusColorClass(employee.status)"
             >
-              {{ employee.attendanceStatus }}
+              {{ employee.status }}
             </span>
           </div>
         </div>
@@ -489,6 +500,14 @@
     </div>
   </div>
 </div>
+
+<!-- Add Employee Modal -->
+<app-add-employee
+  *ngIf="showAddModal"
+  [isOpen]="showAddModal"
+  (closeModal)="toggleAddModal()"
+  (submitEmployee)="handleAddEmployeeSubmit($event)">
+</app-add-employee>
 
 <!-- Employee Details Modal -->
 <app-employee-details
