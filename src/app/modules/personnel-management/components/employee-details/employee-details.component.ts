@@ -152,14 +152,19 @@ export class EmployeeDetailsComponent implements OnInit {
           gender: personnel.gender,
           civil_status: personnel.civil_status,
           email: user.email,
-          phone: personnel.contact || '',
-          address: user.address || '',
+          phone: personnel.contact_number || '',
+          address: personnel.address || '',
           position: personnel.designation,
           department: department?.department_name || '',
           status: user.status,
           employment_type: user.employment_type,
           date_hired: user.date_hired || '',
-          salary: user.salary || 0
+          salary: user.salary || 0,
+          gsis_number: personnel.gsis_number || '',
+          pagibig_number: personnel.pagibig_number || '',
+          philhealth_number: personnel.philhealth_number || '',
+          sss_number: personnel.sss_number || '',
+          tin_number: personnel.tin_number || ''
         };
       }
     });

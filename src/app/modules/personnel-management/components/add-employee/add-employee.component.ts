@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DummyDataService } from '../../../../core/services/dummy-data.service';
 
 enum Gender {
   Male = 'Male',
@@ -34,6 +35,11 @@ interface NewEmployeeForm {
   employment_type: string;
   date_hired: string;
   salary: number;
+  gsis_number: string;
+  pagibig_number: string;
+  philhealth_number: string;
+  sss_number: string;
+  tin_number: string;
 }
 
 @Component({
@@ -71,7 +77,12 @@ export class AddEmployeeComponent {
     department: '',
     employment_type: '',
     date_hired: '',
-    salary: 0
+    salary: 0,
+    gsis_number: '',
+    pagibig_number: '',
+    philhealth_number: '',
+    sss_number: '',
+    tin_number: ''
   };
 
   // Dropdown options
@@ -86,6 +97,8 @@ export class AddEmployeeComponent {
   ];
   departments: string[] = ['Admin', 'HR', 'IT', 'Payroll', 'Recruitment', 'Operations'];
 
+  constructor(private dummyDataService: DummyDataService) {}
+
   onClose() {
     this.closeModal.emit();
     this.resetForm();
@@ -93,8 +106,21 @@ export class AddEmployeeComponent {
 
   onSubmit() {
     if (this.validateForm()) {
-      this.submitEmployee.emit(this.newEmployee);
-      this.resetForm();
+      this.dummyDataService.addEmployee(this.newEmployee).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.submitEmployee.emit(this.newEmployee);
+            this.resetForm();
+            alert('Employee added successfully!');
+          } else {
+            alert('Failed to add employee. Please try again.');
+          }
+        },
+        error: (error) => {
+          console.error('Error adding employee:', error);
+          alert('An error occurred while adding the employee. Please try again.');
+        }
+      });
     } else {
       alert('Please fill in all required fields');
     }
@@ -140,7 +166,12 @@ export class AddEmployeeComponent {
       department: '',
       employment_type: '',
       date_hired: '',
-      salary: 0
+      salary: 0,
+      gsis_number: '',
+      pagibig_number: '',
+      philhealth_number: '',
+      sss_number: '',
+      tin_number: ''
     };
   }
 } 
