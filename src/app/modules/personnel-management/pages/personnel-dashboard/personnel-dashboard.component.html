@@ -25,7 +25,11 @@
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-6 gap-4 mb-6">
-      <div class="bg-white p-4 rounded-lg shadow flex items-center">
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onTotalEmployeesClick()"
+        [class.bg-indigo-50]="selectedFilter === 'total'"
+      >
         <div class="p-3 rounded-lg mr-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +52,11 @@
         </div>
       </div>
 
-      <div class="bg-white p-4 rounded-lg shadow flex items-center">
+      <div
+        class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+        (click)="onInOfficeClick()"
+        [class.bg-indigo-50]="selectedFilter === 'inOffice'"
+      >
         <div class="p-3 rounded-lg mr-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,8 +81,8 @@
 
       <div
         class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
-        (click)="onEmploymentTypeCardClick('Full-Time')"
-        [class.bg-indigo-50]="selectedEmploymentType === 'Full-Time'"
+        (click)="onEmploymentTypeClick('Full_time')"
+        [class.bg-indigo-50]="selectedFilter === 'Full_time'"
       >
         <div class="p-3 rounded-lg mr-4">
           <svg
@@ -102,8 +110,8 @@
 
       <div
         class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
-        (click)="onEmploymentTypeCardClick('Part-Time')"
-        [class.bg-indigo-50]="selectedEmploymentType === 'Part-Time'"
+        (click)="onEmploymentTypeClick('Part_time')"
+        [class.bg-indigo-50]="selectedFilter === 'Part_time'"
       >
         <div class="p-3 rounded-lg mr-4">
           <svg
@@ -131,8 +139,8 @@
 
       <div
         class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
-        (click)="onEmploymentTypeCardClick('Regular')"
-        [class.bg-indigo-50]="selectedEmploymentType === 'Regular'"
+        (click)="onEmploymentTypeClick('Regular')"
+        [class.bg-indigo-50]="selectedFilter === 'Regular'"
       >
         <div class="p-3 rounded-lg mr-4">
           <svg
@@ -158,8 +166,8 @@
 
       <div
         class="bg-white p-4 rounded-lg shadow flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
-        (click)="onEmploymentTypeCardClick('Intern')"
-        [class.bg-indigo-50]="selectedEmploymentType === 'Intern'"
+        (click)="onEmploymentTypeClick('Intern')"
+        [class.bg-indigo-50]="selectedFilter === 'Intern'"
       >
         <div class="p-3 rounded-lg mr-4">
           <svg

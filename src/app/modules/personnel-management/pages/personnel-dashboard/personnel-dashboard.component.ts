@@ -92,6 +92,7 @@ export class PersonnelDashboardComponent implements OnInit {
   selectedDepartment: string = '';
   selectedEmploymentType: string = '';
   selectedAttendanceStatus: string = '';
+  selectedFilter: string = '';
 
   // Pagination
   currentPage = 1;
@@ -132,25 +133,6 @@ export class PersonnelDashboardComponent implements OnInit {
         const user = data.users.find(u => u.user_id === person.user_id);
         const dept = data.departments.find(d => d.department_id === person.department_id);
 
-        // Assign consistent employment types based on user_id
-        let employmentType: 'Full-Time' | 'Part-Time' | 'Regular' | 'Intern';
-        switch (person.user_id % 4) {
-          case 0: employmentType = 'Full-Time'; break;
-          case 1: employmentType = 'Part-Time'; break;
-          case 2: employmentType = 'Regular'; break;
-          case 3: employmentType = 'Intern'; break;
-          default: employmentType = 'Full-Time';
-        }
-
-        // Assign consistent attendance statuses based on user_id
-        let attendanceStatus: 'Present' | 'Absent' | 'Late';
-        switch (person.user_id % 3) {
-          case 0: attendanceStatus = 'Present'; break;
-          case 1: attendanceStatus = 'Absent'; break;
-          case 2: attendanceStatus = 'Late'; break;
-          default: attendanceStatus = 'Present';
-        }
-
         return {
           id: person.personnel_id,
           name: `${person.first_name} ${person.last_name}`,
@@ -160,14 +142,19 @@ export class PersonnelDashboardComponent implements OnInit {
           gender: person.gender,
           civil_status: person.civil_status,
           email: user?.email || '',
-          phone: user?.phone || '',
-          address: user?.address || '',
+          phone: person.contact_number || '',
+          address: person.address || '',
           position: person.designation,
           department: dept?.department_name || '',
-          status: user?.status || '',
-          employment_type: user?.employment_type,
-          date_hired: user?.date_hired || '',
-          salary: user?.salary || 0,
+          status: user?.status || 'Active',
+          employment_type: user?.employment_type || 'Full-time',
+          date_hired: person.date_hired || '',
+          salary: person.salary || 0,
+          gsis_number: person.gsis_number || '',
+          pagibig_number: person.pagibig_number || '',
+          philhealth_number: person.philhealth_number || '',
+          sss_number: person.sss_number || '',
+          tin_number: person.tin_number || '',
           avatar: 'assets/images/Quanby Logo-png.gif'
         };
       });
@@ -188,30 +175,133 @@ export class PersonnelDashboardComponent implements OnInit {
 
   // Update statistics based on current employee data
   private updateStats(): void {
+    // Count total employees
     this.statusStats.totalEmployees = this.allEmployees.length;
-    this.statusStats.inOffice = this.allEmployees.filter(emp => emp.status === 'Present').length;
+
+    // Count employees in office (assuming status 'Active' means in office)
+    this.statusStats.inOffice = this.allEmployees.filter(emp => emp.status === 'Active').length;
+
+    // Count regular employees
     this.statusStats.regulars = this.allEmployees.filter(emp => emp.employment_type === 'Regular').length;
+
+    // Count interns
     this.statusStats.interns = this.allEmployees.filter(emp => emp.employment_type === 'Intern').length;
 
-    this.employmentTypeStats.fullTime = this.allEmployees.filter(emp => emp.employment_type === 'Full-Time').length;
-    this.employmentTypeStats.partTime = this.allEmployees.filter(emp => emp.employment_type === 'Part-Time').length;
-    this.employmentTypeStats.regulars = this.statusStats.regulars;
-    this.employmentTypeStats.interns = this.statusStats.interns;
+    // Count employment types
+    this.employmentTypeStats = {
+      fullTime: this.allEmployees.filter(emp => emp.employment_type === 'Full_time').length,
+      partTime: this.allEmployees.filter(emp => emp.employment_type === 'Part_time').length,
+      regulars: this.allEmployees.filter(emp => emp.employment_type === 'Regular').length,
+      interns: this.allEmployees.filter(emp => emp.employment_type === 'Intern').length
+    };
   }
 
-  // New method to handle card clicks
-  onEmploymentTypeCardClick(type: 'Full-Time' | 'Part-Time' | 'Regular' | 'Intern'): void {
-    this.currentFilter = 'employmentType';
+  // Handle total employees click
+  onTotalEmployeesClick(): void {
+    this.selectedFilter = 'total';
+    this.selectedEmploymentType = '';
+    this.selectedDepartment = '';
+    this.selectedAttendanceStatus = '';
+    this.filterEmployees();
+  }
+
+  // Handle in office click
+  onInOfficeClick(): void {
+    this.selectedFilter = 'inOffice';
+    this.selectedEmploymentType = '';
+    this.selectedDepartment = '';
+    this.selectedAttendanceStatus = '';
+    this.filterEmployees();
+  }
+
+  // Handle employment type click
+  onEmploymentTypeClick(type: string): void {
+    this.selectedFilter = type;
     this.selectedEmploymentType = type;
-    this.showFilterDropdown = false;
-    this.applyFilters();
+    this.selectedDepartment = '';
+    this.selectedAttendanceStatus = '';
+    this.filterEmployees();
   }
 
-  // Search functionality
+  // Filter employees based on search term and selected filters
+  private filterEmployees(): void {
+    let filtered = [...this.allEmployees];
+
+    // Apply search filter
+    if (this.searchTerm) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(emp => 
+        emp.name.toLowerCase().includes(searchLower) ||
+        emp.position.toLowerCase().includes(searchLower) ||
+        emp.department.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply employment type filter
+    if (this.selectedEmploymentType) {
+      filtered = filtered.filter(emp => emp.employment_type === this.selectedEmploymentType);
+    }
+
+    // Apply department filter
+    if (this.selectedDepartment) {
+      filtered = filtered.filter(emp => emp.department === this.selectedDepartment);
+    }
+
+    // Apply status filter
+    if (this.selectedAttendanceStatus) {
+      filtered = filtered.filter(emp => emp.status === this.selectedAttendanceStatus);
+    }
+
+    // Apply selected filter
+    if (this.selectedFilter === 'inOffice') {
+      filtered = filtered.filter(emp => emp.status === 'Present');
+    } else if (this.selectedFilter === 'total') {
+      // Show all employees
+      filtered = [...this.allEmployees];
+    }
+
+    this.employees = filtered;
+    this.updateStats();
+  }
+
+  // Handle search input
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.searchTerm = input.value.toLowerCase();
-    this.applyFilters();
+    this.searchTerm = input.value;
+    this.filterEmployees();
+  }
+
+  // Handle employment type filter
+  onEmploymentTypeCardClick(type: string): void {
+    this.selectedEmploymentType = type;
+    this.filterEmployees();
+  }
+
+  // Handle department filter
+  applyDepartmentFilter(department: string): void {
+    this.selectedDepartment = department;
+    this.filterEmployees();
+  }
+
+  applyEmploymentTypeFilter(type: string): void {
+    this.selectedEmploymentType = type;
+    this.filterEmployees();
+  }
+
+  // Handle attendance status filter
+  applyAttendanceStatusFilter(status: string): void {
+    this.selectedAttendanceStatus = status;
+    this.filterEmployees();
+  }
+
+  // Reset all filters
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.selectedEmploymentType = '';
+    this.selectedDepartment = '';
+    this.selectedAttendanceStatus = '';
+    this.selectedFilter = '';
+    this.filterEmployees();
   }
 
   // Toggle filter dropdown
@@ -228,63 +318,7 @@ export class PersonnelDashboardComponent implements OnInit {
     this.selectedEmploymentType = '';
     this.selectedAttendanceStatus = '';
 
-    this.applyFilters();
-  }
-
-  // Apply selected department filter
-  applyDepartmentFilter(department: string): void {
-    this.selectedDepartment = department;
-    this.applyFilters();
-    this.showFilterDropdown = false;
-  }
-
-  // Apply selected employment type filter
-  applyEmploymentTypeFilter(type: string): void {
-    this.selectedEmploymentType = type;
-    this.applyFilters();
-    this.showFilterDropdown = false;
-  }
-
-  // Apply selected attendance status filter
-  applyAttendanceStatusFilter(status: string): void {
-    this.selectedAttendanceStatus = status;
-    this.applyFilters();
-    this.showFilterDropdown = false;
-  }
-
-  // Reset filters
-  resetFilters(): void {
-    this.currentFilter = 'all';
-    this.selectedDepartment = '';
-    this.selectedEmploymentType = '';
-    this.selectedAttendanceStatus = '';
-    this.showFilterDropdown = false;
-    this.employees = [...this.allEmployees];
-  }
-
-  // Apply all active filters
-  applyFilters(): void {
-    let filteredEmployees = [...this.allEmployees];
-
-    // Apply search filter if search term exists
-    if (this.searchTerm) {
-      filteredEmployees = filteredEmployees.filter(emp =>
-        emp.name.toLowerCase().includes(this.searchTerm) ||
-        emp.position.toLowerCase().includes(this.searchTerm) ||
-        emp.department.toLowerCase().includes(this.searchTerm)
-      );
-    }
-
-    // Apply other filters based on selected filter type
-    if (this.currentFilter === 'department' && this.selectedDepartment) {
-      filteredEmployees = filteredEmployees.filter(emp => emp.department === this.selectedDepartment);
-    } else if (this.currentFilter === 'employmentType' && this.selectedEmploymentType) {
-      filteredEmployees = filteredEmployees.filter(emp => emp.employment_type === this.selectedEmploymentType);
-    } else if (this.currentFilter === 'attendanceStatus' && this.selectedAttendanceStatus) {
-      filteredEmployees = filteredEmployees.filter(emp => emp.status === this.selectedAttendanceStatus);
-    }
-
-    this.employees = filteredEmployees;
+    this.filterEmployees();
   }
 
   // Get active filter label for display

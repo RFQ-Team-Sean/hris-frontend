@@ -34,7 +34,8 @@ export class DummyDataService {
       pagibig_number: '123456789012',
       philhealth_number: '123456789012',
       sss_number: '123456789012',
-      tin_number: '123456789012'
+      tin_number: '123456789012',
+      salary: '100000'
     },
     { 
       personnel_id: 2, 
@@ -52,7 +53,8 @@ export class DummyDataService {
       pagibig_number: '234567890123',
       philhealth_number: '234567890123',
       sss_number: '234567890123',
-      tin_number: '234567890123'
+      tin_number: '234567890123',
+      salary: '100001'
     },
     { 
       personnel_id: 3, 
@@ -70,7 +72,8 @@ export class DummyDataService {
       pagibig_number: '345678901234',
       philhealth_number: '345678901234',
       sss_number: '345678901234',
-      tin_number: '345678901234'
+      tin_number: '345678901234',
+      salary: '100002'
     },
     { 
       personnel_id: 4, 
@@ -88,7 +91,8 @@ export class DummyDataService {
       pagibig_number: '456789012345',
       philhealth_number: '456789012345',
       sss_number: '456789012345',
-      tin_number: '456789012345'
+      tin_number: '456789012345',
+      salary: '100003'
     },
     { 
       personnel_id: 5, 
@@ -106,7 +110,8 @@ export class DummyDataService {
       pagibig_number: '567890123456',
       philhealth_number: '567890123456',
       sss_number: '567890123456',
-      tin_number: '567890123456'
+      tin_number: '567890123456',
+      salary: '100004'
     },
     { 
       personnel_id: 6, 
@@ -124,7 +129,8 @@ export class DummyDataService {
       pagibig_number: '678901234567',
       philhealth_number: '678901234567',
       sss_number: '678901234567',
-      tin_number: '678901234567'
+      tin_number: '678901234567',
+      salary: '100005'
     }
   ];
 
@@ -190,7 +196,8 @@ export class DummyDataService {
       philhealth_number: employeeData.philhealth_number,
       sss_number: employeeData.sss_number,
       tin_number: employeeData.tin_number,
-      address: employeeData.address
+      address: employeeData.address,
+      salary: employeeData.salary
     };
 
     // Add to arrays
