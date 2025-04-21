@@ -289,6 +289,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'Certifications & Career Pathing', path: '/learning-development/certification' },
           ]
         },
+        { 
+          name: 'Job Portal', 
+          path: '/job-portal', 
+          icon: 'attach_money',
+          children: [
+            { name: 'Application Status', path: '/job-portal/application-status' },
+            { name: 'Job Application', path: '/job-portal/job-application' },
+            { name: 'Job Search', path: '/job-portal/job-search' },
+          ]
+        },
         { name: 'Reports & Analytics', path: '/reports/report-dashboard', icon: 'trending_up' },
         { 
           name: 'System Administration', 
