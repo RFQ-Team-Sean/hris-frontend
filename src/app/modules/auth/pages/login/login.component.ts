@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIf, CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { DummyDataService } from '../../../../core/services/dummy-data.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private dummyService: DummyDataService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -39,20 +39,12 @@ export class LoginComponent {
       this.errorMessage = '';
       const { email, password } = this.loginForm.value;
 
-      this.dummyService.login(email, password).subscribe({
+      this.authService.login(email, password).subscribe({
         next: (response) => {
           if (response.success) {
-            console.log('Login successful:', response.user);
-            localStorage.setItem('user', JSON.stringify(response.user)); // Store user info
-            
-            // Store personnel data in localStorage
-            this.dummyService.getPersonnel().subscribe(personnelData => {
-              localStorage.setItem('personnel', JSON.stringify(personnelData));
-            });
-            
-            // ✅ Corrected route paths
+            // Navigate based on role
             const roleBasedRoutes: { [key: string]: string } = {
-              Admin: '/dashboard/admin', // ✅ Corrected admin route
+              Admin: '/dashboard/admin',
               HR: '/dashboard/hr',
               Employee: '/dashboard/employee',
               Payroll_Manager: '/dashboard/payroll',
@@ -62,7 +54,7 @@ export class LoginComponent {
 
             this.router.navigate([roleBasedRoutes[response.user.role] || '/dashboard']);
           } else {
-            this.errorMessage = response.message; // Show error message
+            this.errorMessage = 'Invalid email or password';
             this.isLoading = false;
           }
         },
