@@ -1,0 +1,176 @@
+/* Custom status badge colors */
+.bg-yellow-100 { background-color: #fef9c3; }
+.text-yellow-800 { color: #854d0e; }
+
+.bg-blue-100 { background-color: #dbeafe; }
+.text-blue-800 { color: #1e40af; }
+
+.bg-green-100 { background-color: #dcfce7; }
+.text-green-800 { color: #166534; }
+
+.bg-red-100 { background-color: #fee2e2; }
+.text-red-800 { color: #991b1b; }
+
+.bg-purple-100 { background-color: #f3e8ff; }
+.text-purple-800 { color: #6b21a8; }
+
+/* Additional status badge colors for new statuses */
+.bg-gray-100 { background-color: #f3f4f6; }
+.text-gray-800 { color: #1f2937; }
+
+.bg-orange-100 { background-color: #ffedd5; }
+.text-orange-800 { color: #9a3412; }
+
+.bg-indigo-100 { background-color: #e0e7ff; }
+.text-indigo-800 { color: #3730a3; }
+
+.bg-emerald-100 { background-color: #d1fae5; }
+.text-emerald-800 { color: #065f46; }
+
+/* Timeline styles */
+.timeline-connector {
+  position: absolute;
+  left: 15px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background-color: #e5e7eb;
+}
+
+/* Modal animation */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.modal-exit {
+  opacity: 1;
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Improved modal styling */
+:host ::ng-deep {
+  .fixed.inset-0 {
+    z-index: 9999;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.modal-container {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: auto;
+  max-height: 90vh;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 1rem;
+}
+
+/* Status badge hover effects */
+.rounded-full {
+  transition: transform 0.2s ease;
+}
+
+.rounded-full:hover {
+  transform: scale(1.05);
+}
+
+/* Admin action button styles */
+.admin-action-btn {
+  transition: all 0.2s ease;
+}
+
+.admin-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Status update button grid */
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Modal container adjustments for admin view */
+.modal-container {
+  max-width: 56rem; /* Wider modal for admin view */
+}
+
+/* Admin notes textarea */
+textarea {
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Applicant info section */
+.applicant-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Enhance status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: all 0.15s ease;
+}
+
+.status-badge:hover {
+  transform: scale(1.05);
+}

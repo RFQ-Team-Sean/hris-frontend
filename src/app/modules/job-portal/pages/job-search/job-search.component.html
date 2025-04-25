@@ -1,1 +1,346 @@
-<p>job-search works!</p>
+<div class="job-search-container">
+  <!-- Job Detail View -->
+  <div class="job-detail-modal" *ngIf="showJobDetail && selectedJob">
+    <div class="job-detail-container">
+      <div class="job-detail-header">
+        <button class="close-btn" (click)="closeJobDetail()">✕</button>
+        <div class="job-detail-title-section">
+          <h1>{{ selectedJob.position_title }}</h1>
+          <div class="job-badges">
+            <span class="department-badge">{{ selectedJob.department }}</span>
+            <span class="employment-badge">{{
+              selectedJob.employment_type.replace("_", " ")
+            }}</span>
+            <span class="location-badge">{{ selectedJob.location }}</span>
+            <span class="vacancy-badge"
+              >{{ selectedJob.num_vacancies }} position{{
+                selectedJob.num_vacancies > 1 ? "s" : ""
+              }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="job-detail-body">
+        <div class="job-detail-meta">
+          <div class="job-id">Job ID: {{ selectedJob.id }}</div>
+          <div class="posting-date">
+            Posted: {{ formatDate(selectedJob.created_at) }}
+          </div>
+          <div
+            class="application-deadline"
+            [ngClass]="{
+              urgent: daysUntilDeadline(selectedJob.application_deadline) <= 7
+            }"
+          >
+            Deadline: {{ formatDate(selectedJob.application_deadline) }} ({{
+              daysUntilDeadline(selectedJob.application_deadline)
+            }}
+            days left)
+          </div>
+          <div class="salary-range" *ngIf="selectedJob.salary_range">
+            Salary: {{ selectedJob.salary_range }}
+          </div>
+        </div>
+
+        <div class="job-detail-main">
+          <section class="job-description-section">
+            <h2>Job Description</h2>
+            <p>{{ selectedJob.job_description }}</p>
+          </section>
+
+          <section
+            class="job-responsibilities-section"
+            *ngIf="selectedJob.responsibilities"
+          >
+            <h2>Responsibilities</h2>
+            <ul class="responsibilities-list">
+              <li
+                *ngFor="
+                  let responsibility of selectedJob.responsibilities
+                    .split('-')
+                    .slice(1)
+                "
+              >
+                {{ responsibility.trim() }}
+              </li>
+            </ul>
+          </section>
+
+          <section class="job-qualifications-section">
+            <h2>Qualifications</h2>
+            <p>{{ selectedJob.qualifications }}</p>
+          </section>
+
+          <section
+            class="technical-section"
+            *ngIf="selectedJob.technical_competencies"
+          >
+            <h2>Technical Skills</h2>
+            <div class="skill-tags">
+              <span
+                class="skill-tag"
+                *ngFor="
+                  let skill of selectedJob.technical_competencies.split(', ')
+                "
+              >
+                {{ skill }}
+              </span>
+            </div>
+          </section>
+
+          <section class="job-benefits-section" *ngIf="selectedJob.benefits">
+            <h2>Benefits</h2>
+            <ul class="benefits-list">
+              <li
+                *ngFor="let benefit of selectedJob.benefits.split('-').slice(1)"
+              >
+                {{ benefit.trim() }}
+              </li>
+            </ul>
+          </section>
+
+          <section
+            class="department-section"
+            *ngIf="selectedJob.department_description"
+          >
+            <h2>About the Department</h2>
+            <p>{{ selectedJob.department_description }}</p>
+          </section>
+        </div>
+      </div>
+
+      <div class="job-detail-footer">
+        <button class="apply-btn" (click)="applyForJob(selectedJob.id)">
+          Apply Now
+        </button>
+        <div class="action-buttons">
+          <button class="action-btn share-btn">
+            <i class="icon">🔗</i> Share
+          </button>
+          <button class="action-btn save-btn">
+            <i class="icon">🔖</i> Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>Find Your Dream Job</h1>
+      <p>Search and apply for the latest job opportunities</p>
+      <div class="search-bar">
+        <div class="search-input">
+          <i class="search-icon">🔍</i>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="filterJobs()"
+            placeholder="Search for jobs, skills, or keywords"
+          />
+        </div>
+        <button class="search-btn" (click)="filterJobs()">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content section -->
+  <div class="main-content">
+    <!-- Featured jobs section -->
+    <section class="featured-jobs">
+      <h2>Featured Job Opportunities</h2>
+      <div class="featured-jobs-grid">
+        <div class="featured-card" *ngFor="let job of featuredJobs">
+          <div class="featured-card-header">
+            <h3>{{ job.position_title }}</h3>
+            <span class="department-badge">{{ job.department }}</span>
+          </div>
+          <div class="featured-card-body">
+            <p class="job-description">{{ job.job_description }}</p>
+            <ul class="job-details">
+              <li>
+                <i class="icon">📍</i>
+                <span>{{ job.location }}</span>
+              </li>
+              <li>
+                <i class="icon">💼</i>
+                <span>{{ job.employment_type.replace("_", " ") }}</span>
+              </li>
+              <li *ngIf="job.salary_range">
+                <i class="icon">💰</i>
+                <span>{{ job.salary_range }}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="featured-card-footer">
+            <button class="apply-btn" (click)="applyForJob(job.id)">
+              Apply Now
+            </button>
+            <div class="deadline">
+              <i class="icon">⏰</i>
+              <span>Apply by: {{ formatDate(job.application_deadline) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search and filter section -->
+    <section class="job-search-results">
+      <div class="filter-panel">
+        <h3>Filter Results</h3>
+        <div class="filter-group">
+          <label for="department">Department</label>
+          <select
+            id="department"
+            [(ngModel)]="departmentFilter"
+            (change)="filterJobs()"
+          >
+            <option *ngFor="let dept of departments" [value]="dept">
+              {{ dept }}
+            </option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="employmentType">Employment Type</label>
+          <select
+            id="employmentType"
+            [(ngModel)]="employmentTypeFilter"
+            (change)="filterJobs()"
+          >
+            <option *ngFor="let type of employmentTypes" [value]="type">
+              {{ type.replace("_", " ") }}
+            </option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="location">Location</label>
+          <select
+            id="location"
+            [(ngModel)]="locationFilter"
+            (change)="filterJobs()"
+          >
+            <option *ngFor="let loc of locations" [value]="loc">
+              {{ loc }}
+            </option>
+          </select>
+        </div>
+        <button class="reset-btn" (click)="resetFilters()">
+          Reset Filters
+        </button>
+      </div>
+
+      <div class="job-listing">
+        <div class="job-listing-header">
+          <h3>
+            Available Positions
+            <span class="job-count">({{ filteredJobs.length }})</span>
+          </h3>
+          <div class="sorting">
+            <span>Sort by:</span>
+            <select>
+              <option>Newest</option>
+              <option>Relevance</option>
+              <option>Deadline (Soonest)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="job-cards">
+          <div class="job-card" *ngFor="let job of filteredJobs">
+            <div class="job-card-header">
+              <div class="job-title-section">
+                <h3>{{ job.position_title }}</h3>
+                <div class="job-badges">
+                  <span class="department-badge">{{ job.department }}</span>
+                  <span class="vacancy-badge"
+                    >{{ job.num_vacancies }} position{{
+                      job.num_vacancies > 1 ? "s" : ""
+                    }}</span
+                  >
+                </div>
+              </div>
+              <div class="job-id">{{ job.id }}</div>
+            </div>
+
+            <div class="job-card-body">
+              <p class="job-description">{{ job.job_description }}</p>
+
+              <div class="job-skills" *ngIf="job.technical_competencies">
+                <h4>Skills:</h4>
+                <div class="skill-tags">
+                  <span
+                    class="skill-tag"
+                    *ngFor="let skill of job.technical_competencies.split(', ')"
+                    >{{ skill }}</span
+                  >
+                </div>
+              </div>
+
+              <div class="job-details-grid">
+                <div class="detail-item">
+                  <span class="detail-label">Location</span>
+                  <span class="detail-value">{{ job.location }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Type</span>
+                  <span class="detail-value">{{
+                    job.employment_type.replace("_", " ")
+                  }}</span>
+                </div>
+                <div class="detail-item" *ngIf="job.salary_range">
+                  <span class="detail-label">Salary Range</span>
+                  <span class="detail-value">{{ job.salary_range }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Posted On</span>
+                  <span class="detail-value">{{
+                    formatDate(job.created_at)
+                  }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Deadline</span>
+                  <span class="detail-value">{{
+                    formatDate(job.application_deadline)
+                  }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Time Left</span>
+                  <span
+                    class="detail-value"
+                    [ngClass]="{
+                      urgent: daysUntilDeadline(job.application_deadline) <= 7
+                    }"
+                  >
+                    {{ daysUntilDeadline(job.application_deadline) }} days
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="job-card-footer">
+              <button class="apply-btn" (click)="applyForJob(job.id)">
+                Apply Now
+              </button>
+              <button class="view-details-btn" (click)="viewJobDetails(job)">
+                View Details
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div class="empty-state" *ngIf="filteredJobs.length === 0">
+            <div class="empty-icon">🔍</div>
+            <h3>No matching jobs found</h3>
+            <p>Try adjusting your search criteria or filters</p>
+            <button class="reset-btn" (click)="resetFilters()">
+              Reset All Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
