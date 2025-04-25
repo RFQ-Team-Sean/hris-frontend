@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIf, CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
+import { DummyDataService } from '../../../../core/services/dummy-data.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private dummyService: DummyDataService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -39,12 +39,20 @@ export class LoginComponent {
       this.errorMessage = '';
       const { email, password } = this.loginForm.value;
 
-      this.authService.login(email, password).subscribe({
+      this.dummyService.login(email, password).subscribe({
         next: (response) => {
           if (response.success) {
-            // Navigate based on role
+            console.log('Login successful:', response.user);
+            localStorage.setItem('user', JSON.stringify(response.user)); // Store user info
+            
+            // Store personnel data in localStorage
+            this.dummyService.getPersonnel().subscribe(personnelData => {
+              localStorage.setItem('personnel', JSON.stringify(personnelData));
+            });
+            
+            // ✅ Corrected route paths
             const roleBasedRoutes: { [key: string]: string } = {
-              Admin: '/dashboard/admin',
+              Admin: '/dashboard/admin', // ✅ Corrected admin route
               HR: '/dashboard/hr',
               Employee: '/dashboard/employee',
               Payroll_Manager: '/dashboard/payroll',
@@ -54,7 +62,7 @@ export class LoginComponent {
 
             this.router.navigate([roleBasedRoutes[response.user.role] || '/dashboard']);
           } else {
-            this.errorMessage = 'Invalid email or password';
+            this.errorMessage = response.message; // Show error message
             this.isLoading = false;
           }
         },
