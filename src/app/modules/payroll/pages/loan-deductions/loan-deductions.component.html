@@ -11,7 +11,7 @@
             <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Loan & Contribution Deductions</h1>
             <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage employee loan repayments and mandatory contributions</p>
           </div>
-          <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+          <button (click)="openAddModal()" style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
             + Add New Deduction
           </button>
         </div>
@@ -19,16 +19,16 @@
   
       <!-- Tabs for Loan Types -->
       <div style="display: flex; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;">
-        <button style="padding: 12px 16px; border-bottom: 2px solid #5046e5; font-size: 0.875rem; font-weight: 500; color: #5046e5;">
+        <button (click)="setActiveTab('active')" [style.border-bottom]="activeTab === 'active' ? '2px solid #5046e5' : 'none'" [style.color]="activeTab === 'active' ? '#5046e5' : '#6b7280'" style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500;">
           Active Deductions
         </button>
-        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+        <button (click)="setActiveTab('completed')" [style.border-bottom]="activeTab === 'completed' ? '2px solid #5046e5' : 'none'" [style.color]="activeTab === 'completed' ? '#5046e5' : '#6b7280'" style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500;">
           Completed Loans
         </button>
-        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+        <button (click)="setActiveTab('mandatory')" [style.border-bottom]="activeTab === 'mandatory' ? '2px solid #5046e5' : 'none'" [style.color]="activeTab === 'mandatory' ? '#5046e5' : '#6b7280'" style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500;">
           Mandatory Contributions
         </button>
-        <button style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+        <button (click)="setActiveTab('history')" [style.border-bottom]="activeTab === 'history' ? '2px solid #5046e5' : 'none'" [style.color]="activeTab === 'history' ? '#5046e5' : '#6b7280'" style="padding: 12px 16px; font-size: 0.875rem; font-weight: 500;">
           Deduction History
         </button>
       </div>
@@ -38,20 +38,15 @@
         <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Deduction Type</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedDeductionType" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Types</option>
-              <option>SSS Loan</option>
-              <option>Pag-IBIG Loan</option>
-              <option>Company Loan</option>
-              <option>SSS Contribution</option>
-              <option>Pag-IBIG Contribution</option>
-              <option>PhilHealth</option>
+              <option *ngFor="let type of getDeductionTypeOptions()" [value]="type">{{ type }}</option>
             </select>
           </div>
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedDepartment" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Departments</option>
               <option *ngFor="let dept of departments$ | async">{{ dept.department_name }}</option>
             </select>
@@ -60,14 +55,14 @@
           <div style="flex: 2; min-width: 300px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Employee</label>
             <div style="position: relative;">
-              <input type="text" placeholder="Search by name or employee ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name or employee ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
           </div>
           
-          <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+          <button (click)="applyFilters()" style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
             Apply Filters
           </button>
         </div>
@@ -77,19 +72,19 @@
       <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
         <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
           <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Active Loans</p>
-          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ (deductions$ | async)?.length || 0 }}</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ activeLoansCount$ | async }}</p>
+        </div>
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Completed Loans</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ completedLoansCount$ | async }}</p>
+        </div>
+        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Mandatory Contributions</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ mandatoryContributionsCount$ | async }}</p>
         </div>
         <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
           <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Total Monthly Deductions</p>
           <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ totalMonthlyDeductions$ | async | currency:'PHP':'symbol-narrow':'1.2-2' }}</p>
-        </div>
-        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
-          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">SSS Contributions</p>
-          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ totalSssContributions$ | async | currency:'PHP':'symbol-narrow':'1.2-2' }}</p>
-        </div>
-        <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 16px;">
-          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Pag-IBIG Contributions</p>
-          <p style="font-size: 1.5rem; font-weight: 700; color: #5046e5;">{{ totalPagibigContributions$ | async | currency:'PHP':'symbol-narrow':'1.2-2' }}</p>
         </div>
       </div>
   
@@ -101,6 +96,7 @@
               <tr style="border-bottom: 1px solid #e5e7eb;">
                 <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Employee</th>
                 <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Department</th>
+                <th style="padding: 12px 16px; text-align: left; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Deduction Type</th>
                 <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">SSS</th>
                 <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">Pag-IBIG</th>
                 <th style="padding: 12px 16px; text-align: right; font-size: 0.875rem; font-weight: 500; color: #6b7280;">PhilHealth</th>
@@ -126,6 +122,9 @@
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
                   {{ getPersonnelDepartment(deduction.personnel_id, personnelWithDepartments$ | async) }}
                 </td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
+                  {{ deduction.deduction_type }}
+                </td>
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">
                   {{ deduction.sss | currency:'PHP':'symbol-narrow':'1.2-2' }}
                 </td>
@@ -146,8 +145,8 @@
                 </td>
                 <td style="padding: 16px; text-align: center;">
                   <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Stop</button>
+                    <button (click)="openEditModal(deduction)" style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                    <button *ngIf="activeTab === 'active'" (click)="openStopModal(deduction)" style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Stop</button>
                   </div>
                 </td>
               </tr>
@@ -157,12 +156,155 @@
   
         <!-- Pagination -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to {{ (deductions$ | async)?.length || 0 }} of {{ (deductions$ | async)?.length || 0 }} deductions</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">
+            Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} deductions
+          </p>
           <div style="display: flex; gap: 8px;">
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+            <button (click)="previousPage()" [disabled]="currentPage === 1" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; cursor: pointer;" [style.opacity]="currentPage === 1 ? '0.5' : '1'">
+              Previous
+            </button>
+            <ng-container *ngFor="let page of pageRange">
+              <button (click)="currentPage = page; deductionsSubject.next([])" [style.background-color]="currentPage === page ? '#2563eb' : 'transparent'" [style.color]="currentPage === page ? 'white' : '#6b7280'" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; cursor: pointer;">
+                {{ page }}
+              </button>
+            </ng-container>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; cursor: pointer;" [style.opacity]="currentPage === totalPages ? '0.5' : '1'">
+              Next
+            </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Add New Deduction Modal -->
+      <div *ngIf="showAddModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Add New Deduction</h2>
+            <button (click)="closeAddModal()" style="color: #6b7280; font-size: 1.25rem;">×</button>
+          </div>
+
+          <form (ngSubmit)="saveNewDeduction()">
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employee</label>
+              <select [(ngModel)]="newDeduction.personnel_id" name="personnel_id" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+                <option value="">Select Employee</option>
+                <option *ngFor="let person of personnel$ | async" [value]="person.id">
+                  {{ person.first_name }} {{ person.last_name }}
+                </option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Deduction Type</label>
+              <select [(ngModel)]="newDeduction.deduction_type" name="deduction_type" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+                <option value="">Select Type</option>
+                <option>SSS Loan</option>
+                <option>Pag-IBIG Loan</option>
+                <option>Company Loan</option>
+                <option>SSS Contribution</option>
+                <option>Pag-IBIG Contribution</option>
+                <option>PhilHealth</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Amount</label>
+              <input type="number" [(ngModel)]="newDeduction.amount" name="amount" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Start Date</label>
+              <input type="date" [(ngModel)]="newDeduction.start_date" name="start_date" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">End Date (Optional)</label>
+              <input type="date" [(ngModel)]="newDeduction.end_date" name="end_date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button type="button" (click)="closeAddModal()" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #6b7280;">
+                Cancel
+              </button>
+              <button type="submit" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+                Save Deduction
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Edit Deduction Modal -->
+      <div *ngIf="showEditModal" style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;">
+        <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+          <h3 style="font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Edit Deduction</h3>
+          
+          <form (ngSubmit)="saveEditDeduction()">
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employee</label>
+              <select [(ngModel)]="editDeduction.personnel_id" name="personnel_id" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+                <option *ngFor="let person of personnel$ | async" [value]="person.id">{{ person.first_name }} {{ person.last_name }}</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Deduction Type</label>
+              <select [(ngModel)]="editDeduction.deduction_type" name="deduction_type" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+                <option *ngFor="let type of getDeductionTypeOptions()" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Amount</label>
+              <input type="number" [(ngModel)]="editDeduction.amount" name="amount" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Start Date</label>
+              <input type="date" [(ngModel)]="editDeduction.start_date" name="start_date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">End Date (Optional)</label>
+              <input type="date" [(ngModel)]="editDeduction.end_date" name="end_date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+              <button type="button" (click)="closeEditModal()" style="padding: 8px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">Cancel</button>
+              <button type="submit" style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white;">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Stop Deduction Modal -->
+      <div *ngIf="showStopModal" style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;">
+        <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+          <h3 style="font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Stop Deduction</h3>
+          
+          <form (ngSubmit)="confirmStopDeduction()">
+            <div style="margin-bottom: 16px;">
+              <p style="font-size: 0.875rem; color: #6b7280;">Are you sure you want to stop this deduction?</p>
+              <p style="font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-top: 8px;">
+                {{ getPersonnelName(stopDeduction.personnel_id, personnel$ | async) }} - {{ stopDeduction.deduction_type }}
+              </p>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Reason</label>
+              <textarea [(ngModel)]="stopDeduction.reason" name="reason" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Effective Date</label>
+              <input type="date" [(ngModel)]="stopDeduction.effective_date" name="effective_date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+              <button type="button" (click)="closeStopModal()" style="padding: 8px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">Cancel</button>
+              <button type="submit" style="padding: 8px 16px; background-color: #dc2626; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white;">Stop Deduction</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
