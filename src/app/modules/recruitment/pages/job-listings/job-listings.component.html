@@ -11,7 +11,7 @@
           <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Job Listings</h1>
           <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage all job postings for your organization</p>
         </div>
-        <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+        <button (click)="openCreateModal()" style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
           + Create New Job
         </button>
       </div>
@@ -22,50 +22,54 @@
       <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Status</label>
-          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <select [(ngModel)]="filters.status" (ngModelChange)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <option value="">All Statuses</option>
-            <option>Active</option>
-            <option>Draft</option>
-            <option>Closed</option>
-            <option>Archived</option>
+            <option value="Active">Active</option>
+            <option value="Draft">Draft</option>
+            <option value="Closed">Closed</option>
+            <option value="Archived">Archived</option>
           </select>
         </div>
         
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
-          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <select [(ngModel)]="filters.department" (ngModelChange)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <option value="">All Departments</option>
-            <option>Engineering</option>
-            <option>Marketing</option>
-            <option>Sales</option>
-            <option>Human Resources</option>
+            <option *ngFor="let dept of departments" [value]="dept.id">{{dept.department_name}}</option>
           </select>
         </div>
         
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Type</label>
-          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <select [(ngModel)]="filters.type" (ngModelChange)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <option value="">All Types</option>
-            <option>Full-time</option>
-            <option>Part-time</option>
-            <option>Contract</option>
-            <option>Internship</option>
+            <option value="Regular">Full-time</option>
+            <option value="Part_time">Part-time</option>
+            <option value="Contractual">Contract</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Consultant">Consultant</option>
           </select>
         </div>
         
         <div style="flex: 2; min-width: 300px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Jobs</label>
           <div style="position: relative;">
-            <input type="text" placeholder="Search by job title or reference number" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <input type="text" [(ngModel)]="filters.search" (input)="onSearchChange($event)" placeholder="Search by job title or reference number" 
+                   style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
         </div>
         
-        <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
-          Apply Filters
-        </button>
+        <div style="display: flex; gap: 8px;">
+          <button (click)="resetFilters()" style="padding: 12px 16px; border: 1px solid #e5e7eb; color: #374151; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+            Reset
+          </button>
+          <button (click)="applyFilters()" style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+            Apply Filters
+          </button>
+        </div>
       </div>
     </div>
 
@@ -85,8 +89,7 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Job 1 -->
-            <tr style="border-bottom: 1px solid #e5e7eb;">
+            <tr *ngFor="let job of filteredJobs" style="border-bottom: 1px solid #e5e7eb;">
               <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                   <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #e0e7ff; display: flex; align-items: center; justify-content: center;">
@@ -95,91 +98,44 @@
                     </svg>
                   </div>
                   <div>
-                    <p style="font-weight: 500;">Senior Frontend Developer</p>
-                    <p style="font-size: 0.75rem; color: #6b7280;">Req #DEV-1024</p>
+                    <p style="font-weight: 500;">{{job.position_title}}</p>
+                    <p style="font-size: 0.75rem; color: #6b7280;">Req #{{job.id}}</p>
                   </div>
                 </div>
               </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Engineering</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Full-time</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">24</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{job.department_id}}</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{job.employment_type}}</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">0</td>
               <td style="padding: 16px; text-align: center;">
-                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                  Active
+                <span [style.background-color]="job.posting_status === 'Active' ? '#d1fae5' : '#dbeafe'"
+                      [style.color]="job.posting_status === 'Active' ? '#065f46' : '#1e40af'"
+                      style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+                  {{job.posting_status}}
                 </span>
               </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">May 15, 2023</td>
+              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{job.created_at | date}}</td>
               <td style="padding: 16px; text-align: center;">
-                <div style="display: flex; justify-content: center; gap: 12px;">
-                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
-                </div>
-              </td>
-            </tr>
-            
-            <!-- Job 2 -->
-            <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #f3e8ff; display: flex; align-items: center; justify-content: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                <div style="display: flex; justify-content: center; gap: 16px;">
+                  <button (click)="openViewModal(job)" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
                     </svg>
-                  </div>
-                  <div>
-                    <p style="font-weight: 500;">Product Designer</p>
-                    <p style="font-size: 0.75rem; color: #6b7280;">Req #DES-2048</p>
-                  </div>
-                </div>
-              </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Product</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Contract</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">18</td>
-              <td style="padding: 16px; text-align: center;">
-                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                  Active
-                </span>
-              </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Jun 1, 2023</td>
-              <td style="padding: 16px; text-align: center;">
-                <div style="display: flex; justify-content: center; gap: 12px;">
-                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
-                </div>
-              </td>
-            </tr>
-            
-            <!-- Job 3 -->
-            <tr>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: #dcfce7; display: flex; align-items: center; justify-content: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                  </button>
+                  <button (click)="openEditModal(job)" class="text-gray-600 hover:text-yellow-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
-                  </div>
-                  <div>
-                    <p style="font-weight: 500;">Cybersecurity Specialist</p>
-                    <p style="font-size: 0.75rem; color: #6b7280;">Req #SEC-4096</p>
-                  </div>
-                </div>
-              </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">IT Security</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Full-time</td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937; text-align: right;">32</td>
-              <td style="padding: 16px; text-align: center;">
-                <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #dbeafe; color: #1e40af;">
-                  Draft
-                </span>
-              </td>
-              <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Jun 15, 2023</td>
-              <td style="padding: 16px; text-align: center;">
-                <div style="display: flex; justify-content: center; gap: 12px;">
-                  <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                  <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                  <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
+                  </button>
+                  <button (click)="openDeleteModal(job)" class="text-gray-600 hover:text-red-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -189,15 +145,278 @@
 
       <!-- Pagination and Summary -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-        <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 12 jobs</p>
+        <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to {{filteredJobs.length}} of {{filteredJobs.length}} jobs</p>
         <div style="display: flex; gap: 8px;">
           <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
           <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
           <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- View Job Modal -->
+<div *ngIf="showViewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 9999;">
+  <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-semibold">Job Details</h3>
+        <button (click)="closeViewModal()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="selectedJob" class="p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-600">Position Title</p>
+          <p class="font-medium">{{selectedJob.position_title}}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Department</p>
+          <p class="font-medium">{{getDepartmentName(selectedJob.department_id)}}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Job Type</p>
+          <p class="font-medium">{{selectedJob.employment_type}}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Status</p>
+          <p class="font-medium">{{selectedJob.posting_status}}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Vacancies</p>
+          <p class="font-medium">{{selectedJob.num_vacancies}}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Deadline</p>
+          <p class="font-medium">{{selectedJob.application_deadline | date}}</p>
+        </div>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Job Description</p>
+        <p class="mt-1 whitespace-pre-wrap">{{selectedJob.job_description}}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Qualifications</p>
+        <p class="mt-1 whitespace-pre-wrap">{{selectedJob.qualifications}}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Technical Competencies</p>
+        <p class="mt-1 whitespace-pre-wrap">{{selectedJob.technical_competencies}}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Salary Range</p>
+        <p class="mt-1">{{selectedJob.salary_range}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Job Modal -->
+<div *ngIf="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 9999;">
+  <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-semibold">Edit Job</h3>
+        <button (click)="closeEditModal()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <form *ngIf="selectedJob" (ngSubmit)="updateJob()" class="p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Position Title</label>
+          <input type="text" [(ngModel)]="selectedJob.position_title" name="position_title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Department</label>
+          <select [(ngModel)]="selectedJob.department_id" name="department_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="">Select Department</option>
+            <option *ngFor="let dept of departments" [value]="dept.id">{{dept.department_name}}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Job Type</label>
+          <select [(ngModel)]="selectedJob.employment_type" name="employment_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="Regular">Regular</option>
+            <option value="Contract">Contract</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Status</label>
+          <select [(ngModel)]="selectedJob.posting_status" name="posting_status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <option value="Draft">Draft</option>
+            <option value="Published">Published</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Number of Vacancies</label>
+          <input type="number" [(ngModel)]="selectedJob.num_vacancies" name="num_vacancies" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Application Deadline</label>
+          <input type="date" [(ngModel)]="selectedJob.application_deadline" name="application_deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Job Description</label>
+        <textarea [(ngModel)]="selectedJob.job_description" name="job_description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Qualifications</label>
+        <textarea [(ngModel)]="selectedJob.qualifications" name="qualifications" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Technical Competencies</label>
+        <textarea [(ngModel)]="selectedJob.technical_competencies" name="technical_competencies" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Salary Range</label>
+        <input type="text" [(ngModel)]="selectedJob.salary_range" name="salary_range" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      </div>
+      <div class="flex justify-end gap-2 pt-4 border-t border-gray-200">
+        <button type="button" (click)="closeEditModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md">
+          Cancel
+        </button>
+        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div *ngIf="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 9999;">
+  <div class="bg-white rounded-lg w-full max-w-md">
+    <div class="p-6">
+      <div class="text-center">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Delete Job</h3>
+        <p class="text-sm text-gray-500 mb-6">
+          Are you sure you want to delete this job posting? This action cannot be undone.
+        </p>
+        <div class="flex justify-center gap-4">
+          <button (click)="closeDeleteModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md">
+            Cancel
+          </button>
+          <button (click)="deleteJob()" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Job Modal -->
+<div *ngIf="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 9999;">
+  <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-semibold">Create New Job</h3>
+        <button (click)="closeCreateModal()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <form (ngSubmit)="createJob()" class="p-6 space-y-4">
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Position Title</label>
+        <input type="text" [(ngModel)]="newJob.position_title" name="position_title" required
+               style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
+        <select [(ngModel)]="newJob.department_id" name="department_id" required
+                style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="">Select Department</option>
+          <option *ngFor="let dept of departments" [value]="dept.id">{{dept.department_name}}</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Description</label>
+        <textarea [(ngModel)]="newJob.job_description" name="job_description" required
+                  style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; min-height: 100px;"></textarea>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Qualifications</label>
+        <textarea [(ngModel)]="newJob.qualifications" name="qualifications" required
+                  style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; min-height: 100px;"></textarea>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Technical Competencies</label>
+        <textarea [(ngModel)]="newJob.technical_competencies" name="technical_competencies"
+                  style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; min-height: 100px;"></textarea>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Salary Range</label>
+        <input type="text" [(ngModel)]="newJob.salary_range" name="salary_range"
+               style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employment Type</label>
+        <select [(ngModel)]="newJob.employment_type" name="employment_type" required
+                style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="Regular">Full-time</option>
+          <option value="Part_time">Part-time</option>
+          <option value="Contractual">Contract</option>
+          <option value="Temporary">Temporary</option>
+          <option value="Consultant">Consultant</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Number of Vacancies</label>
+        <input type="number" [(ngModel)]="newJob.num_vacancies" name="num_vacancies" required min="1"
+               style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Application Deadline</label>
+        <input type="date" [(ngModel)]="newJob.application_deadline" name="application_deadline" required
+               style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Posting Status</label>
+        <select [(ngModel)]="newJob.posting_status" name="posting_status" required
+                style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="Draft">Draft</option>
+          <option value="Published">Published</option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+        <button type="button" (click)="closeCreateModal()"
+                style="padding: 12px 24px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+          Cancel
+        </button>
+        <button type="submit"
+                style="padding: 12px 24px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+          Create Job
+        </button>
+      </div>
+    </form>
   </div>
 </div>
