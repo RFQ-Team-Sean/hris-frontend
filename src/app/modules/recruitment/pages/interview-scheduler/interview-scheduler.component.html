@@ -11,7 +11,7 @@
             <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Interview Scheduler</h1>
             <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage applicant interviews from screening to final decision</p>
           </div>
-          <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+          <button (click)="openScheduleModal()" style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
             + Schedule New Interview
           </button>
         </div>
@@ -22,7 +22,7 @@
         <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Interview Stage</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="stageFilter" (change)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Stages</option>
               <option>Phone Screening</option>
               <option>Technical Interview</option>
@@ -33,7 +33,7 @@
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Interview Status</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="statusFilter" (change)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Statuses</option>
               <option>Scheduled</option>
               <option>Completed</option>
@@ -44,7 +44,7 @@
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date Range</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="dateFilter" (change)="onFilterChange()" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Dates</option>
               <option>Today</option>
               <option>This Week</option>
@@ -56,7 +56,7 @@
           <div style="flex: 2; min-width: 300px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Applicants</label>
             <div style="position: relative;">
-              <input type="text" placeholder="Search by name, job title, or ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange($event)" placeholder="Search by name, job title, or ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -85,104 +85,58 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Interview 1 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
+              <tr *ngFor="let interview of filteredInterviews" style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/applicant1.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
+                      <img [src]="interview.applicantImage" [alt]="interview.applicantName" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div>
-                      <p style="font-weight: 500;">Maria Garcia</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">APP-2023-001</p>
+                      <p style="font-weight: 500;">{{interview.applicantName}}</p>
+                      <p style="font-size: 0.75rem; color: #6b7280;">{{interview.applicantId}}</p>
                     </div>
                   </div>
                 </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Senior Frontend Developer</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Technical Interview</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">John Smith (Tech Lead)</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{interview.jobTitle}}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{interview.stage}}</td>
+                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">{{interview.interviewer}}</td>
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div>Jun 15, 2023</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;">10:00 AM - 11:00 AM</div>
+                  <div>{{interview.date}}</div>
+                  <div style="font-size: 0.75rem; color: #6b7280;">{{interview.time}}</div>
                 </td>
                 <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                    Scheduled
+                  <span [ngStyle]="{
+                    'display': 'inline-flex',
+                    'align-items': 'center',
+                    'padding': '4px 8px',
+                    'border-radius': '9999px',
+                    'font-size': '0.75rem',
+                    'font-weight': '500',
+                    'background-color': interview.status === 'Scheduled' ? '#d1fae5' : 
+                                      interview.status === 'Completed' ? '#d1fae5' :
+                                      interview.status === 'Rescheduled' ? '#fef3c7' : '#fee2e2',
+                    'color': interview.status === 'Scheduled' ? '#065f46' :
+                            interview.status === 'Completed' ? '#065f46' :
+                            interview.status === 'Rescheduled' ? '#92400e' : '#991b1b'
+                  }">
+                    {{interview.status}}
                   </span>
                 </td>
                 <td style="padding: 16px; text-align: center;">
                   <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                    <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Reschedule</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Cancel</button>
-                  </div>
-                </td>
-              </tr>
-              
-              <!-- Interview 2 -->
-              <tr style="border-bottom: 1px solid #e5e7eb;">
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/applicant2.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <div>
-                      <p style="font-weight: 500;">James Wilson</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">APP-2023-002</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Product Designer</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">HR Interview</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Sarah Johnson (HR Manager)</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div>Jun 16, 2023</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;">2:00 PM - 3:00 PM</div>
-                </td>
-                <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #fef3c7; color: #92400e;">
-                    Rescheduled
-                  </span>
-                </td>
-                <td style="padding: 16px; text-align: center;">
-                  <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                    <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Reschedule</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Cancel</button>
-                  </div>
-                </td>
-              </tr>
-              
-              <!-- Interview 3 -->
-              <tr>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
-                      <img src="assets/applicant3.jpg" alt="Applicant" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <div>
-                      <p style="font-weight: 500;">Robert Chen</p>
-                      <p style="font-size: 0.75rem; color: #6b7280;">APP-2023-003</p>
-                    </div>
-                  </div>
-                </td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Cybersecurity Specialist</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Final Interview</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">Michael Brown (Director)</td>
-                <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
-                  <div>Jun 14, 2023</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;">9:30 AM - 10:30 AM</div>
-                </td>
-                <td style="padding: 16px; text-align: center;">
-                  <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background-color: #d1fae5; color: #065f46;">
-                    Completed
-                  </span>
-                </td>
-                <td style="padding: 16px; text-align: center;">
-                  <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
-                    <button style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Feedback</button>
-                    <button style="color: #16a34a; font-size: 0.875rem; font-weight: 500;">Hire</button>
+                    <button (click)="openViewModal(interview)" style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+                    <button *ngIf="interview.status !== 'Completed' && interview.status !== 'Cancelled'" 
+                            (click)="rescheduleInterview(interview)" 
+                            style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Reschedule</button>
+                    <button *ngIf="interview.status !== 'Completed' && interview.status !== 'Cancelled'" 
+                            (click)="cancelInterview(interview)" 
+                            style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Cancel</button>
+                    <button *ngIf="interview.status === 'Completed'" 
+                            (click)="openFeedbackModal(interview)" 
+                            style="color: #7c3aed; font-size: 0.875rem; font-weight: 500;">Feedback</button>
+                    <button *ngIf="interview.status === 'Completed'" 
+                            (click)="hireApplicant(interview)" 
+                            style="color: #16a34a; font-size: 0.875rem; font-weight: 500;">Hire</button>
                   </div>
                 </td>
               </tr>
@@ -192,15 +146,142 @@
   
         <!-- Pagination and Summary -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to 3 of 15 interviews</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">Showing {{(currentPage - 1) * itemsPerPage + 1}} to {{Math.min(currentPage * itemsPerPage, totalInterviews)}} of {{totalInterviews}} interviews</p>
           <div style="display: flex; gap: 8px;">
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+            <button (click)="onPageChange(currentPage - 1)" 
+                    [disabled]="currentPage === 1"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
+            <button *ngFor="let page of [1, 2, 3]" 
+                    (click)="onPageChange(page)"
+                    [style.background-color]="currentPage === page ? '#2563eb' : 'transparent'"
+                    [style.color]="currentPage === page ? 'white' : '#6b7280'"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">{{page}}</button>
+            <button (click)="onPageChange(currentPage + 1)" 
+                    [disabled]="currentPage * itemsPerPage >= totalInterviews"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+<!-- Schedule Interview Modal -->
+<div *ngIf="showScheduleModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+  <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+    <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Schedule New Interview</h2>
+    <form [formGroup]="scheduleForm" (ngSubmit)="onSubmitSchedule()">
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Applicant Name</label>
+        <input type="text" formControlName="applicantName" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Job Title</label>
+        <input type="text" formControlName="jobTitle" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Interview Stage</label>
+        <select formControlName="stage" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="">Select Stage</option>
+          <option>Phone Screening</option>
+          <option>Technical Interview</option>
+          <option>HR Interview</option>
+          <option>Final Interview</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Interviewer</label>
+        <input type="text" formControlName="interviewer" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date</label>
+        <input type="date" formControlName="date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Time</label>
+        <input type="time" formControlName="time" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button type="button" (click)="closeScheduleModal()" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">Cancel</button>
+        <button type="submit" [disabled]="!scheduleForm.valid" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">Schedule Interview</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- View Interview Modal -->
+<div *ngIf="showViewModal && selectedInterview" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+  <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+    <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Interview Details</h2>
+    <div style="margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <div style="width: 48px; height: 48px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
+          <img [src]="selectedInterview.applicantImage" [alt]="selectedInterview.applicantName" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div>
+          <p style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">{{selectedInterview.applicantName}}</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">{{selectedInterview.applicantId}}</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Job Title</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.jobTitle}}</p>
+        </div>
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Interview Stage</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.stage}}</p>
+        </div>
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Interviewer</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.interviewer}}</p>
+        </div>
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Status</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.status}}</p>
+        </div>
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Date</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.date}}</p>
+        </div>
+        <div>
+          <p style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">Time</p>
+          <p style="font-size: 0.875rem; color: #1f2937;">{{selectedInterview.time}}</p>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end;">
+      <button (click)="closeViewModal()" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback Modal -->
+<div *ngIf="showFeedbackModal && selectedInterview" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+  <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 500px;">
+    <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Interview Feedback</h2>
+    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmitFeedback()">
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Rating (1-5)</label>
+        <input type="number" formControlName="rating" min="1" max="5" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Notes</label>
+        <textarea formControlName="notes" rows="4" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;"></textarea>
+      </div>
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Recommendation</label>
+        <select formControlName="recommendation" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="">Select Recommendation</option>
+          <option>Strong Hire</option>
+          <option>Hire</option>
+          <option>No Hire</option>
+          <option>Strong No Hire</option>
+        </select>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button type="button" (click)="closeFeedbackModal()" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">Cancel</button>
+        <button type="submit" [disabled]="!feedbackForm.valid" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">Submit Feedback</button>
+      </div>
+    </form>
+  </div>
+</div>
