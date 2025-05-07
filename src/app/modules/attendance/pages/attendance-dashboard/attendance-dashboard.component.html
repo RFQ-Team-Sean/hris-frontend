@@ -13,12 +13,12 @@
       <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date</label>
-          <input type="date" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;" [value]="currentDate">
+          <input type="date" [(ngModel)]="currentDate" (change)="onDateChange(currentDate)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
         </div>
         
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
-          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <select [(ngModel)]="selectedDepartment" (change)="onDepartmentChange(selectedDepartment)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <option value="">All Departments</option>
             <ng-container *ngIf="departments$ | async as departments">
               <option *ngFor="let dept of departments" [value]="dept.id">{{dept.department_name}}</option>
@@ -28,18 +28,14 @@
         
         <div style="flex: 1; min-width: 200px;">
           <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
-          <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <select [(ngModel)]="selectedStatus" (change)="onStatusChange(selectedStatus)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             <option value="">All Status</option>
-            <option>Present</option>
-            <option>Absent</option>
-            <option>Late</option>
-            <option>On_Leave</option>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+            <option value="Late">Late</option>
+            <option value="On_Leave">On Leave</option>
           </select>
         </div>
-        
-        <button style="padding: 12px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
-          Apply Filters
-        </button>
       </div>
     </div>
 
@@ -133,7 +129,7 @@
                   </span>
                 </td>
                 <td style="padding: 16px; text-align: center;">
-                  <button (click)="viewAttendance(record.id)" style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
+                  <button (click)="viewAttendance(record)" style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">View</button>
                 </td>
               </tr>
             </ng-container>
@@ -143,16 +139,95 @@
 
       <!-- Pagination -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-        <ng-container *ngIf="attendanceRecords$ | async as records">
-          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to {{records.length}} of {{records.length}} records</p>
-        </ng-container>
+        <p style="font-size: 0.875rem; color: #6b7280;">
+          Showing <span style="font-weight: 500; color: #111827;">{{ (currentPage - 1) * pageSize + 1 }}</span> to 
+          <span style="font-weight: 500; color: #111827;">{{ Math.min(currentPage * pageSize, totalItems) }}</span> of 
+          <span style="font-weight: 500; color: #111827;">{{ totalItems }}</span> records
+        </p>
         <div style="display: flex; gap: 8px;">
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+          <button (click)="previousPage()" [disabled]="currentPage === 1" 
+                  style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; display: flex; align-items: center; gap: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Previous
+          </button>
+          <button *ngFor="let page of getPageNumbers()" 
+                  (click)="goToPage(page)"
+                  [style.backgroundColor]="page === currentPage ? '#5046e5' : 'transparent'"
+                  [style.color]="page === currentPage ? 'white' : '#374151'"
+                  style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+            {{ page }}
+          </button>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+                  style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; display: flex; align-items: center; gap: 4px;">
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Modal -->
+<div *ngIf="showViewModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;">
+  <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="font-size: 1.5rem; font-weight: 600; color: #111827;">Attendance Details</h2>
+      <button (click)="closeViewModal()" style="padding: 8px; border-radius: 6px; color: #6b7280; hover:bg-gray-100;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div *ngIf="selectedRecord" style="display: grid; gap: 16px;">
+      <!-- Employee Info -->
+      <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+          <span style="font-weight: 600; color: #4b5563;">{{ selectedRecord.employeeId }}</span>
+        </div>
+        <div>
+          <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">{{ selectedRecord.name }}</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">{{ selectedRecord.department }}</p>
+        </div>
+      </div>
+
+      <!-- Time Details -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Time In</p>
+          <p style="font-weight: 500; color: #111827;">{{ selectedRecord.timeIn }}</p>
+        </div>
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Time Out</p>
+          <p style="font-weight: 500; color: #111827;">{{ selectedRecord.timeOut }}</p>
+        </div>
+      </div>
+
+      <!-- Hours and Status -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Hours Worked</p>
+          <p style="font-weight: 500; color: #111827;">{{ selectedRecord.hoursWorked }}</p>
+        </div>
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Status</p>
+          <span [style.background-color]="getStatusColor(selectedRecord.status).background"
+                [style.color]="getStatusColor(selectedRecord.status).text"
+                style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+            {{ selectedRecord.status }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Additional Info -->
+      <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Biometric Verification</p>
+        <p style="font-weight: 500; color: #111827;">{{ selectedRecord.biometricUsed ? 'Verified' : 'Not Verified' }}</p>
       </div>
     </div>
   </div>

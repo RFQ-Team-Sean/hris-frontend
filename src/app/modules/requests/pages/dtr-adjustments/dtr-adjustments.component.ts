@@ -47,6 +47,9 @@ export class DtrAdjustmentsComponent implements OnInit {
   selectedDate: string = '';
   personnel: any[] = [];
   departments: any[] = [];
+  showViewModal = false;
+  selectedAdjustment: DtrAdjustment | null = null;
+  Math = Math;
 
   constructor(private dummyDataService: DummyDataService) {}
 
@@ -78,20 +81,21 @@ export class DtrAdjustmentsComponent implements OnInit {
   }
 
   loadAdjustments(): void {
-    const rawAdjustments = this.dummyDataService.getDtrAdjustmentRequests();
-    this.adjustments = rawAdjustments.map(adj => ({
-      ...adj,
-      id: Number(adj.id),
-      personnel_id: Number(adj.personnel_id),
-      log_date: new Date(adj.log_date),
-      original_time_in: new Date(adj.original_time_in),
-      original_time_out: new Date(adj.original_time_out),
-      requested_time_in: new Date(adj.requested_time_in),
-      requested_time_out: new Date(adj.requested_time_out),
-      request_date: new Date(adj.request_date),
-      status: adj.status as 'Pending' | 'Approved' | 'Rejected' | ''
-    }));
-    this.updatePaginatedData();
+    this.dummyDataService.getDtrAdjustmentRequests().subscribe(rawAdjustments => {
+      this.adjustments = rawAdjustments.map(adj => ({
+        ...adj,
+        id: Number(adj.id),
+        personnel_id: Number(adj.personnel_id),
+        log_date: new Date(adj.log_date),
+        original_time_in: new Date(adj.original_time_in),
+        original_time_out: new Date(adj.original_time_out),
+        requested_time_in: new Date(adj.requested_time_in),
+        requested_time_out: new Date(adj.requested_time_out),
+        request_date: new Date(adj.request_date),
+        status: adj.status as 'Pending' | 'Approved' | 'Rejected' | ''
+      }));
+      this.updatePaginatedData();
+    });
   }
 
   updatePaginatedData(): void {
@@ -102,12 +106,15 @@ export class DtrAdjustmentsComponent implements OnInit {
     }
 
     if (this.selectedDate) {
-      filteredData = filteredData.filter(adj => adj.log_date.toISOString().split('T')[0] === this.selectedDate);
+      const selectedDateStr = new Date(this.selectedDate).toISOString().split('T')[0];
+      filteredData = filteredData.filter(adj => 
+        adj.log_date.toISOString().split('T')[0] === selectedDateStr
+      );
     }
 
     this.totalItems = filteredData.length;
     this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-    this.currentPage = Math.min(this.currentPage, this.totalPages);
+    this.currentPage = Math.min(this.currentPage, this.totalPages || 1);
 
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.paginatedData = filteredData.slice(startIndex, startIndex + this.pageSize);
@@ -115,7 +122,15 @@ export class DtrAdjustmentsComponent implements OnInit {
 
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxPagesToShow = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
@@ -186,7 +201,25 @@ export class DtrAdjustmentsComponent implements OnInit {
   }
 
   viewRequest(id: number): void {
-    // Implement view request functionality
-    console.log('View request:', id);
+    const adjustment = this.adjustments.find(adj => adj.id === id);
+    if (adjustment) {
+      this.selectedAdjustment = adjustment;
+      this.showViewModal = true;
+    }
+  }
+
+  closeViewModal(): void {
+    this.showViewModal = false;
+    this.selectedAdjustment = null;
+  }
+
+  onStatusChange(): void {
+    this.currentPage = 1;
+    this.updatePaginatedData();
+  }
+
+  onDateChange(): void {
+    this.currentPage = 1;
+    this.updatePaginatedData();
   }
 } 

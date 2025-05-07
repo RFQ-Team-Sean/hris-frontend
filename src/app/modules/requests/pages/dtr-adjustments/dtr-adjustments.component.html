@@ -16,7 +16,7 @@
           <div style="display: flex; gap: 16px;">
             <div>
               <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
-              <select [(ngModel)]="selectedStatus" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <select [(ngModel)]="selectedStatus" (change)="onStatusChange()" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
                 <option value="">All Status</option>
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
@@ -24,8 +24,8 @@
               </select>
             </div>
             <div>
-              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date Range</label>
-              <input type="date" [(ngModel)]="selectedDate" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date</label>
+              <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
             </div>
           </div>
           <button style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;">
@@ -117,7 +117,7 @@
         <!-- Pagination -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #e5e7eb;">
           <div style="font-size: 0.875rem; color: #6b7280;">
-            Showing <span style="font-weight: 500; color: #111827;">{{ currentPage }}</span> to <span style="font-weight: 500; color: #111827;">{{ pageSize }}</span> of <span style="font-weight: 500; color: #111827;">{{ totalItems }}</span> entries
+            Showing <span style="font-weight: 500; color: #111827;">{{ (currentPage - 1) * pageSize + 1 }}</span> to <span style="font-weight: 500; color: #111827;">{{ Math.min(currentPage * pageSize, totalItems) }}</span> of <span style="font-weight: 500; color: #111827;">{{ totalItems }}</span> entries
           </div>
           <div style="display: flex; gap: 8px;">
             <button (click)="previousPage()" [disabled]="currentPage === 1" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
@@ -143,4 +143,69 @@
         </div>
       </div>
     </div>
-  </div>    
+</div>
+
+<!-- View Modal -->
+<div *ngIf="showViewModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;">
+  <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="font-size: 1.5rem; font-weight: 600; color: #111827;">DTR Adjustment Details</h2>
+      <button (click)="closeViewModal()" style="padding: 8px; border-radius: 6px; color: #6b7280; hover:bg-gray-100;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div *ngIf="selectedAdjustment" style="display: grid; gap: 16px;">
+      <!-- Employee Info -->
+      <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+          <span style="font-weight: 600; color: #4b5563;">{{ selectedAdjustment.personnel_id }}</span>
+        </div>
+        <div>
+          <p style="font-weight: 500; color: #111827; margin-bottom: 4px;">{{ getEmployeeName(selectedAdjustment.personnel_id) }}</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">{{ getEmployeeDepartment(selectedAdjustment.personnel_id) }}</p>
+        </div>
+      </div>
+
+      <!-- Time Details -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Current Record</p>
+          <p style="font-weight: 500; color: #111827;">{{ formatTime(selectedAdjustment.original_time_in) }} - {{ formatTime(selectedAdjustment.original_time_out) }}</p>
+        </div>
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Requested Adjustment</p>
+          <p style="font-weight: 500; color: #111827;">{{ formatTime(selectedAdjustment.requested_time_in) }} - {{ formatTime(selectedAdjustment.requested_time_out) }}</p>
+        </div>
+      </div>
+
+      <!-- Date and Status -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Date</p>
+          <p style="font-weight: 500; color: #111827;">{{ formatDate(selectedAdjustment.log_date) }}</p>
+        </div>
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Status</p>
+          <span [ngClass]="getStatusBadgeClass(selectedAdjustment.status)" style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+            {{ selectedAdjustment.status }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Reason -->
+      <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Reason for Adjustment</p>
+        <p style="font-weight: 500; color: #111827;">{{ selectedAdjustment.reason }}</p>
+      </div>
+
+      <!-- Request Date -->
+      <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+        <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Request Date</p>
+        <p style="font-weight: 500; color: #111827;">{{ formatDate(selectedAdjustment.request_date) }}</p>
+      </div>
+    </div>
+  </div>
+</div>    

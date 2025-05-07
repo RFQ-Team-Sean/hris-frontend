@@ -196,6 +196,96 @@ export class DummyDataService {
       total_hours: 8, 
       status: 'Present', 
       biometric_used: true 
+    },
+    { 
+      id: '2', 
+      personnel_id: '2', 
+      log_date: new Date('2024-01-01'), 
+      time_in: new Date('2024-01-01T09:15:00'), 
+      time_out: new Date('2024-01-01T17:30:00'), 
+      total_hours: 8.25, 
+      status: 'Late', 
+      biometric_used: true 
+    },
+    { 
+      id: '3', 
+      personnel_id: '3', 
+      log_date: new Date('2024-01-01'), 
+      time_in: new Date('2024-01-01T08:45:00'), 
+      time_out: new Date('2024-01-01T17:15:00'), 
+      total_hours: 8.5, 
+      status: 'Present', 
+      biometric_used: true 
+    },
+    { 
+      id: '4', 
+      personnel_id: '4', 
+      log_date: new Date('2024-01-01'), 
+      time_in: null, 
+      time_out: null, 
+      total_hours: 0, 
+      status: 'Absent', 
+      biometric_used: false 
+    },
+    { 
+      id: '5', 
+      personnel_id: '5', 
+      log_date: new Date('2024-01-01'), 
+      time_in: new Date('2024-01-01T08:50:00'), 
+      time_out: new Date('2024-01-01T17:10:00'), 
+      total_hours: 8.33, 
+      status: 'Present', 
+      biometric_used: true 
+    },
+    { 
+      id: '6', 
+      personnel_id: '1', 
+      log_date: new Date('2024-01-02'), 
+      time_in: new Date('2024-01-02T08:58:00'), 
+      time_out: new Date('2024-01-02T17:02:00'), 
+      total_hours: 8.07, 
+      status: 'Present', 
+      biometric_used: true 
+    },
+    { 
+      id: '7', 
+      personnel_id: '2', 
+      log_date: new Date('2024-01-02'), 
+      time_in: new Date('2024-01-02T09:20:00'), 
+      time_out: new Date('2024-01-02T17:35:00'), 
+      total_hours: 8.25, 
+      status: 'Late', 
+      biometric_used: true 
+    },
+    { 
+      id: '8', 
+      personnel_id: '3', 
+      log_date: new Date('2024-01-02'), 
+      time_in: null, 
+      time_out: null, 
+      total_hours: 0, 
+      status: 'On_Leave', 
+      biometric_used: false 
+    },
+    { 
+      id: '9', 
+      personnel_id: '4', 
+      log_date: new Date('2024-01-02'), 
+      time_in: new Date('2024-01-02T08:52:00'), 
+      time_out: new Date('2024-01-02T17:08:00'), 
+      total_hours: 8.27, 
+      status: 'Present', 
+      biometric_used: true 
+    },
+    { 
+      id: '10', 
+      personnel_id: '5', 
+      log_date: new Date('2024-01-02'), 
+      time_in: new Date('2024-01-02T09:10:00'), 
+      time_out: new Date('2024-01-02T17:20:00'), 
+      total_hours: 8.17, 
+      status: 'Late', 
+      biometric_used: true 
     }
   ];
 
@@ -851,8 +941,8 @@ export class DummyDataService {
     return of(this.attendanceLogs);
   }
 
-  getDtrAdjustmentRequests() {
-    return this.dtrAdjustmentRequests;
+  getDtrAdjustmentRequests(): Observable<any[]> {
+    return of(this.dtrAdjustmentRequests);
   }
 
   getLeaveTypes(): Observable<any[]> {

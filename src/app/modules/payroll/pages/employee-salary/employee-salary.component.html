@@ -11,7 +11,7 @@
             <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 8px; color: white;">Employee Salaries</h1>
             <p style="color: white; margin-bottom: 0; opacity: 0.9;">Manage employee compensation, benefits, and deductions</p>
           </div>
-          <button style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
+          <button (click)="openModal({}, false)" style="padding: 10px 16px; background-color: white; color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">
             + Add New Salary
           </button>
         </div>
@@ -22,26 +22,26 @@
         <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedDepartment" (change)="onDepartmentChange(selectedDepartment)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Departments</option>
-              <option *ngFor="let dept of departments$ | async">{{ dept.department_name }}</option>
+              <option *ngFor="let dept of departments$ | async" [value]="dept.id">{{ dept.department_name }}</option>
             </select>
           </div>
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employee Status</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedStatus" (change)="onStatusChange(selectedStatus)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Statuses</option>
-              <option>Active</option>
-              <option>Inactive</option>
-              <option>On Leave</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="On Leave">On Leave</option>
             </select>
           </div>
           
           <div style="flex: 2; min-width: 300px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Search Employee</label>
             <div style="position: relative;">
-              <input type="text" placeholder="Search by name or employee ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange(searchQuery)" placeholder="Search by name or employee ID" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <svg style="position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: #6b7280;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -72,7 +72,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let employee of employees$ | async" style="border-bottom: 1px solid #e5e7eb;">
+              <tr *ngFor="let employee of filteredEmployees$ | async" style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 16px; font-size: 0.875rem; color: #1f2937;">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 32px; height: 32px; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden;">
@@ -99,8 +99,8 @@
                 </td>
                 <td style="padding: 16px; text-align: center;">
                   <div style="display: flex; justify-content: center; gap: 8px;">
-                    <button style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
-                    <button style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
+                    <button (click)="openModal(employee, true)" style="color: #2563eb; font-size: 0.875rem; font-weight: 500;">Edit</button>
+                    <button (click)="deleteEmployee(employee)" style="color: #dc2626; font-size: 0.875rem; font-weight: 500;">Delete</button>
                   </div>
                 </td>
               </tr>
@@ -110,12 +110,120 @@
   
         <!-- Pagination and Summary -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-          <p style="font-size: 0.875rem; color: #6b7280;">Showing 1 to {{ (employees$ | async)?.length }} of {{ (employees$ | async)?.length }} employees</p>
+          <p style="font-size: 0.875rem; color: #6b7280;">
+            Showing <span style="font-weight: 500; color: #111827;">{{ (currentPage - 1) * pageSize + 1 }}</span> to 
+            <span style="font-weight: 500; color: #111827;">{{ Math.min(currentPage * pageSize, totalItems) }}</span> of 
+            <span style="font-weight: 500; color: #111827;">{{ totalItems }}</span> employees
+          </p>
           <div style="display: flex; gap: 8px;">
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Previous</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+            <button (click)="previousPage()" [disabled]="currentPage === 1" 
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; display: flex; align-items: center; gap: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              Previous
+            </button>
+            <button *ngFor="let page of getPageNumbers()" 
+                    (click)="goToPage(page)"
+                    [style.backgroundColor]="page === currentPage ? '#5046e5' : 'transparent'"
+                    [style.color]="page === currentPage ? 'white' : '#374151'"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+              {{ page }}
+            </button>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280; display: flex; align-items: center; gap: 4px;">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit/View Modal -->
+  <div *ngIf="showModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;">
+    <div style="background-color: white; border-radius: 8px; padding: 24px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: #111827;">{{ isEditMode ? 'Edit' : 'Add' }} Employee Salary</h2>
+        <button (click)="closeModal()" style="padding: 8px; border-radius: 6px; color: #6b7280; hover:bg-gray-100;">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div *ngIf="selectedEmployee" style="display: grid; gap: 16px;">
+        <!-- Employee Info -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">First Name</label>
+            <input type="text" [(ngModel)]="selectedEmployee.first_name" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Last Name</label>
+            <input type="text" [(ngModel)]="selectedEmployee.last_name" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+        </div>
+
+        <!-- Department and Position -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
+            <select [(ngModel)]="selectedEmployee.department_id" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="">Select Department</option>
+              <option *ngFor="let dept of departments$ | async" [value]="dept.id">{{ dept.department_name }}</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Position</label>
+            <input type="text" [(ngModel)]="selectedEmployee.designation" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+        </div>
+
+        <!-- Salary Details -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Basic Salary</label>
+            <input type="number" [(ngModel)]="selectedEmployee.salary" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Allowances</label>
+            <input type="number" [(ngModel)]="selectedEmployee.allowances" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Deductions</label>
+            <input type="number" [(ngModel)]="selectedEmployee.deductions" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
+            <select [(ngModel)]="selectedEmployee.status" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="On Leave">On Leave</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Net Salary Preview -->
+        <div style="padding: 16px; background-color: #f9fafb; border-radius: 6px;">
+          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 8px;">Net Salary</p>
+          <p style="font-size: 1.25rem; font-weight: 600; color: #111827;">
+            {{ formatCurrency(calculateNetSalary(selectedEmployee.salary || 0, selectedEmployee.allowances || 0, selectedEmployee.deductions || 0)) }}
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button (click)="closeModal()" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">Cancel</button>
+          <button (click)="saveEmployee()" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+            {{ isEditMode ? 'Update' : 'Add' }} Employee
+          </button>
         </div>
       </div>
     </div>
