@@ -15,26 +15,25 @@
         <div style="display: flex; gap: 16px;">
           <div>
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Status</label>
-            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select (change)="onStatusFilterChange($event)" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
             </select>
           </div>
           <div>
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Leave Type</label>
-            <select style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select (change)="onLeaveTypeFilterChange($event)" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Types</option>
-              <option value="vacation">Vacation</option>
-              <option value="sick">Sick</option>
-              <option value="personal">Personal</option>
-              <option value="bereavement">Bereavement</option>
+              <ng-container *ngIf="leaveTypes$ | async as leaveTypes">
+                <option *ngFor="let type of leaveTypes" [value]="type.id">{{type.leave_type_name}}</option>
+              </ng-container>
             </select>
           </div>
           <div>
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Date Range</label>
-            <input type="date" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <input type="date" (change)="onDateFilterChange($event)" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
           </div>
         </div>
         <button style="padding: 8px 16px; background-color: #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;">
@@ -61,7 +60,7 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngIf="leaveApplicationsWithDetails$ | async as applications">
+            <ng-container *ngIf="filteredApplications$ | async as applications">
               <tr *ngFor="let app of applications" style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 16px;">
                   <div style="display: flex; align-items: center; gap: 12px;">
@@ -94,7 +93,7 @@
                 <td style="padding: 16px;">
                   <div style="display: flex; gap: 8px;">
                     <button *ngIf="app.status === 'Pending'"
-                            (click)="approveLeave(app.id)"
+                            (click)="showApproveConfirmation(app)"
                             style="padding: 6px 12px; background-color: #ecfdf5; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #065f46; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -102,14 +101,14 @@
                       Approve
                     </button>
                     <button *ngIf="app.status === 'Pending'"
-                            (click)="rejectLeave(app.id)"
+                            (click)="showRejectConfirmation(app)"
                             style="padding: 6px 12px; background-color: #fee2e2; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #b91c1c; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                       </svg>
                       Reject
                     </button>
-                    <button (click)="viewLeave(app.id)"
+                    <button (click)="showViewModal(app)"
                             style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 0.75rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
                       <svg xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -128,25 +127,32 @@
       <!-- Pagination -->
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #e5e7eb;">
         <div style="font-size: 0.875rem; color: #6b7280;">
-          Showing <span style="font-weight: 500; color: #111827;">1</span> to <span style="font-weight: 500; color: #111827;">4</span> of <span style="font-weight: 500; color: #111827;">12</span> entries
+          Showing <span style="font-weight: 500; color: #111827;">{{(currentPage - 1) * itemsPerPage + 1}}</span> to 
+          <span style="font-weight: 500; color: #111827;">{{endIndex}}</span> of 
+          <span style="font-weight: 500; color: #111827;">{{totalItems}}</span> entries
         </div>
         <div style="display: flex; gap: 8px;">
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+          <button [disabled]="currentPage === 1"
+                  (click)="onPageChange(currentPage - 1)"
+                  style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;"
+                  [style.opacity]="currentPage === 1 ? '0.5' : '1'">
             <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
             Previous
           </button>
-          <button style="padding: 8px 12px; border: 1px solid #5046e5; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: white; background-color: #5046e5;">
-            1
-          </button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
-            2
-          </button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
-            3
-          </button>
-          <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;">
+          <ng-container *ngFor="let page of pages">
+            <button (click)="onPageChange(page)"
+                    [style.background-color]="page === currentPage ? '#5046e5' : 'transparent'"
+                    [style.color]="page === currentPage ? 'white' : '#374151'"
+                    style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+              {{page}}
+            </button>
+          </ng-container>
+          <button [disabled]="currentPage === totalPages"
+                  (click)="onPageChange(currentPage + 1)"
+                  style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151; display: flex; align-items: center; gap: 4px;"
+                  [style.opacity]="currentPage === totalPages ? '0.5' : '1'">
             Next
             <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -157,3 +163,21 @@
     </div>
   </div>
 </div>
+
+<!-- View Modal -->
+<app-leave-application-modal
+  [isOpen]="isViewModalOpen"
+  [application]="selectedApplication"
+  [isProcessing]="isProcessing"
+  (close)="closeViewModal()">
+</app-leave-application-modal>
+
+<!-- Confirmation Modal -->
+<app-leave-confirmation-modal
+  [isOpen]="isConfirmModalOpen"
+  [action]="confirmAction"
+  [application]="selectedApplication"
+  [isProcessing]="isProcessing"
+  (close)="closeConfirmModal()"
+  (confirm)="confirmAction === 'approve' ? approveLeave() : rejectLeave()">
+</app-leave-confirmation-modal>
