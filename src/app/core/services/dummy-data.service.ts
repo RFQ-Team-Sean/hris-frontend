@@ -730,13 +730,125 @@ export class DummyDataService {
 
   // Audit Logs
   private auditLogs = [
-    { 
-      id: '1', 
-      user_id: '1', 
-      action_type: 'Login', 
-      table_affected: 'User', 
-      record_id: '1', 
-      timestamp: new Date() 
+    {
+      id: 1,
+      timestamp: new Date('2024-05-15T10:45:23'),
+      action: 'Payslip Generated',
+      employee: {
+        name: 'Juan Dela Cruz',
+        id: 'EMP-2023-001'
+      },
+      details: 'May 2024 payslip generated with net pay of ₱46,250.00',
+      performedBy: {
+        name: 'Maria Santos',
+        role: 'HR Manager'
+      },
+      ipAddress: '192.168.1.105'
+    },
+    {
+      id: 2,
+      timestamp: new Date('2024-05-14T15:22:17'),
+      action: 'Salary Updated',
+      employee: {
+        name: 'Maria Santos',
+        id: 'EMP-2023-002'
+      },
+      details: 'Basic salary updated from ₱48,000.00 to ₱50,000.00',
+      performedBy: {
+        name: 'Admin User',
+        role: 'System Admin'
+      },
+      ipAddress: '192.168.1.100'
+    },
+    {
+      id: 3,
+      timestamp: new Date('2024-05-14T09:15:42'),
+      action: 'Deduction Added',
+      employee: {
+        name: 'Pedro Reyes',
+        id: 'EMP-2023-003'
+      },
+      details: 'Added SSS loan deduction of ₱1,200.00',
+      performedBy: {
+        name: 'Juan Dela Cruz',
+        role: 'Payroll Officer'
+      },
+      ipAddress: '192.168.1.120'
+    },
+    {
+      id: 4,
+      timestamp: new Date('2024-05-13T11:30:05'),
+      action: 'Bonus Added',
+      employee: {
+        name: 'All Employees',
+        id: 'Company-wide'
+      },
+      details: 'Added performance bonus (5% of basic salary)',
+      performedBy: {
+        name: 'System',
+        role: 'Automated Process'
+      },
+      ipAddress: 'System'
+    },
+    {
+      id: 5,
+      timestamp: new Date('2024-05-12T14:20:33'),
+      action: 'Payslip Generated',
+      employee: {
+        name: 'Ana Garcia',
+        id: 'EMP-2023-004'
+      },
+      details: 'May 2024 payslip generated with net pay of ₱42,500.00',
+      performedBy: {
+        name: 'Maria Santos',
+        role: 'HR Manager'
+      },
+      ipAddress: '192.168.1.105'
+    },
+    {
+      id: 6,
+      timestamp: new Date('2024-05-12T09:45:12'),
+      action: 'Salary Updated',
+      employee: {
+        name: 'Carlos Reyes',
+        id: 'EMP-2023-005'
+      },
+      details: 'Basic salary updated from ₱45,000.00 to ₱47,000.00',
+      performedBy: {
+        name: 'Admin User',
+        role: 'System Admin'
+      },
+      ipAddress: '192.168.1.100'
+    },
+    {
+      id: 7,
+      timestamp: new Date('2024-05-11T16:30:45'),
+      action: 'Deduction Added',
+      employee: {
+        name: 'Maria Santos',
+        id: 'EMP-2023-002'
+      },
+      details: 'Added HDMF loan deduction of ₱2,000.00',
+      performedBy: {
+        name: 'Juan Dela Cruz',
+        role: 'Payroll Officer'
+      },
+      ipAddress: '192.168.1.120'
+    },
+    {
+      id: 8,
+      timestamp: new Date('2024-05-11T10:15:22'),
+      action: 'Bonus Added',
+      employee: {
+        name: 'IT Department',
+        id: 'DEPT-IT'
+      },
+      details: 'Added project completion bonus (10% of basic salary)',
+      performedBy: {
+        name: 'System',
+        role: 'Automated Process'
+      },
+      ipAddress: 'System'
     }
   ];
 
