@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DummyDataService } from '../../../../core/services/dummy-data.service';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
 import { WorkSchedule, PersonnelSchedule } from '../../../../core/models/attendance.model';
+import { FormsModule } from '@angular/forms';
 
 interface Personnel {
   id: string;
@@ -20,6 +21,7 @@ interface ScheduleData {
   id: string;
   employeeName: string;
   department: string;
+  departmentId: string;
   schedule: {
     mon: { type: string; shift: string };
     tue: { type: string; shift: string };
@@ -33,19 +35,40 @@ interface ScheduleData {
   endDate: Date | null;
 }
 
+interface FilterState {
+  department: string;
+  shiftType: string;
+  schedulePeriod: string;
+}
+
+interface ScheduleForm {
+  employeeId: string;
+  scheduleId: string;
+  startDate: Date;
+  endDate: Date | null;
+}
+
 @Component({
   selector: 'app-work-schedule-management',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './work-schedule-management.component.html',
   styleUrls: ['./work-schedule-management.component.scss']
 })
 export class WorkScheduleManagementComponent implements OnInit {
   // Observables for data
   workSchedules$!: Observable<WorkSchedule[]>;
-  personnelSchedules$!: Observable<PersonnelSchedule[]>;
+  private personnelSchedulesSubject = new BehaviorSubject<PersonnelSchedule[]>([]);
+  personnelSchedules$ = this.personnelSchedulesSubject.asObservable();
   personnel$!: Observable<Personnel[]>;
   departments$!: Observable<Department[]>;
+
+  // Filter state
+  private filterState = new BehaviorSubject<FilterState>({
+    department: '',
+    shiftType: '',
+    schedulePeriod: 'May 27 - June 2, 2024'
+  });
 
   // Combined data for the view
   scheduleData$!: Observable<ScheduleData[]>;
@@ -53,37 +76,76 @@ export class WorkScheduleManagementComponent implements OnInit {
   eveningShiftCount$!: Observable<number>;
   nightShiftCount$!: Observable<number>;
 
+  // Filter values for template
+  selectedDepartment = '';
+  selectedShiftType = '';
+  selectedSchedulePeriod = 'May 27 - June 2, 2024';
+
+  // Modal state
+  showCreateModal = false;
+  newSchedule: ScheduleForm = {
+    employeeId: '',
+    scheduleId: '',
+    startDate: new Date(),
+    endDate: null
+  };
+
   constructor(private dummyDataService: DummyDataService) {}
 
   ngOnInit() {
     // Initialize observables
     this.workSchedules$ = this.dummyDataService.getWorkSchedules();
-    this.personnelSchedules$ = this.dummyDataService.getPersonnelSchedules();
+    this.dummyDataService.getPersonnelSchedules().subscribe(schedules => {
+      this.personnelSchedulesSubject.next(schedules);
+    });
     this.personnel$ = this.dummyDataService.getPersonnel();
     this.departments$ = this.dummyDataService.getDepartments();
 
-    // Combine the data for the view
+    // Combine the data for the view with filters
     this.scheduleData$ = combineLatest([
       this.personnelSchedules$,
       this.workSchedules$,
       this.personnel$,
-      this.departments$
+      this.departments$,
+      this.filterState
     ]).pipe(
-      map(([personnelSchedules, workSchedules, personnel, departments]) => {
-        return personnelSchedules.map(schedule => {
-          const workSchedule = workSchedules.find(ws => ws.id === schedule.schedule_id);
-          const employee = personnel.find(p => p.id === schedule.personnel_id);
-          const department = departments.find(d => d.id === employee?.department_id);
-          
-          return {
-            id: schedule.id,
-            employeeName: `${employee?.first_name} ${employee?.last_name}`,
-            department: department?.department_name || 'Unknown',
-            schedule: this.formatSchedule(workSchedule),
-            startDate: schedule.start_date,
-            endDate: schedule.end_date
-          };
-        });
+      map(([personnelSchedules, workSchedules, personnel, departments, filters]) => {
+        return personnelSchedules
+          .map(schedule => {
+            const workSchedule = workSchedules.find(ws => ws.id === schedule.schedule_id);
+            const employee = personnel.find(p => p.id === schedule.personnel_id);
+            const department = departments.find(d => d.id === employee?.department_id);
+            
+            return {
+              id: schedule.id,
+              employeeName: `${employee?.first_name} ${employee?.last_name}`,
+              department: department?.department_name || 'Unknown',
+              departmentId: department?.id || '',
+              schedule: this.formatSchedule(workSchedule),
+              startDate: schedule.start_date,
+              endDate: schedule.end_date
+            };
+          })
+          .filter(data => {
+            // Apply department filter
+            if (filters.department && data.departmentId !== filters.department) {
+              return false;
+            }
+            
+            // Apply shift type filter
+            if (filters.shiftType) {
+              const shiftType = filters.shiftType.toLowerCase();
+              const scheduleDays = Object.values(data.schedule) as { type: string; shift: string }[];
+              const hasMatchingShift = scheduleDays.some(day => 
+                day.type.toLowerCase() === shiftType
+              );
+              if (!hasMatchingShift) {
+                return false;
+              }
+            }
+            
+            return true;
+          });
       })
     );
 
@@ -99,6 +161,30 @@ export class WorkScheduleManagementComponent implements OnInit {
     this.nightShiftCount$ = this.scheduleData$.pipe(
       map(data => data.filter(s => s.schedule.mon.type === 'night').length)
     );
+  }
+
+  // Filter change handlers
+  onDepartmentChange(department: string) {
+    this.selectedDepartment = department;
+    this.updateFilters();
+  }
+
+  onShiftTypeChange(shiftType: string) {
+    this.selectedShiftType = shiftType;
+    this.updateFilters();
+  }
+
+  onSchedulePeriodChange(period: string) {
+    this.selectedSchedulePeriod = period;
+    this.updateFilters();
+  }
+
+  private updateFilters() {
+    this.filterState.next({
+      department: this.selectedDepartment,
+      shiftType: this.selectedShiftType,
+      schedulePeriod: this.selectedSchedulePeriod
+    });
   }
 
   // Helper method to format schedule for display
@@ -167,7 +253,7 @@ export class WorkScheduleManagementComponent implements OnInit {
 
   // Method to handle schedule creation
   createSchedule() {
-    // TODO: Implement schedule creation logic
+    this.showCreateModal = true;
   }
 
   // Method to handle schedule editing
@@ -178,5 +264,42 @@ export class WorkScheduleManagementComponent implements OnInit {
   // Method to handle schedule publishing
   publishSchedule() {
     // TODO: Implement schedule publishing logic
+  }
+
+  // Method to handle modal close
+  closeModal() {
+    this.showCreateModal = false;
+    this.newSchedule = {
+      employeeId: '',
+      scheduleId: '',
+      startDate: new Date(),
+      endDate: null
+    };
+  }
+
+  // Method to handle form submission
+  submitSchedule() {
+    if (!this.newSchedule.employeeId || !this.newSchedule.scheduleId || !this.newSchedule.startDate) {
+      console.error('Please fill in all required fields');
+      return;
+    }
+
+    // Create a new personnel schedule
+    const newPersonnelSchedule: PersonnelSchedule = {
+      id: Math.random().toString(36).substr(2, 9), // Generate a random ID for demo
+      personnel_id: this.newSchedule.employeeId,
+      schedule_id: this.newSchedule.scheduleId,
+      start_date: new Date(this.newSchedule.startDate),
+      end_date: this.newSchedule.endDate ? new Date(this.newSchedule.endDate) : null,
+      created_by: '1', // Hardcoded for demo
+      created_at: new Date()
+    };
+
+    // Update the schedules list with the new schedule
+    const currentSchedules = this.personnelSchedulesSubject.getValue();
+    this.personnelSchedulesSubject.next([...currentSchedules, newPersonnelSchedule]);
+
+    // Close the modal and reset the form
+    this.closeModal();
   }
 }

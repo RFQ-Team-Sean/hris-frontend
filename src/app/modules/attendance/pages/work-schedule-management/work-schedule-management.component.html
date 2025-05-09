@@ -20,7 +20,7 @@
         <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Schedule Period</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedSchedulePeriod" (ngModelChange)="onSchedulePeriodChange($event)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option>May 27 - June 2, 2024</option>
               <option>May 20 - May 26, 2024</option>
               <option>May 13 - May 19, 2024</option>
@@ -30,20 +30,20 @@
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Department</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedDepartment" (ngModelChange)="onDepartmentChange($event)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Departments</option>
-              <option *ngFor="let dept of departments$ | async">{{ dept.department_name }}</option>
+              <option *ngFor="let dept of departments$ | async" [value]="dept.id">{{ dept.department_name }}</option>
             </select>
           </div>
           
           <div style="flex: 1; min-width: 200px;">
             <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Shift Type</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+            <select [(ngModel)]="selectedShiftType" (ngModelChange)="onShiftTypeChange($event)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
               <option value="">All Shifts</option>
-              <option>Morning (8AM-5PM)</option>
-              <option>Mid (10AM-7PM)</option>
-              <option>Evening (2PM-11PM)</option>
-              <option>Night (10PM-7AM)</option>
+              <option value="morning">Morning (8AM-5PM)</option>
+              <option value="mid">Mid (10AM-7PM)</option>
+              <option value="evening">Evening (2PM-11PM)</option>
+              <option value="night">Night (10PM-7AM)</option>
             </select>
           </div>
           
@@ -181,4 +181,61 @@
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; background-color: #2563eb; color: white;">1</button>
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">2</button>
             <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">3</button>
-            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">
+            <button style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; color: #6b7280;">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Create Schedule Modal -->
+<div *ngIf="showCreateModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 50;">
+  <div style="background-color: white; border-radius: 8px; width: 100%; max-width: 500px; padding: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Create New Schedule</h2>
+      <button (click)="closeModal()" style="color: #6b7280; font-size: 1.5rem;">×</button>
+    </div>
+
+    <form (ngSubmit)="submitSchedule()">
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Employee</label>
+        <select [(ngModel)]="newSchedule.employeeId" name="employeeId" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="">Select Employee</option>
+          <option *ngFor="let employee of personnel$ | async" [value]="employee.id">
+            {{ employee.first_name }} {{ employee.last_name }}
+          </option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Schedule Type</label>
+        <select [(ngModel)]="newSchedule.scheduleId" name="scheduleId" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+          <option value="">Select Schedule Type</option>
+          <option *ngFor="let schedule of workSchedules$ | async" [value]="schedule.id">
+            {{ schedule.schedule_name }}
+          </option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">Start Date</label>
+        <input type="date" [(ngModel)]="newSchedule.startDate" name="startDate" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px;">End Date (Optional)</label>
+        <input type="date" [(ngModel)]="newSchedule.endDate" name="endDate" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem;">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button type="button" (click)="closeModal()" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: #374151;">
+          Cancel
+        </button>
+        <button type="submit" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
+          Create Schedule
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

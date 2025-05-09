@@ -7,21 +7,21 @@ import { Observable, of } from 'rxjs';
 export class DummyDataService {
   // Users Table
   private users = [
-    { id: '1', username: 'admin', email: 'admin@example.com', password_hash: 'password', role: 'Admin', status: 'Active', created_at: new Date(), updated_at: new Date() },
-    { id: '2', username: 'hr_manager', email: 'hr@example.com', password_hash: 'password', role: 'HR', status: 'Active', created_at: new Date(), updated_at: new Date() },
-    { id: '3', username: 'employee_john', email: 'john@example.com', password_hash: 'password', role: 'Employee', status: 'Active', created_at: new Date(), updated_at: new Date() },
-    { id: '4', username: 'payroll_mgr', email: 'payroll@example.com', password_hash: 'password', role: 'Payroll_Manager', status: 'Active', created_at: new Date(), updated_at: new Date() },
-    { id: '5', username: 'recruiter_anna', email: 'anna@example.com', password_hash: 'password', role: 'Recruiter', status: 'Active', created_at: new Date(), updated_at: new Date() },
-    { id: '6', username: 'manager_mike', email: 'mike@example.com', password_hash: 'password', role: 'Manager', status: 'Active', created_at: new Date(), updated_at: new Date() }
+    { id: '1', username: 'admin', email: 'admin@example.com', password_hash: 'password', role: 'Admin', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') },
+    { id: '2', username: 'hr_manager', email: 'hr@example.com', password_hash: 'password', role: 'HR', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') },
+    { id: '3', username: 'employee_john', email: 'john@example.com', password_hash: 'password', role: 'Employee', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') },
+    { id: '4', username: 'payroll_mgr', email: 'payroll@example.com', password_hash: 'password', role: 'Payroll_Manager', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') },
+    { id: '5', username: 'recruiter_anna', email: 'anna@example.com', password_hash: 'password', role: 'Recruiter', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') },
+    { id: '6', username: 'manager_mike', email: 'mike@example.com', password_hash: 'password', role: 'Manager', status: 'Active', created_at: new Date('2025-05-01'), updated_at: new Date('2025-05-01') }
   ];
 
   // Departments Table
   private departments = [
-    { id: '1', department_name: 'Administration', department_head: '1', description: 'Administrative Department', created_at: new Date() },
-    { id: '2', department_name: 'Human Resources', department_head: '2', description: 'HR Department', created_at: new Date() },
-    { id: '3', department_name: 'Information Technology', department_head: '3', description: 'IT Department', created_at: new Date() },
-    { id: '4', department_name: 'Finance', department_head: '4', description: 'Finance Department', created_at: new Date() },
-    { id: '5', department_name: 'Operations', department_head: '5', description: 'Operations Department', created_at: new Date() }
+    { id: '1', department_name: 'Administration', department_head: '1', description: 'Administrative Department', created_at: new Date('2025-05-01') },
+    { id: '2', department_name: 'Human Resources', department_head: '2', description: 'HR Department', created_at: new Date('2025-05-01') },
+    { id: '3', department_name: 'Information Technology', department_head: '3', description: 'IT Department', created_at: new Date('2025-05-01') },
+    { id: '4', department_name: 'Finance', department_head: '4', description: 'Finance Department', created_at: new Date('2025-05-01') },
+    { id: '5', department_name: 'Operations', department_head: '5', description: 'Operations Department', created_at: new Date('2025-05-01') }
   ];
 
   // Personnel Table
@@ -40,14 +40,14 @@ export class DummyDataService {
       department_id: '1', 
       designation: 'System Administrator', 
       employment_type: 'Regular', 
-      date_hired: new Date('2020-01-01'), 
+      date_hired: new Date('2025-05-01'), 
       salary: 50000, 
       gsis_number: '123456789', 
       pagibig_number: '123456789', 
       philhealth_number: '123456789', 
       sss_number: '123456789', 
       tin_number: '123456789', 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     },
     { 
       id: '2', 
@@ -162,13 +162,13 @@ export class DummyDataService {
       id: '1', 
       schedule_name: 'Regular 9-5', 
       is_flextime: false, 
-      start_time: new Date('2024-01-01T09:00:00'), 
-      end_time: new Date('2024-01-01T17:00:00'), 
-      break_start_time: new Date('2024-01-01T12:00:00'), 
-      break_end_time: new Date('2024-01-01T13:00:00'), 
+      start_time: new Date('2025-05-01T09:00:00'), 
+      end_time: new Date('2025-05-01T17:00:00'), 
+      break_start_time: new Date('2025-05-01T12:00:00'), 
+      break_end_time: new Date('2025-05-01T13:00:00'), 
       break_deducted: true, 
       is_work_from_home: false, 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -178,10 +178,10 @@ export class DummyDataService {
       id: '1', 
       personnel_id: '1', 
       schedule_id: '1', 
-      start_date: new Date('2024-01-01'), 
-      end_date: new Date('2024-12-31'), 
+      start_date: new Date('2025-05-01'), 
+      end_date: new Date('2025-05-31'), 
       created_by: '1', 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -190,9 +190,9 @@ export class DummyDataService {
     { 
       id: '1', 
       personnel_id: '1', 
-      log_date: new Date('2024-01-01'), 
-      time_in: new Date('2024-01-01T08:55:00'), 
-      time_out: new Date('2024-01-01T17:05:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T08:55:00'), 
+      time_out: new Date('2025-05-09T17:05:00'), 
       total_hours: 8, 
       status: 'Present', 
       biometric_used: true 
@@ -200,9 +200,9 @@ export class DummyDataService {
     { 
       id: '2', 
       personnel_id: '2', 
-      log_date: new Date('2024-01-01'), 
-      time_in: new Date('2024-01-01T09:15:00'), 
-      time_out: new Date('2024-01-01T17:30:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T09:15:00'), 
+      time_out: new Date('2025-05-09T17:30:00'), 
       total_hours: 8.25, 
       status: 'Late', 
       biometric_used: true 
@@ -210,9 +210,9 @@ export class DummyDataService {
     { 
       id: '3', 
       personnel_id: '3', 
-      log_date: new Date('2024-01-01'), 
-      time_in: new Date('2024-01-01T08:45:00'), 
-      time_out: new Date('2024-01-01T17:15:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T08:45:00'), 
+      time_out: new Date('2025-05-09T17:15:00'), 
       total_hours: 8.5, 
       status: 'Present', 
       biometric_used: true 
@@ -220,7 +220,7 @@ export class DummyDataService {
     { 
       id: '4', 
       personnel_id: '4', 
-      log_date: new Date('2024-01-01'), 
+      log_date: new Date('2025-05-09'), 
       time_in: null, 
       time_out: null, 
       total_hours: 0, 
@@ -230,9 +230,9 @@ export class DummyDataService {
     { 
       id: '5', 
       personnel_id: '5', 
-      log_date: new Date('2024-01-01'), 
-      time_in: new Date('2024-01-01T08:50:00'), 
-      time_out: new Date('2024-01-01T17:10:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T08:50:00'), 
+      time_out: new Date('2025-05-09T17:10:00'), 
       total_hours: 8.33, 
       status: 'Present', 
       biometric_used: true 
@@ -240,9 +240,9 @@ export class DummyDataService {
     { 
       id: '6', 
       personnel_id: '1', 
-      log_date: new Date('2024-01-02'), 
-      time_in: new Date('2024-01-02T08:58:00'), 
-      time_out: new Date('2024-01-02T17:02:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T08:58:00'), 
+      time_out: new Date('2025-05-09T17:02:00'), 
       total_hours: 8.07, 
       status: 'Present', 
       biometric_used: true 
@@ -250,9 +250,9 @@ export class DummyDataService {
     { 
       id: '7', 
       personnel_id: '2', 
-      log_date: new Date('2024-01-02'), 
-      time_in: new Date('2024-01-02T09:20:00'), 
-      time_out: new Date('2024-01-02T17:35:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T09:20:00'), 
+      time_out: new Date('2025-05-09T17:35:00'), 
       total_hours: 8.25, 
       status: 'Late', 
       biometric_used: true 
@@ -260,7 +260,7 @@ export class DummyDataService {
     { 
       id: '8', 
       personnel_id: '3', 
-      log_date: new Date('2024-01-02'), 
+      log_date: new Date('2025-05-09'), 
       time_in: null, 
       time_out: null, 
       total_hours: 0, 
@@ -270,9 +270,9 @@ export class DummyDataService {
     { 
       id: '9', 
       personnel_id: '4', 
-      log_date: new Date('2024-01-02'), 
-      time_in: new Date('2024-01-02T08:52:00'), 
-      time_out: new Date('2024-01-02T17:08:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T08:52:00'), 
+      time_out: new Date('2025-05-09T17:08:00'), 
       total_hours: 8.27, 
       status: 'Present', 
       biometric_used: true 
@@ -280,9 +280,9 @@ export class DummyDataService {
     { 
       id: '10', 
       personnel_id: '5', 
-      log_date: new Date('2024-01-02'), 
-      time_in: new Date('2024-01-02T09:10:00'), 
-      time_out: new Date('2024-01-02T17:20:00'), 
+      log_date: new Date('2025-05-09'), 
+      time_in: new Date('2025-05-09T09:10:00'), 
+      time_out: new Date('2025-05-09T17:20:00'), 
       total_hours: 8.17, 
       status: 'Late', 
       biometric_used: true 
@@ -362,45 +362,45 @@ export class DummyDataService {
       id: '1', 
       personnel_id: '1', 
       leave_type_id: '1', 
-      start_date: new Date('2024-02-01'), 
-      end_date: new Date('2024-02-05'), 
+      start_date: new Date('2025-05-10'), 
+      end_date: new Date('2025-05-14'), 
       total_days: 5, 
       status: 'Pending', 
       reason: 'Family vacation', 
-      request_date: new Date() 
+      request_date: new Date('2025-05-01') 
     },
     {
       id: '2',
       personnel_id: '2', 
       leave_type_id: '1',
-      start_date: new Date('2024-03-15'),
-      end_date: new Date('2024-03-17'),
+      start_date: new Date('2025-05-15'),
+      end_date: new Date('2025-05-17'),
       total_days: 3,
       status: 'Approved',
       reason: 'Personal matters',
-      request_date: new Date()
+      request_date: new Date('2025-05-01')
     },
     {
       id: '3',
       personnel_id: '1',
       leave_type_id: '1', 
-      start_date: new Date('2024-04-10'),
-      end_date: new Date('2024-04-14'),
+      start_date: new Date('2025-05-20'),
+      end_date: new Date('2025-05-24'),
       total_days: 5,
       status: 'Rejected',
       reason: 'Team building event',
-      request_date: new Date()
+      request_date: new Date('2025-05-01')
     },
     {
       id: '4',
       personnel_id: '3',
       leave_type_id: '1',
-      start_date: new Date('2024-05-01'),
-      end_date: new Date('2024-05-02'),
+      start_date: new Date('2025-05-25'),
+      end_date: new Date('2025-05-26'),
       total_days: 2,
       status: 'Pending',
       reason: 'Wedding anniversary',
-      request_date: new Date()
+      request_date: new Date('2025-05-01')
     }
   ];
 
@@ -413,7 +413,7 @@ export class DummyDataService {
       days_to_monetize: 5, 
       status: 'Pending', 
       amount: 5000, 
-      request_date: new Date() 
+      request_date: new Date('2025-05-01') 
     }
   ];
 
@@ -422,13 +422,13 @@ export class DummyDataService {
     { 
       id: '1', 
       personnel_id: '1', 
-      overtime_date: new Date('2024-01-15'), 
-      start_time: new Date('2024-01-15T17:00:00'), 
-      end_time: new Date('2024-01-15T20:00:00'), 
+      overtime_date: new Date('2025-05-15'), 
+      start_time: new Date('2025-05-15T17:00:00'), 
+      end_time: new Date('2025-05-15T20:00:00'), 
       total_hours: 3, 
       reason: 'Project deadline', 
       status: 'Pending', 
-      request_date: new Date() 
+      request_date: new Date('2025-05-01') 
     }
   ];
 
@@ -444,9 +444,9 @@ export class DummyDataService {
       new_designation: 'Team Lead', 
       previous_salary: 40000, 
       new_salary: 50000, 
-      effective_date: new Date('2024-01-01'), 
+      effective_date: new Date('2025-05-01'), 
       issued_by: '1', 
-      issued_date: new Date('2023-12-15'), 
+      issued_date: new Date('2025-05-01'), 
       remarks: 'Promotion due to excellent performance' 
     }
   ];
@@ -458,7 +458,7 @@ export class DummyDataService {
       personnel_id: '1', 
       record_type: 'Merit', 
       description: 'Employee of the Month', 
-      date_recorded: new Date('2024-01-01'), 
+      date_recorded: new Date('2025-05-01'), 
       documented_by: '2' 
     }
   ];
@@ -471,7 +471,7 @@ export class DummyDataService {
       case_title: 'Workplace Conduct', 
       case_description: 'Investigation of workplace behavior', 
       case_status: 'Filed', 
-      date_filed: new Date('2024-01-01'), 
+      date_filed: new Date('2025-05-01'), 
       filed_by: '2' 
     }
   ];
@@ -481,15 +481,15 @@ export class DummyDataService {
     { 
       id: '1', 
       personnel_id: '1', 
-      payroll_period_start: new Date('2024-01-01'), 
-      payroll_period_end: new Date('2024-01-15'), 
+      payroll_period_start: new Date('2025-05-01'), 
+      payroll_period_end: new Date('2025-05-15'), 
       basic_salary: 50000, 
       salary_adjustments: 0, 
       gross_salary: 50000, 
       total_deductions: 5000, 
       net_amount_due: 45000, 
       payment_status: 'Processed', 
-      processed_date: new Date() 
+      processed_date: new Date('2025-05-15') 
     }
   ];
 
@@ -517,8 +517,8 @@ export class DummyDataService {
       loan_source: 'Company', 
       loan_amount: 50000, 
       monthly_deduction: 2000, 
-      start_date: new Date('2024-01-01'), 
-      end_date: new Date('2024-12-31'), 
+      start_date: new Date('2025-05-01'), 
+      end_date: new Date('2025-12-31'), 
       remaining_balance: 48000, 
       status: 'Active' 
     }
@@ -535,10 +535,10 @@ export class DummyDataService {
       salary_range: '50k-70k', 
       employment_type: 'Regular', 
       num_vacancies: 2, 
-      application_deadline: new Date('2024-03-01'), 
+      application_deadline: new Date('2025-05-31'), 
       posting_status: 'Published', 
       created_by: '5', 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -565,7 +565,7 @@ export class DummyDataService {
       applicant_id: '1', 
       cover_letter: 'I am interested in this position', 
       status: 'Pending', 
-      application_date: new Date() 
+      application_date: new Date('2025-05-01') 
     }
   ];
 
@@ -576,7 +576,7 @@ export class DummyDataService {
       application_id: '1', 
       document_type: 'Resume', 
       document_path: '/documents/resume.pdf', 
-      upload_date: new Date() 
+      upload_date: new Date('2025-05-01') 
     }
   ];
 
@@ -586,7 +586,7 @@ export class DummyDataService {
       id: '1', 
       application_id: '1', 
       interviewer_id: '5', 
-      interview_date: new Date('2024-02-15'), 
+      interview_date: new Date('2025-05-15'), 
       interview_type: 'On_Site', 
       interview_status: 'Scheduled', 
       interview_location: 'Main Office' 
@@ -599,7 +599,7 @@ export class DummyDataService {
       id: '1', 
       application_id: '1', 
       exam_type: 'Technical', 
-      exam_date: new Date('2024-02-20'), 
+      exam_date: new Date('2025-05-20'), 
       exam_location: 'Testing Center', 
       exam_status: 'Scheduled', 
       passing_score: 75 
@@ -612,7 +612,7 @@ export class DummyDataService {
       id: '1', 
       application_id: '1', 
       assessor_id: '5', 
-      assessment_date: new Date(), 
+      assessment_date: new Date('2025-05-01'), 
       criteria_technical: 85, 
       criteria_experience: 90, 
       criteria_education: 80, 
@@ -631,7 +631,7 @@ export class DummyDataService {
       certificate_type: 'Employment', 
       purpose: 'Bank Loan', 
       status: 'Pending', 
-      request_date: new Date() 
+      request_date: new Date('2025-05-01') 
     }
   ];
 
@@ -641,9 +641,9 @@ export class DummyDataService {
       id: '1', 
       personnel_id: '1', 
       reviewer_id: '2', 
-      review_period_start: new Date('2023-01-01'), 
-      review_period_end: new Date('2023-12-31'), 
-      review_date: new Date(), 
+      review_period_start: new Date('2025-05-01'), 
+      review_period_end: new Date('2025-05-31'), 
+      review_date: new Date('2025-05-01'), 
       performance_score: 90, 
       strengths: 'Excellent technical skills', 
       areas_for_improvement: 'Time management', 
@@ -658,14 +658,14 @@ export class DummyDataService {
       id: '1', 
       training_name: 'Leadership Training', 
       description: 'Management skills development', 
-      start_date: new Date('2024-03-01'), 
-      end_date: new Date('2024-03-05'), 
+      start_date: new Date('2025-05-10'), 
+      end_date: new Date('2025-05-14'), 
       location: 'Training Center', 
       trainer: 'External Consultant', 
       max_participants: '20', 
       status: 'Planned', 
       created_by: '2', 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -686,7 +686,7 @@ export class DummyDataService {
       training_id: '1', 
       personnel_id: '1', 
       status: 'Enrolled', 
-      enrollment_date: new Date() 
+      enrollment_date: new Date('2025-05-01') 
     }
   ];
 
@@ -698,7 +698,7 @@ export class DummyDataService {
       feedback_type: 'HR_Service', 
       feedback_content: 'Great HR support', 
       is_anonymous: false, 
-      submitted_at: new Date(), 
+      submitted_at: new Date('2025-05-01'), 
       status: 'New' 
     }
   ];
@@ -711,7 +711,7 @@ export class DummyDataService {
       notification_type: 'System', 
       message: 'Your leave request has been approved', 
       is_read: false, 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -723,7 +723,7 @@ export class DummyDataService {
       document_type: 'PDF', 
       file_path: '/documents/policy.pdf', 
       uploaded_by: '1', 
-      upload_date: new Date(), 
+      upload_date: new Date('2025-05-01'), 
       is_public: true 
     }
   ];
@@ -732,13 +732,13 @@ export class DummyDataService {
   private auditLogs = [
     {
       id: 1,
-      timestamp: new Date('2024-05-15T10:45:23'),
+      timestamp: new Date('2025-05-15T10:45:23'),
       action: 'Payslip Generated',
       employee: {
         name: 'Juan Dela Cruz',
         id: 'EMP-2023-001'
       },
-      details: 'May 2024 payslip generated with net pay of ₱46,250.00',
+      details: 'May 2025 payslip generated with net pay of ₱46,250.00',
       performedBy: {
         name: 'Maria Santos',
         role: 'HR Manager'
@@ -747,7 +747,7 @@ export class DummyDataService {
     },
     {
       id: 2,
-      timestamp: new Date('2024-05-14T15:22:17'),
+      timestamp: new Date('2025-05-14T15:22:17'),
       action: 'Salary Updated',
       employee: {
         name: 'Maria Santos',
@@ -762,7 +762,7 @@ export class DummyDataService {
     },
     {
       id: 3,
-      timestamp: new Date('2024-05-14T09:15:42'),
+      timestamp: new Date('2025-05-14T09:15:42'),
       action: 'Deduction Added',
       employee: {
         name: 'Pedro Reyes',
@@ -777,7 +777,7 @@ export class DummyDataService {
     },
     {
       id: 4,
-      timestamp: new Date('2024-05-13T11:30:05'),
+      timestamp: new Date('2025-05-13T11:30:05'),
       action: 'Bonus Added',
       employee: {
         name: 'All Employees',
@@ -792,13 +792,13 @@ export class DummyDataService {
     },
     {
       id: 5,
-      timestamp: new Date('2024-05-12T14:20:33'),
+      timestamp: new Date('2025-05-12T14:20:33'),
       action: 'Payslip Generated',
       employee: {
         name: 'Ana Garcia',
         id: 'EMP-2023-004'
       },
-      details: 'May 2024 payslip generated with net pay of ₱42,500.00',
+      details: 'May 2025 payslip generated with net pay of ₱42,500.00',
       performedBy: {
         name: 'Maria Santos',
         role: 'HR Manager'
@@ -807,7 +807,7 @@ export class DummyDataService {
     },
     {
       id: 6,
-      timestamp: new Date('2024-05-12T09:45:12'),
+      timestamp: new Date('2025-05-12T09:45:12'),
       action: 'Salary Updated',
       employee: {
         name: 'Carlos Reyes',
@@ -822,7 +822,7 @@ export class DummyDataService {
     },
     {
       id: 7,
-      timestamp: new Date('2024-05-11T16:30:45'),
+      timestamp: new Date('2025-05-11T16:30:45'),
       action: 'Deduction Added',
       employee: {
         name: 'Maria Santos',
@@ -837,7 +837,7 @@ export class DummyDataService {
     },
     {
       id: 8,
-      timestamp: new Date('2024-05-11T10:15:22'),
+      timestamp: new Date('2025-05-11T10:15:22'),
       action: 'Bonus Added',
       employee: {
         name: 'IT Department',
@@ -859,7 +859,7 @@ export class DummyDataService {
       report_name: 'Monthly Attendance', 
       generated_by: '1', 
       file_path: '/reports/attendance.pdf', 
-      created_at: new Date() 
+      created_at: new Date('2025-05-01') 
     }
   ];
 
@@ -889,9 +889,9 @@ export class DummyDataService {
       id: '1', 
       personnel_id: '1', 
       reviewer_id: '2', 
-      evaluation_period_start: new Date('2023-01-01'), 
-      evaluation_period_end: new Date('2023-12-31'), 
-      evaluation_date: new Date(), 
+      evaluation_period_start: new Date('2025-05-01'), 
+      evaluation_period_end: new Date('2025-05-31'), 
+      evaluation_date: new Date('2025-05-01'), 
       kpi_score: 90, 
       overall_performance_score: 92, 
       status: 'Submitted' 
@@ -918,8 +918,8 @@ export class DummyDataService {
       bio: 'Experienced professional', 
       skills: ['JavaScript', 'Angular', 'Node.js'], 
       certifications: ['AWS Certified', 'Angular Certified'], 
-      createdAt: new Date(), 
-      updatedAt: new Date() 
+      createdAt: new Date('2025-05-01'), 
+      updatedAt: new Date('2025-05-01') 
     }
   ];
 
@@ -963,8 +963,8 @@ export class DummyDataService {
       fileSize: 1024, 
       category: 'Employment', 
       isPrivate: false, 
-      createdAt: new Date(), 
-      updatedAt: new Date() 
+      createdAt: new Date('2025-05-01'), 
+      updatedAt: new Date('2025-05-01') 
     }
   ];
 
@@ -982,8 +982,8 @@ export class DummyDataService {
       instructorId: '1', 
       category: 'Development', 
       tags: ['Angular', 'Frontend'], 
-      createdAt: new Date(), 
-      updatedAt: new Date() 
+      createdAt: new Date('2025-05-01'), 
+      updatedAt: new Date('2025-05-01') 
     }
   ];
 
@@ -998,8 +998,8 @@ export class DummyDataService {
       duration: 8, 
       content: 'Angular basics', 
       resources: ['/resources/angular-basics.pdf'], 
-      createdAt: new Date(), 
-      updatedAt: new Date() 
+      createdAt: new Date('2025-05-01'), 
+      updatedAt: new Date('2025-05-01') 
     }
   ];
 
@@ -1009,12 +1009,12 @@ export class DummyDataService {
       id: '1', 
       courseId: '1', 
       personnelId: '1', 
-      enrollmentDate: new Date(), 
+      enrollmentDate: new Date('2025-05-01'), 
       status: 'ENROLLED', 
       progress: 0, 
-      lastAccessedAt: new Date(), 
-      createdAt: new Date(), 
-      updatedAt: new Date() 
+      lastAccessedAt: new Date('2025-05-01'), 
+      createdAt: new Date('2025-05-01'), 
+      updatedAt: new Date('2025-05-01') 
     }
   ];
 
