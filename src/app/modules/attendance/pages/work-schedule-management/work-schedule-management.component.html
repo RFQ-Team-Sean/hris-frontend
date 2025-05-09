@@ -193,7 +193,7 @@
 <div *ngIf="showCreateModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 50;">
   <div style="background-color: white; border-radius: 8px; width: 100%; max-width: 500px; padding: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-      <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Create New Schedule</h2>
+      <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">{{ isEditMode ? 'Edit Schedule' : 'Create New Schedule' }}</h2>
       <button (click)="closeModal()" style="color: #6b7280; font-size: 1.5rem;">×</button>
     </div>
 
@@ -233,7 +233,7 @@
           Cancel
         </button>
         <button type="submit" style="padding: 10px 16px; background-color: #5046e5; color: white; border-radius: 6px; font-size: 0.875rem; font-weight: 500;">
-          Create Schedule
+          {{ isEditMode ? 'Update Schedule' : 'Create Schedule' }}
         </button>
       </div>
     </form>

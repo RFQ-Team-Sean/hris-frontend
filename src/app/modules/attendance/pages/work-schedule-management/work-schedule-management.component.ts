@@ -83,6 +83,7 @@ export class WorkScheduleManagementComponent implements OnInit {
 
   // Modal state
   showCreateModal = false;
+  isEditMode = false;
   newSchedule: ScheduleForm = {
     employeeId: '',
     scheduleId: '',
@@ -258,7 +259,21 @@ export class WorkScheduleManagementComponent implements OnInit {
 
   // Method to handle schedule editing
   editSchedule(scheduleId: string) {
-    // TODO: Implement schedule editing logic
+    this.isEditMode = true;
+    this.showCreateModal = true;
+
+    // Find the schedule to edit
+    const currentSchedules = this.personnelSchedulesSubject.getValue();
+    const scheduleToEdit = currentSchedules.find(s => s.id === scheduleId);
+
+    if (scheduleToEdit) {
+      this.newSchedule = {
+        employeeId: scheduleToEdit.personnel_id,
+        scheduleId: scheduleToEdit.schedule_id,
+        startDate: new Date(scheduleToEdit.start_date),
+        endDate: scheduleToEdit.end_date ? new Date(scheduleToEdit.end_date) : null
+      };
+    }
   }
 
   // Method to handle schedule publishing
@@ -269,6 +284,7 @@ export class WorkScheduleManagementComponent implements OnInit {
   // Method to handle modal close
   closeModal() {
     this.showCreateModal = false;
+    this.isEditMode = false;
     this.newSchedule = {
       employeeId: '',
       scheduleId: '',
@@ -284,20 +300,43 @@ export class WorkScheduleManagementComponent implements OnInit {
       return;
     }
 
-    // Create a new personnel schedule
-    const newPersonnelSchedule: PersonnelSchedule = {
-      id: Math.random().toString(36).substr(2, 9), // Generate a random ID for demo
-      personnel_id: this.newSchedule.employeeId,
-      schedule_id: this.newSchedule.scheduleId,
-      start_date: new Date(this.newSchedule.startDate),
-      end_date: this.newSchedule.endDate ? new Date(this.newSchedule.endDate) : null,
-      created_by: '1', // Hardcoded for demo
-      created_at: new Date()
-    };
-
-    // Update the schedules list with the new schedule
     const currentSchedules = this.personnelSchedulesSubject.getValue();
-    this.personnelSchedulesSubject.next([...currentSchedules, newPersonnelSchedule]);
+
+    if (this.isEditMode) {
+      // Find the schedule to edit by matching the employee and schedule type
+      const scheduleToEdit = currentSchedules.find(s => 
+        s.personnel_id === this.newSchedule.employeeId && 
+        s.schedule_id === this.newSchedule.scheduleId
+      );
+
+      if (scheduleToEdit) {
+        // Update the existing schedule
+        const updatedSchedules = currentSchedules.map(schedule => {
+          if (schedule.id === scheduleToEdit.id) {
+            return {
+              ...schedule,
+              schedule_id: this.newSchedule.scheduleId,
+              start_date: new Date(this.newSchedule.startDate),
+              end_date: this.newSchedule.endDate ? new Date(this.newSchedule.endDate) : null
+            };
+          }
+          return schedule;
+        });
+        this.personnelSchedulesSubject.next(updatedSchedules);
+      }
+    } else {
+      // Create new schedule
+      const newPersonnelSchedule: PersonnelSchedule = {
+        id: Math.random().toString(36).substr(2, 9), // Generate a random ID for demo
+        personnel_id: this.newSchedule.employeeId,
+        schedule_id: this.newSchedule.scheduleId,
+        start_date: new Date(this.newSchedule.startDate),
+        end_date: this.newSchedule.endDate ? new Date(this.newSchedule.endDate) : null,
+        created_by: '1', // Hardcoded for demo
+        created_at: new Date()
+      };
+      this.personnelSchedulesSubject.next([...currentSchedules, newPersonnelSchedule]);
+    }
 
     // Close the modal and reset the form
     this.closeModal();

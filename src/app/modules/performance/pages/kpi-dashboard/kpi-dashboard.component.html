@@ -6,27 +6,21 @@
       <div class="filters-section">
         <div class="filter-group">
           <label>Organization</label>
-          <select class="filter-select">
+          <select class="filter-select" [(ngModel)]="selectedOrganization" (change)="onOrganizationChange($event)">
             <option>All Organizations</option>
-            <option>TechCorp Inc.</option>
-            <option>Acme Corporation</option>
-            <option>Global Solutions Ltd.</option>
+            <option *ngFor="let org of organizations$ | async">{{org.name}}</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Department</label>
-          <select class="filter-select">
+          <select class="filter-select" [(ngModel)]="selectedDepartment" (change)="onDepartmentChange($event)">
             <option>All Departments</option>
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Engineering</option>
-            <option>HR</option>
-            <option>Finance</option>
+            <option *ngFor="let dept of departments$ | async">{{dept.name}}</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Time Period</label>
-          <select class="filter-select">
+          <select class="filter-select" [(ngModel)]="selectedTimePeriod" (change)="onTimePeriodChange($event)">
             <option>Last 30 Days</option>
             <option>Last Quarter</option>
             <option>Last Year</option>
@@ -48,14 +42,14 @@
         </div>
       </div>
       <div class="panel-content">
-        <div class="org-overview">
+        <div class="org-overview" *ngFor="let org of organizations$ | async">
           <div class="org-card">
             <div class="org-logo">
               <i class="fas fa-building"></i>
             </div>
             <div class="org-details">
-              <h3>TechCorp Inc.</h3>
-              <span class="rating excellent">92%</span>
+              <h3>{{org.name}}</h3>
+              <span class="rating" [ngClass]="getPerformanceClass(org.overallPerformance)">{{org.overallPerformance}}%</span>
               <p>Overall Performance</p>
             </div>
           </div>
@@ -63,23 +57,23 @@
             <div class="metric-item">
               <span class="metric-label">Growth</span>
               <div class="metric-bar">
-                <div class="bar-fill" style="width: 88%"></div>
+                <div class="bar-fill" [style.width.%]="org.metrics.growth"></div>
               </div>
-              <span class="metric-value">88%</span>
+              <span class="metric-value">{{org.metrics.growth}}%</span>
             </div>
             <div class="metric-item">
               <span class="metric-label">Efficiency</span>
               <div class="metric-bar">
-                <div class="bar-fill" style="width: 95%"></div>
+                <div class="bar-fill" [style.width.%]="org.metrics.efficiency"></div>
               </div>
-              <span class="metric-value">95%</span>
+              <span class="metric-value">{{org.metrics.efficiency}}%</span>
             </div>
             <div class="metric-item">
               <span class="metric-label">Innovation</span>
               <div class="metric-bar">
-                <div class="bar-fill" style="width: 85%"></div>
+                <div class="bar-fill" [style.width.%]="org.metrics.innovation"></div>
               </div>
-              <span class="metric-value">85%</span>
+              <span class="metric-value">{{org.metrics.innovation}}%</span>
             </div>
           </div>
         </div>
@@ -97,58 +91,13 @@
       </div>
       <div class="panel-content">
         <div class="departments-grid">
-          <div class="dept-card">
-            <div class="dept-icon sales">
-              <i class="fas fa-dollar-sign"></i>
+          <div class="dept-card" *ngFor="let dept of departments$ | async">
+            <div class="dept-icon" [ngClass]="dept.name.toLowerCase()">
+              <i class="fas fa-{{dept.icon}}"></i>
             </div>
             <div class="dept-info">
-              <h4>Sales</h4>
-              <p class="dept-score excellent">95%</p>
-            </div>
-          </div>
-          <div class="dept-card">
-            <div class="dept-icon marketing">
-              <i class="fas fa-bullhorn"></i>
-            </div>
-            <div class="dept-info">
-              <h4>Marketing</h4>
-              <p class="dept-score good">87%</p>
-            </div>
-          </div>
-          <div class="dept-card">
-            <div class="dept-icon engineering">
-              <i class="fas fa-code"></i>
-            </div>
-            <div class="dept-info">
-              <h4>Engineering</h4>
-              <p class="dept-score excellent">91%</p>
-            </div>
-          </div>
-          <div class="dept-card">
-            <div class="dept-icon hr">
-              <i class="fas fa-users"></i>
-            </div>
-            <div class="dept-info">
-              <h4>HR</h4>
-              <p class="dept-score good">89%</p>
-            </div>
-          </div>
-          <div class="dept-card">
-            <div class="dept-icon finance">
-              <i class="fas fa-chart-pie"></i>
-            </div>
-            <div class="dept-info">
-              <h4>Finance</h4>
-              <p class="dept-score excellent">93%</p>
-            </div>
-          </div>
-          <div class="dept-card">
-            <div class="dept-icon operations">
-              <i class="fas fa-cogs"></i>
-            </div>
-            <div class="dept-info">
-              <h4>Operations</h4>
-              <p class="dept-score average">78%</p>
+              <h4>{{dept.name}}</h4>
+              <p class="dept-score" [ngClass]="getPerformanceClass(dept.score)">{{dept.score}}%</p>
             </div>
           </div>
         </div>
@@ -170,67 +119,29 @@
             type="text"
             placeholder="Search employees..."
             class="emp-search"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange($event)"
           />
-          <select class="emp-filter-select">
+          <select class="emp-filter-select" [(ngModel)]="selectedDepartment" (change)="onDepartmentChange($event)">
             <option>All Departments</option>
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Engineering</option>
+            <option *ngFor="let dept of departments$ | async">{{dept.name}}</option>
           </select>
         </div>
         <div class="employees-grid">
-          <div class="employee-item">
+          <div class="employee-item" *ngFor="let emp of employees$ | async">
             <div class="employee-avatar">
-              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
+              <img [src]="emp.avatar" [alt]="emp.name" />
             </div>
             <div class="employee-details">
-              <h4>John Smith</h4>
-              <p>Sales Executive</p>
+              <h4>{{emp.name}}</h4>
+              <p>{{emp.position}}</p>
               <div class="employee-metrics">
                 <div class="emp-metric">
                   <span>Performance</span>
                   <div class="emp-progress">
-                    <div class="emp-progress-bar" style="width: 98%"></div>
+                    <div class="emp-progress-bar" [style.width.%]="emp.performance"></div>
                   </div>
-                  <span>98%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="employee-item">
-            <div class="employee-avatar">
-              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
-            </div>
-            <div class="employee-details">
-              <h4>Sarah Johnson</h4>
-              <p>Senior Developer</p>
-              <div class="employee-metrics">
-                <div class="emp-metric">
-                  <span>Performance</span>
-                  <div class="emp-progress">
-                    <div class="emp-progress-bar" style="width: 96%"></div>
-                  </div>
-                  <span>96%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="employee-item">
-            <div class="employee-avatar">
-              <img src="https://via.placeholder.com/50" alt="Employee avatar" />
-            </div>
-            <div class="employee-details">
-              <h4>Michael Chen</h4>
-              <p>Product Manager</p>
-              <div class="employee-metrics">
-                <div class="emp-metric">
-                  <span>Performance</span>
-                  <div class="emp-progress">
-                    <div class="emp-progress-bar" style="width: 95%"></div>
-                  </div>
-                  <span>95%</span>
+                  <span>{{emp.performance}}%</span>
                 </div>
               </div>
             </div>
