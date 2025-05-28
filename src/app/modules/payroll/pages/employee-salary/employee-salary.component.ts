@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DummyDataService } from '../../../../core/services/dummy-data.service';
+import { PayrollService, PayrollRecord, CreatePayrollRecordDto, UpdatePayrollRecordDto } from '../../../../core/services/payroll.service';
 import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -27,72 +27,66 @@ export class EmployeeSalaryComponent implements OnInit {
   totalPages = 0;
   
   // Observables for data
-  employees$: Observable<any[]>;
+  payrollRecords$: Observable<PayrollRecord[]>;
   departments$: Observable<any[]>;
-  filteredEmployees$: Observable<any[]>;
+  filteredPayrollRecords$: Observable<PayrollRecord[]>;
 
   // Filter subjects
   private departmentFilter$ = new BehaviorSubject<string>('');
   private statusFilter$ = new BehaviorSubject<string>('');
   private searchFilter$ = new BehaviorSubject<string>('');
 
-  // Add a BehaviorSubject to manage employees data
-  private employeesSubject = new BehaviorSubject<any[]>([]);
+  // Add a BehaviorSubject to manage payroll records data
+  private payrollRecordsSubject = new BehaviorSubject<PayrollRecord[]>([]);
 
-  constructor(private dummyDataService: DummyDataService) {
-    // Initialize employees data
-    this.dummyDataService.getPersonnel().subscribe(employees => {
-      this.employeesSubject.next(employees);
+  constructor(private payrollService: PayrollService) {
+    // Initialize payroll records data
+    this.payrollService.getAllPayrollRecords().subscribe(records => {
+      this.payrollRecordsSubject.next(records);
     });
 
-    this.employees$ = this.employeesSubject.asObservable();
-    this.departments$ = this.dummyDataService.getDepartments();
+    this.payrollRecords$ = this.payrollRecordsSubject.asObservable();
+    this.departments$ = this.payrollService.getDepartments();
 
     // Combine data for the template with filters
-    this.filteredEmployees$ = combineLatest([
-      this.employees$,
+    this.filteredPayrollRecords$ = combineLatest([
+      this.payrollRecords$,
       this.departments$,
       this.departmentFilter$,
       this.statusFilter$,
       this.searchFilter$
     ]).pipe(
-      map(([employees, departments, dept, status, search]) => {
-        let filteredEmployees = employees;
+      map(([records, departments, dept, status, search]) => {
+        let filteredRecords = records;
 
         // Apply department filter
         if (dept) {
-          filteredEmployees = filteredEmployees.filter(emp => emp.department_id === dept);
+          filteredRecords = filteredRecords.filter(record => record.personnel_id === dept);
         }
 
         // Apply status filter
         if (status) {
-          filteredEmployees = filteredEmployees.filter(emp => emp.status === status);
+          filteredRecords = filteredRecords.filter(record => record.payment_status === status);
         }
 
         // Apply search filter
         if (search) {
           const searchLower = search.toLowerCase();
-          filteredEmployees = filteredEmployees.filter(emp => 
-            emp.first_name.toLowerCase().includes(searchLower) ||
-            emp.last_name.toLowerCase().includes(searchLower) ||
-            emp.id.toLowerCase().includes(searchLower)
+          filteredRecords = filteredRecords.filter(record => 
+            record.personnel_id.toLowerCase().includes(searchLower)
           );
         }
 
         // Update pagination
-        this.totalItems = filteredEmployees.length;
+        this.totalItems = filteredRecords.length;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         this.currentPage = Math.min(this.currentPage, this.totalPages || 1);
 
         // Apply pagination
         const startIndex = (this.currentPage - 1) * this.pageSize;
-        filteredEmployees = filteredEmployees.slice(startIndex, startIndex + this.pageSize);
+        filteredRecords = filteredRecords.slice(startIndex, startIndex + this.pageSize);
 
-        // Map department names
-        return filteredEmployees.map(emp => ({
-          ...emp,
-          department: departments.find(d => d.id === emp.department_id)
-        }));
+        return filteredRecords;
       })
     );
   }
@@ -102,8 +96,8 @@ export class EmployeeSalaryComponent implements OnInit {
   }
 
   // Calculate net salary
-  calculateNetSalary(basic: number, allowances: number, deductions: number): number {
-    return basic + allowances - deductions;
+  calculateNetSalary(basic: number, adjustments: number, deductions: number): number {
+    return basic + adjustments - deductions;
   }
 
   // Format currency (Philippine Peso)
@@ -111,14 +105,14 @@ export class EmployeeSalaryComponent implements OnInit {
     return '₱' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
   }
 
-  // Get status badge class based on employment status
+  // Get status badge class based on payment status
   getStatusBadgeClass(status: string): string {
     switch (status) {
-      case 'Active':
+      case 'PAID':
         return 'bg-green-100 text-green-800';
-      case 'On Leave':
+      case 'PENDING':
         return 'bg-yellow-100 text-yellow-800';
-      case 'Inactive':
+      case 'FAILED':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -142,17 +136,14 @@ export class EmployeeSalaryComponent implements OnInit {
   }
 
   // Modal handlers
-  openModal(employee: any, editMode: boolean = false): void {
-    this.selectedEmployee = editMode ? { ...employee } : {
-      id: Math.random().toString(36).substr(2, 9),
-      first_name: '',
-      last_name: '',
-      salary: 0,
-      allowances: 0,
-      deductions: 0,
-      status: 'Active',
-      department_id: '',
-      designation: ''
+  openModal(record: PayrollRecord | null, editMode: boolean = false): void {
+    this.selectedEmployee = editMode ? { ...record } : {
+      personnel_id: '',
+      payroll_period_start: new Date(),
+      payroll_period_end: new Date(),
+      basic_salary: 0,
+      salary_adjustments: 0,
+      bank_account_number: ''
     };
     this.isEditMode = editMode;
     this.showModal = true;
@@ -165,33 +156,66 @@ export class EmployeeSalaryComponent implements OnInit {
   }
 
   saveEmployee(): void {
-    const currentEmployees = this.employeesSubject.value;
-    
     if (this.isEditMode) {
-      // Update existing employee
-      const index = currentEmployees.findIndex(emp => emp.id === this.selectedEmployee.id);
-      if (index !== -1) {
-        currentEmployees[index] = { ...currentEmployees[index], ...this.selectedEmployee };
-        this.employeesSubject.next([...currentEmployees]);
-      }
-    } else {
-      // Add new employee
-      this.employeesSubject.next([...currentEmployees, this.selectedEmployee]);
-    }
+      // Update existing record
+      const updateData: UpdatePayrollRecordDto = {
+        basic_salary: this.selectedEmployee.basic_salary,
+        salary_adjustments: this.selectedEmployee.salary_adjustments,
+        bank_account_number: this.selectedEmployee.bank_account_number,
+        payment_status: this.selectedEmployee.payment_status
+      };
 
-    // Show success message
-    alert(this.isEditMode ? 'Employee updated successfully!' : 'Employee added successfully!');
-    this.closeModal();
+      this.payrollService.updatePayrollRecord(this.selectedEmployee.id, updateData)
+        .subscribe({
+          next: (updatedRecord) => {
+            const currentRecords = this.payrollRecordsSubject.value;
+            const index = currentRecords.findIndex(r => r.id === updatedRecord.id);
+            if (index !== -1) {
+              currentRecords[index] = updatedRecord;
+              this.payrollRecordsSubject.next([...currentRecords]);
+            }
+            alert('Payroll record updated successfully!');
+            this.closeModal();
+          },
+          error: (error) => {
+            console.error('Error updating payroll record:', error);
+            alert('Failed to update payroll record');
+          }
+        });
+    } else {
+      // Create new record
+      const createData: CreatePayrollRecordDto = {
+        personnel_id: this.selectedEmployee.personnel_id,
+        payroll_period_start: this.selectedEmployee.payroll_period_start,
+        payroll_period_end: this.selectedEmployee.payroll_period_end,
+        basic_salary: this.selectedEmployee.basic_salary,
+        salary_adjustments: this.selectedEmployee.salary_adjustments,
+        bank_account_number: this.selectedEmployee.bank_account_number
+      };
+
+      this.payrollService.createPayrollRecord(createData)
+        .subscribe({
+          next: (newRecord) => {
+            const currentRecords = this.payrollRecordsSubject.value;
+            this.payrollRecordsSubject.next([...currentRecords, newRecord]);
+            alert('Payroll record created successfully!');
+            this.closeModal();
+          },
+          error: (error) => {
+            console.error('Error creating payroll record:', error);
+            alert('Failed to create payroll record');
+          }
+        });
+    }
   }
 
-  deleteEmployee(employee: any): void {
-    if (confirm('Are you sure you want to delete this employee\'s salary record?')) {
-      const currentEmployees = this.employeesSubject.value;
-      const updatedEmployees = currentEmployees.filter(emp => emp.id !== employee.id);
-      this.employeesSubject.next(updatedEmployees);
-      
-      // Show success message
-      alert('Employee deleted successfully!');
+  deleteEmployee(record: PayrollRecord): void {
+    if (confirm('Are you sure you want to delete this payroll record?')) {
+      // Note: You'll need to add a delete method to the PayrollService
+      const currentRecords = this.payrollRecordsSubject.value;
+      const updatedRecords = currentRecords.filter(r => r.id !== record.id);
+      this.payrollRecordsSubject.next(updatedRecords);
+      alert('Payroll record deleted successfully!');
     }
   }
 
