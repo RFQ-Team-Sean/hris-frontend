@@ -632,6 +632,118 @@ export class DummyDataService {
       purpose: 'Bank Loan', 
       status: 'Pending', 
       request_date: new Date('2025-05-01') 
+    },
+    {
+      id: '2',
+      personnel_id: '2',
+      certificate_type: 'Service Record',
+      purpose: 'New Job Application',
+      status: 'Approved',
+      request_date: new Date('2025-05-02')
+    },
+    {
+      id: '3',
+      personnel_id: '3',
+      certificate_type: 'Clearance',
+      purpose: 'Resignation',
+      status: 'Rejected',
+      request_date: new Date('2025-05-03')
+    },
+    {
+      id: '4',
+      personnel_id: '4',
+      certificate_type: 'Salary Certificate',
+      purpose: 'Housing Loan',
+      status: 'Pending',
+      request_date: new Date('2025-05-04')
+    },
+    {
+      id: '5',
+      personnel_id: '5',
+      certificate_type: 'Employment',
+      purpose: 'Visa Application',
+      status: 'Approved',
+      request_date: new Date('2025-05-05')
+    },
+    {
+      id: '6',
+      personnel_id: '1',
+      certificate_type: 'Service Record',
+      purpose: 'Scholarship Application',
+      status: 'Pending',
+      request_date: new Date('2025-05-06')
+    },
+    {
+      id: '7',
+      personnel_id: '2',
+      certificate_type: 'Clearance',
+      purpose: 'Department Transfer',
+      status: 'Approved',
+      request_date: new Date('2025-05-07')
+    },
+    {
+      id: '8',
+      personnel_id: '3',
+      certificate_type: 'Salary Certificate',
+      purpose: 'Car Loan',
+      status: 'Rejected',
+      request_date: new Date('2025-05-08')
+    },
+    {
+      id: '9',
+      personnel_id: '4',
+      certificate_type: 'Employment',
+      purpose: 'Insurance Application',
+      status: 'Pending',
+      request_date: new Date('2025-05-09')
+    },
+    {
+      id: '10',
+      personnel_id: '5',
+      certificate_type: 'Service Record',
+      purpose: 'Professional License Renewal',
+      status: 'Approved',
+      request_date: new Date('2025-05-10')
+    },
+    {
+      id: '11',
+      personnel_id: '1',
+      certificate_type: 'Clearance',
+      purpose: 'Project Assignment',
+      status: 'Pending',
+      request_date: new Date('2025-05-11')
+    },
+    {
+      id: '12',
+      personnel_id: '2',
+      certificate_type: 'Salary Certificate',
+      purpose: 'Credit Card Application',
+      status: 'Rejected',
+      request_date: new Date('2025-05-12')
+    },
+    {
+      id: '13',
+      personnel_id: '3',
+      certificate_type: 'Employment',
+      purpose: 'Business Permit',
+      status: 'Approved',
+      request_date: new Date('2025-05-13')
+    },
+    {
+      id: '14',
+      personnel_id: '4',
+      certificate_type: 'Service Record',
+      purpose: 'Academic Requirements',
+      status: 'Pending',
+      request_date: new Date('2025-05-14')
+    },
+    {
+      id: '15',
+      personnel_id: '5',
+      certificate_type: 'Clearance',
+      purpose: 'Training Program',
+      status: 'Approved',
+      request_date: new Date('2025-05-15')
     }
   ];
 

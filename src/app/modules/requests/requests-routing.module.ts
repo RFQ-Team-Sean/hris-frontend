@@ -5,6 +5,7 @@ import { DtrAdjustmentsComponent } from './pages/dtr-adjustments/dtr-adjustments
 import { CertificationsMembershipComponent } from './pages/certifications-membership/certifications-membership.component';
 import { MonetizationRequestsComponent } from './pages/monetization-requests/monetization-requests.component';
 import { DocumentRequestsComponent } from './pages/document-requests/document-requests.component';
+import { EmployeeDocumentRequestsComponent } from './pages/employee-document-requests/employee-document-requests.component';
 
 const routes: Routes = [
   { path: 'request-dashboard', component: RequestDashboardComponent },
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'certifications-membership', component: CertificationsMembershipComponent },
   { path: 'monetization-requests', component: MonetizationRequestsComponent },
   { path: 'document-requests', component: DocumentRequestsComponent },
-
+  { path: 'employee-document-requests', component: EmployeeDocumentRequestsComponent },
 ];
 
 @NgModule({

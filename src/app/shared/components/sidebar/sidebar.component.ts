@@ -435,7 +435,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           children: [
             { name: 'Certifications & Membership Forms', path: '/requests/certifications-membership' },
             { name: 'Monetization Requests', path: '/requests/monetization-requests' },
-            { name: 'Document Requests', path: '/requests/document-requests' },
+            { name: 'Document Requests', path: '/requests/employee-document-requests' },
 	        ]
         },
        ],
