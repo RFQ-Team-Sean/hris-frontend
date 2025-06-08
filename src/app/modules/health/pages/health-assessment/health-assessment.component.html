@@ -1,0 +1,51 @@
+<div class="min-h-[60vh] flex flex-col items-center justify-center py-12">
+  <h1 class="text-3xl font-bold text-gray-900 mb-4">Health Assessment</h1>
+  <p class="text-gray-600 mb-8 max-w-xl text-center">
+    This page will integrate with InsightGenie.AI for health assessment. Choose a method below to begin.
+  </p>
+  <div class="flex flex-col sm:flex-row gap-4 mb-8 w-full max-w-md justify-center">
+    <button class="btn-primary flex-1 flex items-center justify-center gap-2" (click)="selectOption('audio')">
+      Audio/Voice
+    </button>
+    <button class="btn-primary flex-1 flex items-center justify-center gap-2" (click)="selectOption('face')">
+      Face Scan
+    </button>
+    <button class="btn-primary flex-1 flex items-center justify-center gap-2" (click)="selectOption('digital')">
+      Digital Footprint
+    </button>
+  </div>
+
+  <!-- Instruction Container -->
+  <div class="w-full max-w-lg mb-6">
+    <div *ngIf="activeOption === 'audio'" class="p-4 bg-blue-50 rounded-lg border border-blue-100 text-center">
+      <div class="font-semibold text-blue-900 mb-1">Audio/Voice</div>
+      <div class="text-gray-600 text-sm">Drag and drop a file anywhere on the page.<br>Your voice file needs to have continuous speech of at least 30 seconds and ideally not more than 5 minutes.<br>Accepted formats: aac, aiff, alac, flac, mp3, mp4, ogg, pcm, wav, wma, m4a.</div>
+    </div>
+    <div *ngIf="activeOption === 'face'" class="p-4 bg-green-50 rounded-lg border border-green-100 text-center">
+      <div class="font-semibold text-green-900 mb-1">Face Scan</div>
+      <div class="text-gray-600 text-sm">Your webcam will be used for face scan. Please ensure your face is clearly visible in the camera.</div>
+    </div>
+    <div *ngIf="activeOption === 'digital'" class="p-4 bg-yellow-50 rounded-lg border border-yellow-100 text-center">
+      <div class="font-semibold text-yellow-900 mb-1">Digital Footprint</div>
+      <div class="text-gray-600 text-sm">Drag and drop a file anywhere on the page.<br>Your file needs to have information for at least one person, ideally not more than 10 persons.<br>Accepted format: .csv</div>
+    </div>
+  </div>
+
+  <!-- Audio/Voice Option -->
+  <div *ngIf="activeOption === 'audio'" class="w-full max-w-lg bg-white border border-dashed border-blue-400 rounded-xl p-8 flex flex-col items-center text-center shadow">
+    <div class="text-lg font-semibold mb-2">Upload Audio/Voice File</div>
+    <!-- File input can be added here -->
+  </div>
+
+  <!-- Face Scan Option -->
+  <div *ngIf="activeOption === 'face'" class="w-full max-w-lg bg-white rounded-xl p-8 flex flex-col items-center text-center shadow">
+    <div class="text-lg font-semibold mb-2">Face Scan</div>
+    <video #videoElement width="320" height="240" autoplay class="rounded-lg border border-gray-300"></video>
+  </div>
+
+  <!-- Digital Footprint Option -->
+  <div *ngIf="activeOption === 'digital'" class="w-full max-w-lg bg-white border border-dashed border-blue-400 rounded-xl p-8 flex flex-col items-center text-center shadow">
+    <div class="text-lg font-semibold mb-2">Upload Digital Footprint File</div>
+    <!-- File input can be added here -->
+  </div>
+</div> 

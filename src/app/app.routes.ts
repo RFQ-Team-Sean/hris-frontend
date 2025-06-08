@@ -37,7 +37,7 @@ export const routes: Routes = [
       { path: 'requests', loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule), canActivate: [authGuard] },
       { path: 'learning-development', loadChildren: () => import('./modules/learning-development/learning-development.module').then(m => m.LearningDevelopmentModule), canActivate: [authGuard] },
       { path: 'job-portal', loadChildren: () => import('./modules/job-portal/job-portal.module').then(m => m.JobPortalModule), canActivate: [authGuard] },
-      
+      { path: 'health', loadChildren: () => import('./modules/health/health.module').then(m => m.HealthModule), canActivate: [authGuard] },
       // Default route for authenticated users
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

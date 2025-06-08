@@ -1,0 +1,29 @@
+.health-dashboard {
+  padding: 20px;
+
+  .container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .dashboard-content {
+      min-height: 200px;
+    }
+  }
+}
+
+.hero-gradient {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%),
+    url("https://lh3.googleusercontent.com/aida-public/AB6AXuB44IaLknUse2B2c1mQZ4Of6j2gJ80kLCGFJhmoy1FJAZcXotpoMs5y2JntHgx1US4hdVADFA-HHzbhrGYpONh0MID6-k66msqKnqlZB-MMqO17BFjXy0RI_AvKLQRXH-oDX8g8GJthGkR7YpQGI8NXQUGOHN_aGQzUYveDWLhfOOpp9lMR8rEqnJNFI-0LrkGzNr8jZiZq-ZNJx3Mm1bS328hjQ9N3inI4YC-bS-TldzJ5Gsl3M6WFLcOxuEG52WbnbYajhPLR9L8");
+}
+
+:host {
+  display: block;
+  font-family: 'Manrope', 'Noto Sans', sans-serif;
+} 

@@ -309,7 +309,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             { name: 'Audit Logs', path: '/system-admin/audit-logs' }
           ]
         },
-        
+        { 
+          name: 'Health & Wellness', 
+          path: '/health/health-dashboard', 
+          icon: 'attach_money',
+          children: [
+            { name: 'health dashboard', path: '/health/health-dashboard' },
+            { name: 'resources', path: '/health/resources' },
+            { name: 'events', path: '/health/events' },
+            { name: 'Health Assessment', path: '/health/health-assessment' }
+          ]
+        },
       ],
       'HR': [
         { name: 'Dashboard', path: '/dashboard/admin', icon: 'dashboard' },
